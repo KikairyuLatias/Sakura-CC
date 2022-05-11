@@ -51,7 +51,7 @@ end
 function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc:IsFacedown() or not tc:IsRelateToEffect(e) then return end
-	Duel.SendtoDeck(tc,nil,REASON_EFFECT)
+	Duel.SendtoDeck(tc,2,nil,REASON_EFFECT)
 	if Duel.NegateActivation(ev) and re:GetHandler():IsRelateToEffect(re) then
 		Duel.Destroy(eg,REASON_EFFECT)
 	end

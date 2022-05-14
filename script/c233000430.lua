@@ -57,7 +57,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	e4:SetCode(EFFECT_CANNOT_BE_LINK_MATERIAL)
 	Duel.RegisterEffect(e4,tp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,233000434,0x7c8,TYPES_TOKEN,500,500,1,RACE_BEAST,ATTRIBUTE_LIGHT) end 
+		and Duel.IsPlayerCanSpecialSummonMonster(tp,233000434,0x7c8,TYPES_TOKEN,500,500,1,RACE_BEAST,ATTRIBUTE_LIGHT)
 		then
 		local token=Duel.CreateToken(tp,233000434)
 		Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP)

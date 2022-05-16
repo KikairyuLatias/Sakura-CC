@@ -36,7 +36,6 @@ function s.initial_effect(c)
 	local e5=e3:Clone()
 	e5:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
 	c:RegisterEffect(e5)
-	--cyber magician clause (need to do separate version for LINK)
 end
 
 --setting
@@ -58,7 +57,7 @@ end
 
 --use hand as material
 function s.synval(e,c,sc)
-	if sc:IsRace(RACE_BEAST) and --c:IsNotTuner() 
+	if  --c:IsNotTuner() 
 		(not c:IsType(TYPE_TUNER) or c:IsHasEffect(EFFECT_NONTUNER)) and c:IsSetCard(0x4c9) and c:IsLocation(LOCATION_HAND) then
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)

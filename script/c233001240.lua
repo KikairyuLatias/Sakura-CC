@@ -17,6 +17,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 	--extra summon
 	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetType(EFFECT_TYPE_FIELD)
 	e2:SetTargetRange(LOCATION_HAND+LOCATION_MZONE,0)
 	e2:SetCode(EFFECT_EXTRA_SUMMON_COUNT)
@@ -42,7 +43,7 @@ end
 
 --ss condition
 function s.filter(c,e,tp)
-	return c:IsSetCard(0x4c9) or c:IsCode(233001215) and c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsHasEffect(EFFECT_NECRO_VALLEY)
+	return (c:IsSetCard(0x4c9) or c:IsCode(233001215)) and c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsHasEffect(EFFECT_NECRO_VALLEY)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

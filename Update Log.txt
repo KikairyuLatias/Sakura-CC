@@ -1,0 +1,164 @@
+12/17/2019
+
+Moved the old coding to "Back code". (Please realize that I won't update those, but they are there in case there exists any discrepancies)
+Updated the Set ID
+Cards in their new locations have been uploaded.
+
+12/18/2019
+
+All cards have been moved to the new 233xxxxxx code
+Baofeng Dragon needs to be coded now, but everything else is there.
+May need to correct some old code in case they call specific card names that were shifted...
+
+12/25/2019
+
+Merry Christmas everyone!
+
+Modified the code for Dreamlight Speedstar and Pony Apprentice so they can render 2 different Levels if used to Synchro Summon.
+Added coding for Baofeng Dragon - Honghua (will do rest later)
+Added a new code to the spreadsheet (Flash Blossom Reindeer / 1224 / 4c8), though I will get to coding them after Baofeng.
+
+1/6/2020
+
+Updated some of the scripts that required specific cards by name (as I forgot to double check that they ran the new codes and not the old ones). Luckily those were in the sets that didn't get their positioning moved. (Ergo, Psychic Dragon Delta Latias, some of the Flyer stuff, etc)
+
+1/8/2020
+
+Moved "Phoenix Guardian" to code "652" so it can be properly marked as a sub-arch of "Guardian" (like that'll ever do much)
+Added new versions of the (RELEASE) files that show all the cards in an archetype/series.
+Updated pic for Psychic Dragon Eon Princess Latias EX (though it's just fixing the subtype line)
+"Baofeng Dragon" monsters should be scripted
+
+1/19/2020
+
+"Blazefur Athlete Fighting Aura" added and coded.
+Some of the Diver Equine cards had their scripts modified b/c old effects and stuff, also fixed in the CDB (or should be)
+
+2/1/2020
+
+Added the Flash Blossom Reindeer cards
+Fixed some older cards with outdated texts
+Fixed some of the old code for Hazmat Animal
+
+Please note that the game won't render out the prompts in CDB; likely due to the 9 digit thing. You may wish to have it open on the side or take notes. They should generally be ordered in the same places they appear on text.
+
+2/3/2020
+
+Fixed the Xyz ZPD monsters because using older code
+Added rest of existing Diver Equine monsters
+Other small stuff...
+
+2/5/2020
+
+Added new Flash Blossom monster
+Fixed some codes here and there
+
+(Will need to add conditions on the Pendulums that can SS themselves from the P-Zone, so you cannot trigger their effects if no spaces to go in.)
+
+2/29/2020
+
+Addition of ZP Delta
+Fixed some of the Flash Blossom stuff
+Some other misc fixes.
+Added Rush Duel imports
+
+3/27/2020
+
+Some minor script fixes
+Heavy modifications to the Hazmat Animal arch
+Modifications to the Diver Equine arch
+Other changes
+
+4/4/2020
+
+MASSIVE UPDATE
+- Moved ZP Delta to the 100-range behind ZPD/Magical Girl
+- Diver Deer range expanded to 544
+- Diver Equine range expanded to 20 cards (up to 564)
+- Hazmat Animal expanded to 20 cards (up to 584)
+- Remainder will be left as blanks
+- Rush Duel imports moved to Generic 1
+- 800 range will be for overflow archetypes
+- "Component Folder" inside "expansions" has the individual set files if you would like them.
+
+4/16/2020
+
+As YGOPro is currently being replaced with ED0Pro as of 4/5 (right after I updated this the previous time), I am switching gears for it and coding it for this software.
+
+However, the original code will be kept in back code (YGOPro) if you prefer to still use that version. Just be aware that I won't update it as often.
+
+(Though to be fair, the only things that really changed are likely the codes and some pictures)
+
+That being said though, some of the code may work on YGOPro, but not so much on ED0Pro. If this occurs, please let me know so I can rectify the issue ASAP.
+
+4/19/2020
+
+A few minor code updates, but nothing too serious. Except actually adding code for Blazefur Amaterasu and Ritual (plus pics)
+
+4/26/2020
+
+Updated some code so Armades-esque stuff works properly in ED0Pro.
+
+Also a few modifications to other Decks.
+
+5/12/2020
+
+Diver Deer updates
+Replacing some images for other stuff for updating/balancing
+
+7/22/2020
+
+- Updated Diver Deer stuff with new effects, some cards and fixes
+- Moved Diver Deer range to 500-549, Diver Equine to 550-569, Hazmat Animal to 570-589
+- A few of the Pony support (that are not actual) are revamped to be generic Beast support and moved accordingly.
+- Additional art for Enrique added and slight update to effect
+- Modified Scubapro a bit with summon requirements
+- Some code fixes
+
+You can also find a full list of cards and stuff on my new site:
+https://sites.google.com/view/sakuracarddesign/home
+
+8/18/2020
+
+- Minor code fixing (Pendulums)
+- Some images for Cherry Rabbit
+- Some images for other cards (Hieratics custom)
+- Moved Shira's stuff to the 800 range and made it generic Beast supports (with new cards)
+- Other changes
+
+11/29/2020
+
+- Fixing scripts for several cards (e.g. Diver Deer Master Popohau's hand banish/burn)
+- Rush Duel cards are separated into their own category
+- Actual images for stuff instead of fillers
+- Addition of Skyfurry and Erpeta Metensar
+- New arts for some cards.
+
+02/27/2021
+
+- Correcting some scripts
+- Added legacy support for various archetypes
+- Addition of Radiant Dragon Reindeer in the 2330014xx range
+
+07/05/2021
+
+- Updated images
+- Addition of new cards (including "Resistance Avatar" archetype)
+- Modified some scripts
+
+01/17/2022
+
+- Addition of various cards
+- Updating of some scripts and pictures
+
+05/03/2022
+
+- Updated images
+- Addition of cards
+- Modification of scripts (still WIP in a way)
+
+05/15/2022
+
+- Reconfigured GitHub to work with repositories. Please copy the below into your config file to allow downloads directly from GitHub instead of having to manually do it.
+- Updated images/scripts/cards
+- Cards added or modified according to scripting limitations, and probably general balance revisions later on.

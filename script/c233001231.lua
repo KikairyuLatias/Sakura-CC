@@ -17,11 +17,6 @@ function s.initial_effect(c)
 	e2:SetOperation(s.atkop)
 	e2:SetValue(s.value)
 	c:RegisterEffect(e2)
-	--stat boost
-	local e3=e2:Clone()
-	e3:SetCondition(s.atkcon2)
-	e3:SetOperation(s.atkop2)
-	c:RegisterEffect(e3)
 end
 
 --use hand as material
@@ -31,7 +26,7 @@ function s.synval(e,c,sc)
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_HAND_SYNCHRO+EFFECT_SYNCHRO_CHECK)
-		e1:SetLabel(90001231)
+		e1:SetLabel(id)
 		e1:SetTarget(s.synchktg)
 		c:RegisterEffect(e1)
 		return true
@@ -72,19 +67,10 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	e1:SetValue(s.value)
 	e1:SetReset(RESET_EVENT+0x1fe0000)
 	sync:RegisterEffect(e1)
-end
-
---stat boosting
-function s.atkcon2(e,tp,eg,ep,ev,re,r,rp)
-	return r==REASON_SYNCHRO
-end
-function s.atkop2(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local sync=c:GetReasonCard()
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_UPDATE_DEFENSE)
-	e1:SetValue(s.value)
-	e1:SetReset(RESET_EVENT+0x1fe0000)
+	local e2=Effect.CreateEffect(c)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_UPDATE_DEFENSE)
+	e2:SetValue(s.value)
+	e2:SetReset(RESET_EVENT+0x1fe0000)
 	sync:RegisterEffect(e2)
 end

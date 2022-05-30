@@ -3,7 +3,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--link summon
 	c:EnableReviveLimit()
-	Link.AddProcedure(c,s.matfilter,2,2)
+	Link.AddProcedure(c,s.matfilter,2,3)
 	--targeting/destruction protection while linked
 	local e0=Effect.CreateEffect(c)
 	e0:SetType(EFFECT_TYPE_FIELD)

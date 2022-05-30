@@ -7,20 +7,20 @@ function s.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetRange(LOCATION_PZONE)
-	e1:SetCountLimit(1,id)
 	e1:SetOperation(s.crop)
 	c:RegisterEffect(e1)
 	--promotion thing
-	--ss condition
-	local e5=Effect.CreateEffect(c)
-	e5:SetType(EFFECT_TYPE_FIELD)
-	e5:SetCode(EFFECT_SPSUMMON_PROC)
-	e5:SetProperty(EFFECT_FLAG_UNCOPYABLE)
-	e5:SetRange(LOCATION_HAND)
-	e5:SetCountLimit(1,id)
-	e5:SetCondition(s.spcon)
-	e5:SetOperation(s.spop)
-	c:RegisterEffect(e5)
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,0))
+	e3:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e3:SetRange(LOCATION_PZONE)
+	e3:SetCode(EVENT_PHASE+PHASE_END)
+	e3:SetCountLimit(1,id)
+	e3:SetCost(s.spcost)
+	e3:SetTarget(s.sptg)
+	e3:SetOperation(s.spop)
+	c:RegisterEffect(e3)
 	--attack directly
 	local e6=Effect.CreateEffect(c)
 	e6:SetDescription(aux.Stringid(id,1))
@@ -34,12 +34,12 @@ function s.initial_effect(c)
 	c:RegisterEffect(e6,false,1)
 	--mill the opponent when he dies
 	local e7=Effect.CreateEffect(c)
-	e7:SetCategory(CATEGORY_TODECK)
 	e7:SetDescription(aux.Stringid(id,2))
+	e7:SetCategory(CATEGORY_TODECK)
 	e7:SetProperty(EFFECT_FLAG_DELAY)
 	e7:SetType(EFFECT_TYPE_TRIGGER_O+EFFECT_TYPE_SINGLE)
 	e7:SetCode(EVENT_TO_GRAVE)
-	e7:SetCountLimit(1,id+99998)
+	e7:SetCountLimit(1,{id,1})
 	e7:SetCondition(s.tdcondition)
 	e7:SetTarget(s.tdtarget)
 	e7:SetOperation(s.tdoperation)
@@ -67,6 +67,7 @@ function s.crop(e,tp,eg,ep,ev,re,r,rp)
 	e4:SetReset(RESET_PHASE+PHASE_END)
 	Duel.RegisterEffect(e4,tp)
 end
+
 s.cfilter=aux.FilterFaceupFunction(Card.IsSetCard,0x5f4)
 function s.cedop(e,tp,eg,ep,ev,re,r,rp)
 	if eg:IsExists(s.cfilter,1,nil) then
@@ -81,23 +82,36 @@ end
 function s.chlimit(re,rp,tp)
 	return rp==tp
 end
---ss function
-function s.spfilter(c,ft)
-	return c:IsFaceup() and c:IsSetCard(0x5f4) and c:IsType(TYPE_MONSTER) and c:IsAbleToHandAsCost()
-		and (ft>0 or c:GetSequence()<5)
+
+--promote up
+function s.relfilter(c,e,tp,ft)
+	return c:IsSetCard(0x5f4) and (ft>0 or c:IsInMainMZone(tp)) 
+	and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp,c:GetLevel())
 end
-function s.spcon(e,c)
-	if c==nil then return true end
-	local tp=c:GetControler()
+function s.spfilter(c,e,tp,lv)
+	return c:IsSetCard(0x5f4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and (c:GetLevel()<=lv+3 and c:GetLevel()>lv)
+end
+function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
-	return ft>-1 and Duel.IsExistingMatchingCard(s.spfilter,c:GetControler(),LOCATION_EXTRA+LOCATION_GRAVE,0,2,nil,ft)
+	if chk==0 then return ft>-1 and Duel.CheckReleaseGroupCost(tp,s.relfilter,1,false,nil,nil,e,tp,ft) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
+	local g=Duel.SelectReleaseGroupCost(tp,s.relfilter,1,1,false,nil,nil,e,tp,ft)
+	e:SetLabel(g:GetFirst():GetLevel())
+	Duel.Release(g,REASON_COST)
 end
-function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
-	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RTOHAND)
-	local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_EXTRA+LOCATION_GRAVE,0,2,2,nil,ft)
-	Duel.SendtoHand(g,nil,REASON_COST)
+function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_DECK)
 end
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+	local g=Duel.SelectMatchingCard(tp,s.spfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp,e:GetLabel())
+	if #g>0 then
+		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
+	end
+end
+
 --attack
 function s.dacon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsAbleToEnterBP()
@@ -133,6 +147,7 @@ end
 function s.ftarget(e,c)
 	return e:GetLabel()~=c:GetFieldID()
 end
+
 --deck milling
 function s.tdcondition(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

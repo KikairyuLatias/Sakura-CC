@@ -162,3 +162,10 @@ https://sites.google.com/view/sakuracarddesign/home
 - Reconfigured GitHub to work with repositories. Please copy the below into your config file to allow downloads directly from GitHub instead of having to manually do it.
 - Updated images/scripts/cards
 - Cards added or modified according to scripting limitations, and probably general balance revisions later on.
+
+05/30/2022
+
+- Updates to TRON Zoo code
+- Addition of A.G.M.
+- Rider Deer new artwork and some renovations for the Level 6 and 7 monsters re: promotion effects
+- Various fixes

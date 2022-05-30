@@ -30,7 +30,7 @@ function s.initial_effect(c)
 	local e4=Effect.CreateEffect(c)
 	e4:SetType(EFFECT_TYPE_FIELD)
 	e4:SetCode(EFFECT_QP_ACT_IN_NTPHAND)
-	e4:SetRange(LOCATION_FZONE)
+	e4:SetRange(LOCATION_MZONE)
 	e4:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x7c8))
 	e4:SetCondition(s.actcon)
 	e4:SetTargetRange(LOCATION_HAND,0)
@@ -39,6 +39,7 @@ function s.initial_effect(c)
 	e5:SetCode(EFFECT_TRAP_ACT_IN_HAND)
 	c:RegisterEffect(e5)
 end
+
 --mat filter
 function s.matfilter(c,scard,sumtype,tp)
 	return c:IsRace(RACE_BEAST,scard,sumtype,tp) and c:IsAttribute(ATTRIBUTE_LIGHT,scard,sumtype,tp)

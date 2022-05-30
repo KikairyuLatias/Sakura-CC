@@ -63,5 +63,5 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 	Duel.RegisterEffect(e1,tp)
 end
 function s.splimit(e,c)
-	return not (c:IsSetCard(0x439) or c:IsSetCard(0x1439))
+	return not c:IsSetCard(0x439)
 end

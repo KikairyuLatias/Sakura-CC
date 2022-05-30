@@ -32,6 +32,7 @@ function s.initial_effect(c)
 	e4:SetValue(aux.indoval)
 	c:RegisterEffect(e4)
 end
+
 function s.filter(c)
 	return c:IsFaceup() and c:IsSetCard(0xd0) and c:IsAbleToHand()
 end
@@ -51,4 +52,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	if g:GetCount()>0 then
 		Duel.SendtoHand(g,nil,REASON_EFFECT)
 	end
+end
+function s.indval(e,re,tp)
+	return tp~=e:GetHandlerPlayer()
 end

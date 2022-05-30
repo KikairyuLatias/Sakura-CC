@@ -90,6 +90,6 @@ function s.scop(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local sg=g:Select(tp,1,1,nil)
-		Duel.SynchroSummon(tp,sg:GetFirst(),nil,mg)
+		Duel.LinkSummon(tp,sg:GetFirst(),nil,mg)
 	end
 end

@@ -20,18 +20,6 @@ function s.initial_effect(c)
 	e2:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
 	e2:SetTarget(s.indtg)
 	c:RegisterEffect(e2)
-	--cannot released linked monsters
-	local e3=e2:Clone()
-	e3:SetCode(EFFECT_UNRELEASABLE_SUM)
-	c:RegisterEffect(e3)
-	--cannot release me
-	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_SINGLE)
-	e4:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
-	e4:SetRange(LOCATION_MZONE)
-	e4:SetCode(EFFECT_UNRELEASABLE_SUM)
-	e4:SetValue(1)
-	c:RegisterEffect(e4)
 	--tribute to negate effects
 	local e8=Effect.CreateEffect(c)
 	e8:SetCategory(CATEGORY_NEGATE+CATEGORY_REMOVE+CATEGORY_DAMAGE)

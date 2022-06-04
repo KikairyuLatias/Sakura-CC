@@ -169,3 +169,10 @@ https://sites.google.com/view/sakuracarddesign/home
 - Addition of A.G.M.
 - Rider Deer new artwork and some renovations for the Level 6 and 7 monsters re: promotion effects
 - Various fixes
+
+06/04/2022
+
+- Addition of Flash Resistance Reindeer
+- Other random changes to codes and stuff for improvement
+
+(Still waiting for EDOPro to upload Advanced CB Amethyst's code so I can take that code for the direct attack members with halving damage stuff)

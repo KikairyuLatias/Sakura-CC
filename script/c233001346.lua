@@ -47,7 +47,7 @@ end
 
 --protection
 function s.limfilter(c,tp)
-	return c:GetSummonPlayer()==tp and c:IsRace(RACE_BEAST) and c:IsAttribute(ATTRIBUTE_FIRE)
+	return c:GetSummonPlayer()==tp and c:IsRace(RACE_BEASTWARRIOR) and c:IsAttribute(ATTRIBUTE_FIRE)
 end
 function s.limcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.limfilter,1,nil,tp)

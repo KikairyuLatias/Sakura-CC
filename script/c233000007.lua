@@ -31,11 +31,12 @@ function s.initial_effect(c)
 	e5:SetRange(LOCATION_PZONE)
 	e5:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e5:SetCountLimit(1,id)
-	e5:SetCost(s.descost2)
+	e5:SetCondition(s.descon2)
 	e5:SetTarget(s.destg2)
 	e5:SetOperation(s.desop2)
 	c:RegisterEffect(e5)
 end
+
 --summon self
 function s.spcon(e,c)
 	if c==nil then return true end
@@ -43,6 +44,7 @@ function s.spcon(e,c)
 		and Duel.GetFieldGroupCount(c:GetControler(),0,LOCATION_MZONE)>0
 		and Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
 end
+
 --strip
 function s.condition(e)
 	return Duel.IsExistingMatchingCard(Card.IsSetCard,tp,LOCATION_MZONE,0,1,e:GetHandler(),0x3008) and not c:IsCode(90000007)
@@ -53,21 +55,21 @@ end
 function s.defval(e,c)
 	return c:GetDefense()/2
 end
+
 --blow shit up
-function s.descost2(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return e:GetHandler():IsDestructable() end
-	Duel.Destroy(e:GetHandler(),REASON_COST)
+function s.descon2(e)
+	return Duel.IsExistingMatchingCard(Card.IsSetCard,tp,LOCATION_PZONE,0,1,e:GetHandler(),0x3008)
 end
 function s.destg2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) end
-	if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_MZONE,1,e:GetHandler()) end
+	if chkc then return chkc:IsOnField() end
+	if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectTarget(tp,aux.TRUE,tp,0,LOCATION_MZONE,1,1,nil)
+	local g=Duel.SelectTarget(tp,aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
 end
-function s.desop2(e,tp,eg,ep,ev,re,r,rp)
+function s.adesop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) and tc:IsType(TYPE_MONSTER) then
+	if tc and tc:IsRelateToEffect(e) then
 		Duel.Destroy(tc,REASON_EFFECT)
 	end
 end

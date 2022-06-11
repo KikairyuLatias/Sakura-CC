@@ -15,9 +15,6 @@ function s.initial_effect(c)
 	e2:SetTarget(s.tg)
 	e2:SetValue(s.val)
 	c:RegisterEffect(e2)
-	local e3=e2:Clone()
-	e3:SetValue(s.val2)
-	c:RegisterEffect(e3)
 	--special summon with cost
 	local e4=Effect.CreateEffect(c)
 	e4:SetCategory(CATEGORY_SPECIAL_SUMMON)
@@ -37,10 +34,9 @@ function s.filter(c)
 	return c:IsFaceup() and c:IsSetCard(0x24af)
 end
 function s.val(e,c)
-	return Duel.GetMatchingGroupCount(s.filter,c:GetControler(),LOCATION_MZONE,0,nil)*200
-end
-function s.val2(e,c)
-	return Duel.GetMatchingGroupCount(s.filter,c:GetControler(),0,LOCATION_MZONE,nil)*200
+	local g=Duel.GetMatchingGroup(s.filter,c:GetControler(),LOCATION_MZONE,LOCATION_MZONE,nil)
+	local ct=g:GetClassCount(Card.GetCode)
+	return ct*200
 end
 
 --ss condition

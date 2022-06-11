@@ -34,7 +34,7 @@ end
 
 function s.destop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetTargetCards(e)
-	if #g>0 then Duel.SendtoHand(g,REASON_EFFECT) end
+	if #g>0 then Duel.SendtoHand(g,nil,REASON_EFFECT) end
 end
 
 --QP handcon

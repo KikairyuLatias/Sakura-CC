@@ -176,3 +176,9 @@ https://sites.google.com/view/sakuracarddesign/home
 - Other random changes to codes and stuff for improvement
 
 (Still waiting for EDOPro to upload Advanced CB Amethyst's code so I can take that code for the direct attack members with halving damage stuff)
+
+06/11/2022
+
+- Update of code for cards that allow entire archetype members to attack directly (i.e. Advanced CB Amethyst's code)
+- Addition of new Dreamlight, Magical Girl stuff
+- Some other QoL things (including misc update of coding)

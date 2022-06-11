@@ -20,7 +20,7 @@ function s.initial_effect(c)
 	e2:SetRange(LOCATION_GRAVE)
 	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetTarget(s.target)
-	e2:SetCountLimit(1,id+99999)
+	e2:SetCountLimit(1,{id,1})
 	e2:SetOperation(s.operation)
 	c:RegisterEffect(e2)
 end

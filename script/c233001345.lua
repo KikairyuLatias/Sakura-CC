@@ -17,7 +17,7 @@ function s.initial_effect(c)
 	e2:SetCode(EFFECT_SPSUMMON_PROC)
 	e2:SetProperty(EFFECT_FLAG_UNCOPYABLE)
 	e2:SetRange(LOCATION_REMOVED+LOCATION_GRAVE)
-	e2:SetCountLimit(1,id*2)
+	e2:SetCountLimit(1,{id,1})
 	c:RegisterEffect(e2)
 end
 

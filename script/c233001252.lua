@@ -23,15 +23,17 @@ function s.initial_effect(c)
 	e4:SetCode(EFFECT_DIRECT_ATTACK)
 	e4:SetRange(LOCATION_MZONE)
 	e4:SetTargetRange(LOCATION_MZONE,0)
-	e4:SetTarget(s.datg)
+	e4:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x9d0))
 	c:RegisterEffect(e4)
-	--damage reduce
+	--Battle damage is halved if attacking directly
 	local e5=Effect.CreateEffect(c)
-	e5:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_FIELD)
+	e5:SetType(EFFECT_TYPE_FIELD)
+	e5:SetCode(EFFECT_CHANGE_BATTLE_DAMAGE)
 	e5:SetRange(LOCATION_MZONE)
-	e5:SetCode(EVENT_PRE_BATTLE_DAMAGE)
-	e5:SetCondition(s.rdcon)
-	e5:SetOperation(s.rdop)
+	e5:SetTargetRange(LOCATION_MZONE,0)
+	e5:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x9d0))
+	e5:SetCondition(s.rdmgcond)
+	e5:SetValue(aux.ChangeBattleDamage(1,HALF_DAMAGE))
 	c:RegisterEffect(e5)
 end
 
@@ -52,14 +54,9 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
 
 --direct shot
-function s.datg(e,c)
-	return c:IsSetCard(0x9d0)
-end
-function s.rdcon(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	return ep~=tp and c==Duel.GetAttacker() and Duel.GetAttackTarget()==nil
-		and c:GetEffectCount(EFFECT_DIRECT_ATTACK)<2 and Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)>0
-end
-function s.rdop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.ChangeBattleDamage(ep,ev/2)
+function s.rdmgcond(e)
+	local tp=e:GetHandlerPlayer()
+	local c=Duel.GetAttacker()
+	return Duel.GetAttackTarget()==nil and c:GetEffectCount(EFFECT_DIRECT_ATTACK)<2
+		and Duel.GetFieldGroupCount(tp,0,LOCATION_MZONE)>0 --if there are 0 monsters, it's not attacking directly using this effect
 end

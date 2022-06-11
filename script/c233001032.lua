@@ -8,7 +8,7 @@ function s.initial_effect(c)
 	e1:SetCode(EVENT_FREE_CHAIN)
 	e1:SetCondition(s.condition)
 	e1:SetTarget(s.target)
-	e1:SetCountLimit(1,id+99991)
+	e1:SetCountLimit(1,id)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
 	--GY SS
@@ -20,7 +20,7 @@ function s.initial_effect(c)
 	e3:SetCost(s.spcost)
 	e3:SetTarget(s.sptg)
 	e3:SetOperation(s.spop)
-	e3:SetCountLimit(1,id)
+	e3:SetCountLimit(1,{id,1})
 	c:RegisterEffect(e3)
 end
 
@@ -73,4 +73,26 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SpecialSummonComplete()
 	end
 	--stat bonus goes here
+	Duel.BreakEffect()
+		local tg=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,0,nil)
+		local tc=tg:GetFirst()
+		while tc do
+			local e1=Effect.CreateEffect(e:GetHandler())
+			e1:SetType(EFFECT_TYPE_SINGLE)
+			e1:SetCode(EFFECT_UPDATE_ATTACK)
+			e1:SetValue(s.value)
+			e1:SetReset(RESET_EVENT+0x1fe0000)
+			tc:RegisterEffect(e1)
+			local e2=e1:Clone()
+			e2:SetCode(EFFECT_UPDATE_DEFENSE)
+			tc:RegisterEffect(e2)
+			tc=tg:GetNext()
+	end
+end
+
+function s.val(e,c)
+	if c:IsType(TYPE_XYZ) then return c:GetRank()*100
+	else
+		return c:GetLevel()*100
+	end
 end

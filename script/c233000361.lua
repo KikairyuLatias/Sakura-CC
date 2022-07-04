@@ -26,6 +26,18 @@ function s.initial_effect(c)
 	e2:SetOperation(s.eqop)
 	c:RegisterEffect(e2)
 	--destroy
+	local e3=Effect.CreateEffect(c)
+	e3:SetDescription(aux.Stringid(id,1))
+	e3:SetCategory(CATEGORY_DRAW)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e3:SetCode(EVENT_LEAVE_FIELD)
+	e3:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e3:SetRange(LOCATION_MZONE)
+	e3:SetCountLimit(1,id)
+	e3:SetCondition(s.descon)
+	e3:SetTarget(s.destg)
+	e3:SetOperation(s.desop)
+	c:RegisterEffect(e3)
 end
 
 --moving
@@ -87,4 +99,23 @@ function s.eqop(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.eqlimit(e,c)
 	return c==e:GetLabelObject()
+end
+
+--destroy
+function s.desfilter(c,tp)
+	return c:IsPreviousLocation(LOCATION_SZONE) and c:IsSetCard(0x7c5) and c:IsPreviousControler(tp)
+end
+function s.descon(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(s.desfilter,1,nil,tp)
+end
+function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsDestructable,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end 
+	local g=Duel.GetMatchingGroup(Card.IsDestructable,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
+end
+function s.desop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+	local tc=Duel.SelectMatchingCard(tp,Card.IsDestructable,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
+	e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+0x1fe0000,0,1)
+	Duel.Destroy(tc,REASON_EFFECT)
 end

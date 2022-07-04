@@ -1,8 +1,8 @@
---Golden Dreamlight Dragon
+--Shooting Dreamstar Dragon
 local s,id=GetID()
 function s.initial_effect(c)
 	--synchro summon
-	Synchro.AddProcedure(c,nil,1,1,Synchro.NonTuner(nil),1,99)
+	Synchro.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsType,TYPE_SYNCHRO),1,1,aux.FilterSummonCode(233001001),1,1)
 	c:EnableReviveLimit()
 	--spsummon
 	local e1=Effect.CreateEffect(c)
@@ -22,7 +22,7 @@ function s.initial_effect(c)
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetTargetRange(LOCATION_MZONE,0)
 	e2:SetTarget(s.target)
-	e2:SetValue(1)
+	e2:SetValue(aux.tgoval)
 	c:RegisterEffect(e2)
 	local e3=Effect.CreateEffect(c)
 	e3:SetType(EFFECT_TYPE_FIELD)
@@ -31,26 +31,44 @@ function s.initial_effect(c)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetTargetRange(LOCATION_MZONE,0)
 	e3:SetTarget(s.target)
-	e3:SetValue(1)
+	e3:SetValue(aux.tgoval)
 	c:RegisterEffect(e3)
-	--damage
-	local e4=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(id,1))
-	e4:SetCategory(CATEGORY_DAMAGE)
-	e4:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
-	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e4:SetCode(EVENT_BATTLE_DESTROYING)
-	e4:SetTarget(s.damtg1)
-	e4:SetOperation(s.damop)
+	local e4=e3:Clone()
+	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
 	c:RegisterEffect(e4)
+	--multi attack
+	local e5=Effect.CreateEffect(c)
+	e5:SetDescription(aux.Stringid(id,1))
+	e5:SetType(EFFECT_TYPE_IGNITION)
+	e5:SetCountLimit(1)
+	e5:SetRange(LOCATION_MZONE)
+	e5:SetCondition(s.mtcon)
+	e5:SetOperation(s.mtop)
+	c:RegisterEffect(e5)
+	--lp heal and burn
+	local e6=Effect.CreateEffect(c)
+	e6:SetDescription(aux.Stringid(id,2))
+	e6:SetCategory(CATEGORY_RECOVER+CATEGORY_DAMAGE)
+	e6:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e6:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e6:SetCode(EVENT_BATTLE_DESTROYING)
+	e6:SetTarget(s.damtg1)
+	e6:SetOperation(s.damop)
+	c:RegisterEffect(e6)
 end
+
+--protect
+function s.target(e,c)
+	return c:IsFaceup() or c:IsFacedown()
+end
+
 --special summon
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_SYNCHRO)
 end
 function s.spfilter(c,e,tp)
 	local pg=aux.GetMustBeMaterialGroup(tp,Group.CreateGroup(),tp,c,nil,REASON_SYNCHRO)
-	return #pg<=0 and c:IsCode(44508094) or c:IsCode(70902743) and Duel.GetLocationCountFromEx(tp,tp,e:GetHandler(),c)>0
+	return #pg<=0 and c:IsCode(24696097) or c:IsCode(97489701) and Duel.GetLocationCountFromEx(tp,tp,e:GetHandler(),c)>0
 		and c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_SYNCHRO,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -66,22 +84,38 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
---protect
-function s.target(e,c)
-	return c:IsFaceup() or c:IsFacedown()
+--multi-attack
+function s.mtcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsAbleToEnterBP() and Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>=3
+end
+function s.mtop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	Duel.ConfirmDecktop(tp,3)
+	local g=Duel.GetDecktopGroup(tp,3)
+	local ct=g:FilterCount(Card.IsSetCard,nil,0x5f7)
+	Duel.ShuffleDeck(tp)
+	if ct>1 then
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_EXTRA_ATTACK)
+		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
+		e1:SetValue(ct)
+		c:RegisterEffect(e1)
+	end
 end
 
---burn
+--heal and burn
 function s.damtg1(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	Duel.SetTargetPlayer(1-tp)
-	Duel.SetTargetParam(800)
-	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,800)
+	Duel.SetOperationInfo(0,CATEGORY_RECOVER,nil,0,tp,1200)
+	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,1200)
 end
+
 function s.damcon2(e,tp,eg,ep,ev,re,r,rp)
-	return bit.band(r,0x41)==0x41 and rp~=tp and e:GetHandler():GetPreviousControler()==tp
+	return bit.band(r,0x41)==0x41 and e:GetHandler():GetPreviousControler()==tp
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
-	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
-	Duel.Damage(p,d,REASON_EFFECT)
+	Duel.Recover(tp,1200,REASON_EFFECT)
+	Duel.Damage(1-tp,1200,REASON_EFFECT)
 end

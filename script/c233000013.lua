@@ -57,7 +57,7 @@ function s.initial_effect(c)
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetDescription(aux.Stringid(id,2))
 	e2:SetType(EFFECT_TYPE_IGNITION)
-	e2:SetCountLimit(1,{id2})
+	e2:SetCountLimit(1,{id,2})
 	e2:SetRange(LOCATION_MZONE)
 	e2:SetTarget(s.sptg)
 	e2:SetOperation(s.spop)
@@ -90,24 +90,6 @@ function s.contactop(g)
 	Duel.Release(g,REASON_COST+REASON_MATERIAL)
 end
 
---search for ZPD stuff
-function s.filter1(c)
-	return c:IsSetCard(0xd0) and c:IsAbleToHand()
-end
-function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.filter1,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,nil) end
-	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK+LOCATION_GRAVE)
-end
-function s.thop(e,tp,eg,ep,ev,re,r,rp)
-	if not e:GetHandler():IsRelateToEffect(e) then return end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-	local g=Duel.SelectMatchingCard(tp,s.filter1,tp,LOCATION_DECK+LOCATION_GRAVE,0,1,1,nil)
-	if g:GetCount()>0 then
-		Duel.SendtoHand(g,nil,REASON_EFFECT)
-		Duel.ConfirmCards(1-tp,g)
-	end
-end
-
 --don't even bother, opponent
 function s.indval(e,re,tp)
 	return tp~=e:GetHandlerPlayer()
@@ -131,7 +113,9 @@ end
 
 --ss more
 function s.spfilter(c,e,tp)
-	return c:IsSetCard(0xd0) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsType(TYPE_XYZ) and not c:IsType(TYPE_LINK)
+	if c:IsLocation(LOCATION_EXTRA) and Duel.GetLocationCountFromEx(tp,tp,nil,c)==0 then return false end
+	return c:IsSetCard(0xd0) and c:IsType(TYPE_PENDULUM) and (c:IsLocation(LOCATION_GRAVE) or c:IsFaceup())
+		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

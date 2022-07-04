@@ -29,7 +29,7 @@ function s.initial_effect(c)
 	e4:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e4:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
 	e4:SetRange(LOCATION_MZONE)
-	e4:SetValue(aux.indoval)
+	e4:SetValue(s.indval)
 	c:RegisterEffect(e4)
 end
 

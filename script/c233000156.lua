@@ -72,7 +72,42 @@ function s.recop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Recover(tp,rec,REASON_EFFECT)
 end
 
+--search
+function s.thfilter(c)
+	return c:IsCode(233000155) and c:IsAbleToHand()
+end
 
+function s.thcon(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():IsSummonType(SUMMON_TYPE_LINK)
+end
+
+function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,1,nil) end
+	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
+end
+
+function s.thop(e,tp,eg,ep,ev,re,r,rp)
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
+	local g=Duel.SelectMatchingCard(tp,s.thfilter,tp,LOCATION_DECK,0,1,1,nil)
+	if #g>0 then
+		Duel.SendtoHand(g,nil,REASON_EFFECT)
+		Duel.ConfirmCards(1-tp,g)
+	end
+end
+
+--activate field
+function s.accon(e,tp,eg,ep,ev,re,r,rp)
+	return e:GetHandler():IsSummonType(SUMMON_TYPE_LINK) and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil,tp)
+end
+function s.filter(c,tp)
+	return c:IsCode(233000155) and c:GetActivateEffect() and c:GetActivateEffect():IsActivatable(tp,true,true)
+end
+function s.acop(e,tp,eg,ep,ev,re,r,rp)
+	if not e:GetHandler():IsRelateToEffect(e) then return end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOFIELD)
+	local tc=Duel.SelectMatchingCard(tp,aux.NecroValleyFilter(s.filter),tp,LOCATION_DECK,0,1,1,nil,tp):GetFirst()
+	aux.PlayFieldSpell(tc,e,tp,eg,ep,ev,re,r,rp)
+end
 
 --special summon
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)

@@ -11,7 +11,6 @@ function s.initial_effect(c)
 	e1:SetCondition(s.condition)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.activate)
-	e1:SetHintTiming(0,TIMING_END_PHASE+TIMING_EQUIP)
 	c:RegisterEffect(e1)
 	--nuclear wipe
 	local e2=Effect.CreateEffect(c)
@@ -23,7 +22,6 @@ function s.initial_effect(c)
 	e2:SetCondition(s.condition2)
 	e2:SetTarget(s.target2)
 	e2:SetOperation(s.activate2)
-	e2:SetHintTiming(0,TIMING_END_PHASE+TIMING_EQUIP)
 	c:RegisterEffect(e2)
 end
 

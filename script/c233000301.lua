@@ -72,7 +72,7 @@ end
 
 --promote up
 function s.relfilter(c,e,tp,ft)
-	return c:IsSetCard(0x5f4) and (ft>0 or c:IsInMainMZone(tp)) 
+	return c:IsSetCard(0x5f4) and (ft>0 or c:IsInMainMZone(tp))
 	and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp,c:GetLevel())
 end
 function s.spfilter(c,e,tp,lv)

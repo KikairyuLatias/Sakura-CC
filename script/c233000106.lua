@@ -68,12 +68,9 @@ function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
---stop chaining
-function s.indval(e,re,rp)
-	return rp~=e:GetHandlerPlayer()
-end
+--forget about triggering
 function s.chainop(e,tp,eg,ep,ev,re,r,rp)
-	if re:GetHandler():IsSetCard(0x4b0) then
+	if re:GetHandler():IsSetCard(0x4b0) and not re:GetHandler():IsCode(id) and ep==tp then
 		Duel.SetChainLimit(s.chainlm)
 	end
 end

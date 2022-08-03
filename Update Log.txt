@@ -182,3 +182,8 @@ https://sites.google.com/view/sakuracarddesign/home
 - Update of code for cards that allow entire archetype members to attack directly (i.e. Advanced CB Amethyst's code)
 - Addition of new Dreamlight, Magical Girl stuff
 - Some other QoL things (including misc update of coding)
+
+08/02/2022
+
+- Addition of Diver Vulpine and Aura Beast
+- Other misc updates

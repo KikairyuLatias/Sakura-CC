@@ -67,8 +67,7 @@ end
 
 --forget about triggering
 function s.chainop(e,tp,eg,ep,ev,re,r,rp)
-	local rc=re:GetHandler()
-	if re:IsHasType(EFFECT_TYPE_ACTIVATE) and rc:IsSetCard(0x4ca) and re:IsActiveType(TYPE_MONSTER) then
+	if re:GetHandler():IsSetCard(0x4ca) and re:GetHandler():IsType(TYPE_MONSTER) and ep==tp then
 		Duel.SetChainLimit(s.chainlm)
 	end
 end

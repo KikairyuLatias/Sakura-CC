@@ -25,6 +25,7 @@ function s.initial_effect(c)
 	e2:SetOperation(s.thop)
 	c:RegisterEffect(e2)
 end
+
 --bounce something
 function s.thfilter(c)
 	return c:IsFacedown() and c:IsAbleToHand()
@@ -48,7 +49,7 @@ function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return r==REASON_LINK and re:GetHandler():IsSetCard(0x7d8)
 end
 function s.filter(c)
-	return c:IsSetCard(0x7d8) and c:IsAbleToDeck()
+	return c:IsSetCard(0x7d8) and c:IsAbleToDeck() or c:IsAbleToExtra()
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.filter(chkc) end

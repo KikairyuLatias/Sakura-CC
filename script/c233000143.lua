@@ -57,6 +57,7 @@ function s.initial_effect(c)
 	e8:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
 	c:RegisterEffect(e8)
 end
+
 --spsummon
 function s.filter(c,e,tp)
 	return c:IsSetCard(0x5f3) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsHasEffect(EFFECT_NECRO_VALLEY) and not c:IsCode(id)
@@ -74,9 +75,10 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
 end
+
 --recycle draw
 function s.tdfilter(c)
-	return c:IsSetCard(0x9d0) and c:IsAbleToDeck()
+	return c:IsSetCard(0x9d0) and c:IsAbleToDeck() or c:IsAbleToExtra()
 end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) or chkc:IsLocation(LOCATION_EXTRA) and chkc:IsControler(tp) and s.tdfilter(chkc) end

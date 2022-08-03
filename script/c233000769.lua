@@ -2,7 +2,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	--ritual
-	local e1=Ritual.AddProcGreater(c,s.ritual_fil)
+	local e1=Ritual.AddProcGreater({handler=c,s.ritualfil,location=LOCATION_HAND|LOCATION_GRAVE })
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCost(s.cost)
 	e1:SetCode(EVENT_FREE_CHAIN)

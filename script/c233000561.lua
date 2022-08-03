@@ -12,8 +12,8 @@ function s.initial_effect(c)
 	e2:SetCode(EFFECT_UPDATE_ATTACK)
 	e2:SetRange(LOCATION_FZONE)
 	e2:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
-	e2:SetTarget(s.tg)
-	e2:SetValue(s.val)
+	e2:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x24af))
+	e2:SetValue(s.atkval)
 	c:RegisterEffect(e2)
 	--special summon with cost
 	local e4=Effect.CreateEffect(c)
@@ -26,17 +26,14 @@ function s.initial_effect(c)
 	e4:SetOperation(s.spop)
 	c:RegisterEffect(e4)
 end
+
 --boost
-function s.tg(e,c)
-	return c:IsSetCard(0x24af) and c:IsType(TYPE_MONSTER)
+function s.atkfilter(c)
+	return c:IsFaceup() and c:IsSetCard(0x24af) and not c:IsSetCard(0x34af)
 end
-function s.filter(c)
-	return c:IsFaceup() and c:IsSetCard(0x24af)
-end
-function s.val(e,c)
-	local g=Duel.GetMatchingGroup(s.filter,c:GetControler(),LOCATION_MZONE,LOCATION_MZONE,nil)
-	local ct=g:GetClassCount(Card.GetCode)
-	return ct*200
+function s.atkval(e,c)
+	local g=Duel.GetMatchingGroup(s.atkfilter,e:GetHandlerPlayer(),LOCATION_MZONE,LOCATION_MZONE,nil)
+	return g:GetClassCount(Card.GetCode)*200
 end
 
 --ss condition

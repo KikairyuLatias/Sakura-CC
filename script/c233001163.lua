@@ -67,7 +67,7 @@ end
 
 --don`t bother chaining
 function s.chainop(e,tp,eg,ep,ev,re,r,rp)
-	if re:GetHandler():IsSetCard(0x7db) and re:GetOwnerPlayer()==tp then
+	if re:GetHandler():IsSetCard(0x7db) and not re:GetHandler():IsCode(id) and ep==tp then
 		Duel.SetChainLimit(s.chainlm)
 	end
 end

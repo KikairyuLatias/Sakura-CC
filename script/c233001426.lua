@@ -34,7 +34,7 @@ end
 
 --special summon
 function s.spcfilter(c)
-	return c:IsSetCard(0x7de) and c:IsType(TYPE_MONSTER) and not c:IsPublic()
+	return c:IsSetCard(0x7de) and c:IsType(TYPE_MONSTER) and not c:IsPublic() and not c:GetHandler()
 end
 function s.spcon(e,c)
 	if c==nil then return true end

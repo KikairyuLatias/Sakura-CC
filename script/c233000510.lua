@@ -95,6 +95,7 @@ function s.retop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.ReturnToField(tc)
 	end
 end
+
 --special summon
 function s.filter(c)
 	return c:IsType(TYPE_MONSTER) and c:IsRace(RACE_BEASTWARRIOR) 

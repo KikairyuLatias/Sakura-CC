@@ -72,7 +72,7 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 		local atk=tc:GetAttack()
 		tc=sg:GetNext()
 		if tc then
-			if tc:GetAttack()>atk then atk=tc:GetAttack() end	
+			if tc:GetAttack()>atk then atk=tc:GetAttack() end   
 		end
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
 		local g=Duel.SelectMatchingCard(tp,s.filterx,tp,LOCATION_DECK,0,1,1,nil,atk,att,e,tp)
@@ -81,6 +81,7 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
+
 --ss
 function s.filter2(c)
 	return c:IsFaceup() and c:IsSetCard(0x5f4)
@@ -91,9 +92,10 @@ function s.spcon(e,c)
 	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 and
 		Duel.IsExistingMatchingCard(s.filter2,c:GetControler(),LOCATION_MZONE,0,1,nil)
 end
+
 --draw
 function s.filter(c)
-	return c:IsSetCard(0x5f4) and c:IsAbleToDeck()
+	return c:IsSetCard(0x5f4) and c:IsAbleToDeck() or c:IsAbleToExtra()
 end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE+LOCATION_EXTRA) and chkc:IsControler(tp) and s.filter(chkc) end

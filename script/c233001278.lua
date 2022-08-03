@@ -67,11 +67,8 @@ function s.unaffectedval(e,te)
 end
 
 --While the Hokage is around, you can forget about chaining against Konoha
-function s.indval(e,re,rp)
-	return rp~=e:GetHandlerPlayer()
-end
 function s.chainop(e,tp,eg,ep,ev,re,r,rp)
-	if re:GetHandler():IsSetCard(0x9d0) then
+	if re:GetHandler():IsSetCard(0x9d0) and ep==tp then
 		Duel.SetChainLimit(s.chainlm)
 	end
 end

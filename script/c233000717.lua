@@ -49,8 +49,7 @@ function s.chaincon(e,tp,eg,ep,ev,re,r,rp,chk)
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_LINK)
 end
 function s.chainop(e,tp,eg,ep,ev,re,r,rp)
-	local rc=re:GetHandler()
-	if re:IsHasType(EFFECT_TYPE_ACTIVATE) and rc:IsSetCard(0x5f0) then
+	if re:GetHandler():IsSetCard(0x5f0) and ep==tp then
 		Duel.SetChainLimit(s.chainlm)
 	end
 end

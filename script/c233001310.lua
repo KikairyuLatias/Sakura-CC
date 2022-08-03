@@ -34,7 +34,7 @@ end
 
 --recycle draw
 function s.tdfilter(c)
-	return c:IsSetCard(0x7d7) and c:IsAbleToDeck()
+	return c:IsSetCard(0x7d7) and c:IsAbleToDeck() or c:IsAbleToExtra()
 end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) or chkc:IsLocation(LOCATION_REMOVED) and chkc:IsControler(tp) and s.tdfilter(chkc) end

@@ -26,6 +26,7 @@ function s.initial_effect(c)
 	e4:SetOperation(s.drop)
 	c:RegisterEffect(e4)
 end
+
 --on summon
 function s.filter(c,e,tp)
 	 return c:IsSetCard(0x7c7) and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsHasEffect(EFFECT_NECRO_VALLEY) and not c:IsCode(id)
@@ -46,7 +47,7 @@ end
 
 --recycle draw
 function s.tdfilter(c)
-	return c:IsSetCard(0x7c7) or (c:IsRace(RACE_MACHINE) and c:IsAttribute(ATTRIBUTE_WIND))and c:IsAbleToDeck()
+	return c:IsSetCard(0x7c7) or (c:IsRace(RACE_MACHINE) and c:IsAttribute(ATTRIBUTE_WIND))and c:IsAbleToDeck() or c:IsAbleToExtra()
 end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE) and chkc:IsControler(tp) and s.tdfilter(chkc) end

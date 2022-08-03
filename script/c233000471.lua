@@ -51,7 +51,7 @@ end
 
 --recycle draw
 function s.drfilter(c)
-	return (c:IsSetCard(0x7e1) or c:IsSetCard(0x7e2)) and c:IsAbleToDeck()
+	return (c:IsSetCard(0x7e1) or c:IsSetCard(0x7e2)) and c:IsAbleToDeck() or c:IsAbleToExtra()
 end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE+LOCATION_REMOVED) and chkc:IsControler(tp) and s.drfilter(chkc) end

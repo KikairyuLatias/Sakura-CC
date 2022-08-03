@@ -5,14 +5,14 @@ function s.initial_effect(c)
 	Synchro.AddProcedure(c,nil,1,1,Synchro.NonTuner(nil),1,99)
 	c:EnableReviveLimit()
 	--disable
-	local e2=Effect.CreateEffect(c)
-	e2:SetType(EFFECT_TYPE_FIELD)
-	e2:SetCode(EFFECT_CANNOT_TRIGGER)
-	e2:SetRange(LOCATION_MZONE)
-	e2:SetTargetRange(0,LOCATION_ONFIELD)
-	e2:SetCondition(s.lockcon)
-	e2:SetTarget(s.locktg)
-	c:RegisterEffect(e2)
+	local e1=Effect.CreateEffect(c)
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetCode(EFFECT_CANNOT_TRIGGER)
+	e1:SetRange(LOCATION_MZONE)
+	e1:SetTargetRange(0,LOCATION_ONFIELD)
+	e1:SetCondition(s.lockcon)
+	e1:SetTarget(s.locktg)
+	c:RegisterEffect(e1)
 	--ninja art: flyer hand sniping jutsu!
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,0))
@@ -64,6 +64,7 @@ function s.hdop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Remove(sg,POS_FACEDOWN,REASON_EFFECT)
 	end
 end
+
 --forget about triggering
 s.listed_series={0x7d7}
 function s.cfilter(c,tp)

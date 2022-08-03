@@ -133,13 +133,6 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	local g=Duel.SelectTarget(tp,aux.disfilter1,tp,0,LOCATION_ONFIELD,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_DISABLE,g,1,0,0)
-	if Duel.IsExistingMatchingCard(s.lmfilter,tp,LOCATION_MZONE,0,1,nil) then
-		Duel.SetChainLimit(s.chainlm)
-	end
-end
-
-function s.chainlm(e,rp,tp)
-	return tp==ep
 end
 
 function s.operation(e,tp,eg,ep,ev,re,r,rp)

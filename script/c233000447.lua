@@ -1,19 +1,26 @@
 --Aura Beast Nekomata Ruler Espy
 local s,id=GetID()
 function s.initial_effect(c)
-	Duel.EnableGlobalFlag(GLOBALFLAG_DECK_REVERSE_CHECK)
 	--synchro summon
 	Synchro.AddProcedure(c,nil,1,1,Synchro.NonTunerEx(Card.IsSetCard,0x7e5),1,99)
 	c:EnableReviveLimit()
 	--"I can see the future, and the future is today" --Pokemon Movie Ending 12 DUB
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetCode(EFFECT_REVERSE_DECK)
+	e1:SetCode(EFFECT_CANNOT_MSET)
 	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetTargetRange(0,1)
 	e1:SetCondition(s.viewcon)
+	e1:SetTarget(aux.TRUE)
 	c:RegisterEffect(e1)
+	local e1c=e1:Clone()
+	e1c:SetCode(EFFECT_CANNOT_TURN_SET)
+	c:RegisterEffect(e1c)
+	local e1d=e1:Clone()
+	e1d:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+	e1d:SetTarget(s.sumlimit)
+	c:RegisterEffect(e1d)
 	--this one views their hand
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_FIELD)
@@ -53,6 +60,9 @@ end
 function s.efilter(e,te)
 	local c=te:GetHandler()
 	return c:IsCode(233000447)
+end
+function s.sumlimit(e,c,sump,sumtype,sumpos,targetp)
+	return (sumpos&POS_FACEDOWN)>0
 end
 
 --the opponent is basically telegraphing

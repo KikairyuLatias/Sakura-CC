@@ -30,7 +30,7 @@ function s.cfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x7d7)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,2)
+	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,2) and Duel.GetFieldGroupCount(tp,0,LOCATION_SZONE)>0 and Duel.GetFieldGroupCount(tp,0,LOCATION_FZONE)>=0
 end
 function s.filter(c)
 	return c:IsType(TYPE_SPELL+TYPE_TRAP)
@@ -56,12 +56,14 @@ function s.cfilter2(c)
 	return c:IsFaceup() and c:IsSetCard(0x7d7) and c:GetBaseAttack()>=2400
 end
 function s.condition2(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.cfilter2,tp,LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(s.cfilter2,tp,LOCATION_MZONE,0,1,nil) and Duel.GetFieldGroupCount(tp,0,LOCATION_SZONE)>0 and Duel.GetFieldGroupCount(tp,0,LOCATION_FZONE)>=0
 end
 function s.target2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,0,LOCATION_ONFIELD,1,nil) end
 	local sg=Duel.GetMatchingGroup(s.filter,tp,0,LOCATION_ONFIELD,nil)
+	if g:GetCount()>0 then
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,sg,sg:GetCount(),0,0)
+	end
 end
 function s.activate2(e,tp,eg,ep,ev,re,r,rp)
 	local sg=Duel.GetMatchingGroup(s.filter,tp,0,LOCATION_ONFIELD,e:GetHandler())

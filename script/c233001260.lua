@@ -22,7 +22,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 
--- spsummon
+--spsummon
 function s.filter(c)
 	return c:IsSetCard(0x9d0) and c:IsType(TYPE_MONSTER)
 end

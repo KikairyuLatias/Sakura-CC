@@ -24,7 +24,7 @@ function s.initial_effect(c)
 	e3:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x640))
 	e3:SetCondition(s.rdmgcond)
 	e3:SetValue(aux.ChangeBattleDamage(1,HALF_DAMAGE))
-	c:RegisterEffect(e3))
+	c:RegisterEffect(e3)
 end
 
 --attack directly

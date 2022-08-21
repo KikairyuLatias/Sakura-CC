@@ -78,4 +78,16 @@ function s.lvop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
 		tc:RegisterEffect(e1)
 	end
+		local e2=Effect.CreateEffect(e:GetHandler())
+		e2:SetType(EFFECT_TYPE_FIELD)
+		e2:SetCode(EFFECT_CANNOT_SPECIAL_SUMMON)
+		e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET+EFFECT_FLAG_CLIENT_HINT)
+		e2:SetDescription(aux.Stringid(id,1))
+		e2:SetTargetRange(1,0)
+		e2:SetReset(RESET_PHASE+PHASE_END)
+		e2:SetTarget(s.splimit2)
+		Duel.RegisterEffect(e2,tp)
+end
+function s.splimit2(e,c,sump,sumtype,sumpos,targetp,se)
+	return not c:IsType(TYPE_XYZ) and c:IsRace(RACE_BEASTWARRIOR) and c:IsAttribute(ATTRIBUTE_WATER)
 end

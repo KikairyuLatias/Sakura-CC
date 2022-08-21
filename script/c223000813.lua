@@ -54,6 +54,7 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		e2:SetCode(EFFECT_SET_DEFENSE)
 		e2:SetValue(def)
 		c:RegisterEffect(e2)
+		--damage
 		local e3=Effect.CreateEffect(c)
 		e3:SetType(EFFECT_TYPE_SINGLE)
 		e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)

@@ -12,6 +12,7 @@ function s.initial_effect(c)
 	e1:SetRange(LOCATION_HAND)
 	e1:SetCountLimit(1)
 	e1:SetCondition(s.spcon)
+	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
 	--added normal summon
@@ -34,19 +35,35 @@ end
 
 --special summon
 function s.spcfilter(c)
-	return c:IsSetCard(0x7de) and c:IsType(TYPE_MONSTER) and not c:IsPublic() and not c:GetHandler()
+	return c:IsSetCard(0x7de) and c:IsType(TYPE_MONSTER) and not c:IsPublic()
+end
+function s.rescon(sg,e,tp,mg)
+	return aux.ChkfMMZ(1)(sg,e,tp,mg) and sg:GetClassCount(Card.GetCode)==#sg,sg:GetClassCount(Card.GetCode)~=#sg
 end
 function s.spcon(e,c)
+	local c=e:GetHandler()
 	if c==nil then return true end
 	local tp=c:GetControler()
-	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(s.spcfilter,tp,LOCATION_HAND,0,1,nil)
+	local hg=Duel.GetMatchingGroup(s.spcfilter,tp,LOCATION_HAND,0,c)
+	return aux.SelectUnselectGroup(hg,e,tp,1,1,s.rescon,0)
+end
+function s.sptg(e,tp,eg,ep,ev,re,r,rp,c)
+	local c=e:GetHandler()
+	local hg=Duel.GetMatchingGroup(s.spcfilter,tp,LOCATION_HAND,0,c)
+	local g=aux.SelectUnselectGroup(hg,e,tp,1,1,s.rescon,1,tp,HINTMSG_CONFIRM,nil,nil,true)
+	if #g>0 then
+		g:KeepAlive()
+		e:SetLabelObject(g)
+		return true
+	end
+	return false
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
-	local g=Duel.SelectMatchingCard(tp,s.spcfilter,tp,LOCATION_HAND,0,1,1,nil)
+	local g=e:GetLabelObject()
+	if not g then return end
 	Duel.ConfirmCards(1-tp,g)
 	Duel.ShuffleHand(tp)
+	g:DeleteGroup()
 end
 
 --don`t bother chaining

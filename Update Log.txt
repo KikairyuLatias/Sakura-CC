@@ -187,3 +187,11 @@ https://sites.google.com/view/sakuracarddesign/home
 
 - Addition of Diver Vulpine and Aura Beast
 - Other misc updates
+
+08/21/2022
+
+- Added pics/script for remaining Sunbeast stuff (Ritual monster/spell, and the new Trap)
+- Few script adjustments for existing cards, so they do what the text says (for most part)
+- Image updates with text changes
+- Addition of Numbers 114 and C171
+- Some balancing/PSCT fixes so cards are a bit easier to work with/against, and actually doable. (i.e. Certain effects are not workable with EDOPro's current core)

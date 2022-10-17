@@ -81,7 +81,7 @@ function s.filter2(c)
 	return c:IsFaceup() and c:IsSetCard(0x4c8)
 end
 function s.spencon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x4c8),tp,LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x4c8),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.spentg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end

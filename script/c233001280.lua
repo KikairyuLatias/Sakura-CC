@@ -16,6 +16,7 @@ function s.initial_effect(c)
 	e3:SetOperation(s.spop)
 	c:RegisterEffect(e3)
 end
+
 --requirements
 s.listed_series={0x9d0}
 

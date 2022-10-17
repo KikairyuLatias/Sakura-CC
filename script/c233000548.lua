@@ -68,15 +68,16 @@ function s.damval(e,re,val,r,rp,rc)
 end
 
 --massive purging
-
 function s.rmcfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x14af) and c:IsAbleToRemoveAsCost()
 end
 function s.descost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.rmcfilter,tp,LOCATION_GRAVE,0,5,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local g=Duel.SelectMatchingCard(tp,s.rmcfilter,tp,LOCATION_GRAVE,0,5,5,nil)
-	Duel.Remove(g,POS_FACEUP,REASON_COST)
+	local g=Duel.GetMatchingGroup(s.rmcfilter,tp,LOCATION_ONFIELD+LOCATION_GRAVE,0,nil)
+	if chk==0 then return aux.SelectUnselectGroup(g,e,tp,7,7,aux.dncheck,0) end
+	local rg=aux.SelectUnselectGroup(g,e,tp,7,7,aux.dncheck,1,tp,HINTMSG_REMOVE)
+	if rg then
+		Duel.Remove(rg,POS_FACEUP,REASON_COST)
+	end
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(aux.TRUE,tp,0,LOCATION_ONFIELD+LOCATION_GRAVE,1,nil) end

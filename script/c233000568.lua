@@ -4,14 +4,14 @@ function s.initial_effect(c)
 	--pendulum summon
 	Pendulum.AddProcedure(c)
 	c:EnableReviveLimit()
-	--cannot special summon
-	local e00=Effect.CreateEffect(c)
-	e00:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
-	e00:SetType(EFFECT_TYPE_SINGLE)
-	e00:SetRange(LOCATION_HAND+LOCATION_DECK+LOCATION_GRAVE+LOCATION_REMOVED+LOCATION_EXTRA)
-	e00:SetCode(EFFECT_SPSUMMON_CONDITION)
-	e00:SetValue(s.splimit)
-	c:RegisterEffect(e00)
+	--Must first be ritual summoned
+	local e0k=Effect.CreateEffect(c)
+	e0k:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE+EFFECT_FLAG_SINGLE_RANGE)
+	e0k:SetType(EFFECT_TYPE_SINGLE)
+	e0k:SetRange(LOCATION_EXTRA)
+	e0k:SetCode(EFFECT_SPSUMMON_CONDITION)
+	e0k:SetValue(aux.ritlimit)
+	c:RegisterEffect(e0k)
 	--selfdes
 	local e0a=Effect.CreateEffect(c)
 	e0a:SetType(EFFECT_TYPE_SINGLE)
@@ -62,8 +62,7 @@ function s.initial_effect(c)
 	e6:SetCost(s.sgcost)
 	e6:SetTarget(s.sgtg)
 	e6:SetOperation(s.sgop)
-	c:RegisterEffect(e6)  
-	Duel.AddCustomActivityCounter(id,ACTIVITY_CHAIN,aux.FALSE)
+	c:RegisterEffect(e6)
 	--pendulum
 	local e7=Effect.CreateEffect(c)
 	e7:SetDescription(aux.Stringid(id,2))
@@ -130,8 +129,8 @@ function s.costfilter2(c)
 end
 function s.sgcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetMatchingGroup(s.costfilter2,tp,LOCATION_ONFIELD+LOCATION_GRAVE,0,nil)
-	if chk==0 then return aux.SelectUnselectGroup(g,e,tp,5,5,aux.dncheck,0) end
-	local rg=aux.SelectUnselectGroup(g,e,tp,5,5,aux.dncheck,1,tp,HINTMSG_REMOVE)
+	if chk==0 then return aux.SelectUnselectGroup(g,e,tp,7,7,aux.dncheck,0) end
+	local rg=aux.SelectUnselectGroup(g,e,tp,7,7,aux.dncheck,1,tp,HINTMSG_REMOVE)
 	if rg then
 		Duel.Remove(rg,POS_FACEUP,REASON_COST)
 	end

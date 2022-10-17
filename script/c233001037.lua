@@ -37,16 +37,22 @@ end
 --counter for draw stuff
 function s.checkop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=eg:GetFirst()
-	while tc do
+	for tc in aux.Next(eg) do
 		if tc:IsPreviousLocation(LOCATION_ONFIELD) and tc:IsSetCard(0x5f7) or tc:IsSetCard(0x5f8) then
-			local typ=bit.band(tc:IsSetCard,0x5f7)
+			local typ=(tc:GetOriginalType()&0x7)
 			if (typ==TYPE_MONSTER and Duel.GetFlagEffect(0,id)==0)
-				then
+				or (typ==TYPE_SPELL and Duel.GetFlagEffect(0,id+1)==0)
+				or (typ==TYPE_TRAP and Duel.GetFlagEffect(0,49430784)==0) then
 				s.counter=s.counter+1
 				if typ==TYPE_MONSTER then
 					Duel.RegisterFlagEffect(0,id,RESET_PHASE+PHASE_END,0,1)
+				elseif typ==TYPE_SPELL then
+					Duel.RegisterFlagEffect(0,id+1,RESET_PHASE+PHASE_END,0,1)
+				else
+					Duel.RegisterFlagEffect(0,49430784,RESET_PHASE+PHASE_END,0,1)
+				end
 			end
-		tc=eg:GetNext()
+		end
 	end
 end
 function s.clearop(e,tp,eg,ep,ev,re,r,rp)

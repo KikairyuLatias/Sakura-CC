@@ -14,7 +14,7 @@ end
 
 function s.fextra(e,tp,mg)
 	--if you have Instigator Sheep
-		if Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsCode,233000588),tp,LOCATION_MZONE,0,1,nil) then
+		if Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,233000588),tp,LOCATION_MZONE,0,1,nil) then
 			local sg=Duel.GetMatchingGroup(Card.IsAbleToRemove,tp,LOCATION_DECK+LOCATION_EXTRA+LOCATION_GRAVE,0,nil)
 			if #sg>0 then
 				return sg,s.fcheck

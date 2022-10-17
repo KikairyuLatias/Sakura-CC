@@ -1,89 +1,112 @@
---Crimson Galactic Pegasus Alphacentauris
+--Diver Vulpine Fleet Admiral ʻEleʻele Lilia o ke Awāwa
 local s,id=GetID()
 function s.initial_effect(c)
 	--xyz summon
-	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_BEAST),8,2)
+	Xyz.AddProcedure(c,s.mfilter,10,3,nil,nil,99)
 	c:EnableReviveLimit()
-	--battle immunity
+	--spsummon limit
 	local e0=Effect.CreateEffect(c)
-	e0:SetType(EFFECT_TYPE_FIELD)
-	e0:SetRange(LOCATION_MZONE)
-	e0:SetTargetRange(LOCATION_MZONE,0)
-	e0:SetTarget(s.battg)
-	e0:SetCondition(s.batcon)
-	e0:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
-	e0:SetValue(1)
+	e0:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetCode(EFFECT_SPSUMMON_CONDITION)
+	e0:SetValue(aux.xyzlimit)
 	c:RegisterEffect(e0)
-	--destroy
+	--unaffected
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,0))
-	e1:SetCategory(CATEGORY_DESTROY)
-	e1:SetType(EFFECT_TYPE_IGNITION)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e1:SetRange(LOCATION_MZONE)
-	e1:SetCost(s.cost)
-	e1:SetTarget(s.target)
-	e1:SetOperation(s.operation)
+	e1:SetCode(EFFECT_IMMUNE_EFFECT)
+	e1:SetValue(s.unaffectedval)
+	e1:SetCondition(s.dscon)
 	c:RegisterEffect(e1)
-	--detach, draw and shuffle
+	--cannot release
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(id,1))
-	e2:SetCategory(CATEGORY_DRAW+CATEGORY_TODECK)
-	e2:SetType(EFFECT_TYPE_IGNITION)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e2:SetRange(LOCATION_MZONE)
-	e2:SetCountLimit(1)
-	e2:SetCost(s.drcost)
-	e2:SetTarget(s.drtg)
-	e2:SetOperation(s.drop)
-	c:RegisterEffect(e2,false,REGISTER_FLAG_DETACH_XMAT)
+	e2:SetCode(EFFECT_UNRELEASABLE_SUM)
+	e2:SetCondition(s.dscon)
+	e2:SetValue(1)
+	c:RegisterEffect(e2)
+	local e3=e2:Clone()
+	e3:SetCode(EFFECT_UNRELEASABLE_NONSUM)
+	c:RegisterEffect(e3)
+	--material
+	local e4=Effect.CreateEffect(c)
+	e4:SetDescription(aux.Stringid(id,0))
+	e4:SetType(EFFECT_TYPE_QUICK_O)
+	e4:SetCode(EVENT_FREE_CHAIN)
+	e4:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e4:SetRange(LOCATION_MZONE)
+	e4:SetCountLimit(1,id)
+	e4:SetTarget(s.target)
+	e4:SetOperation(s.operation)
+	c:RegisterEffect(e4)
+	--turn skip
+	local e5=Effect.CreateEffect(c)
+	e5:SetDescription(aux.Stringid(id,1))
+	e5:SetType(EFFECT_TYPE_QUICK_O)
+	e5:SetCode(EVENT_FREE_CHAIN)
+	e5:SetRange(LOCATION_MZONE)
+	e5:SetCountLimit(1,id)
+	e5:SetCost(s.skipcost)
+	e5:SetTarget(s.skiptg)
+	e5:SetOperation(s.skipop)
+	c:RegisterEffect(e5,false,REGISTER_FLAG_DETACH_XMAT)
 end
---proc
-function s.battg(e,c)
-	return c:IsRace(RACE_BEAST)
+
+--material filter
+function s.mfilter(c,xyz,sumtype,tp)
+	return c:IsRace(RACE_BEASTWARRIOR,xyz,sumtype,tp) and c:IsAttribute(ATTRIBUTE_WATER,xyz,sumtype,tp)
 end
-function s.batcon(e)
+
+--don't even bother, opponent
+function s.unaffectedval(e,te)
+	return te:GetOwnerPlayer()~=e:GetHandlerPlayer()
+end
+function s.dscon(e)
 	return e:GetHandler():GetOverlayCount()~=0
 end
---Destroy
-function s.cfilter(c)
-	return c:IsRace(RACE_BEAST) and c:IsAbleToGraveAsCost()
-end
-function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local cg=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_HAND,0,1,1,nil)
-	Duel.SendtoGrave(cg,REASON_COST)
+
+--refuel materials
+function s.xyfilter(c,tp)
+	return c:IsMonster() and not c:IsType(TYPE_TOKEN) and (c:IsFaceup() or c:IsLocation(LOCATION_GRAVE))
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and chkc:IsDestructable() end
-	if chk==0 then return Duel.IsExistingTarget(Card.IsDestructable,tp,0,LOCATION_MZONE,1,nil) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
-	local g=Duel.SelectTarget(tp,Card.IsDestructable,tp,0,LOCATION_MZONE,1,1,nil)
-	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE+LOCATION_GRAVE) and s.xyfilter(chkc,tp) and chkc~=e:GetHandler() end
+	if chk==0 then return e:GetHandler():IsType(TYPE_XYZ)
+		and Duel.IsExistingTarget(s.xyfilter,tp,LOCATION_MZONE+LOCATION_GRAVE,LOCATION_MZONE+LOCATION_GRAVE,1,e:GetHandler(),tp) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
+	Duel.SelectTarget(tp,s.xyfilter,tp,LOCATION_MZONE+LOCATION_GRAVE,LOCATION_MZONE+LOCATION_GRAVE,1,1,e:GetHandler(),tp)
 end
-function s.operation(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.operation(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e) then 
-		Duel.Destroy(tc,REASON_EFFECT)
+	if c:IsRelateToEffect(e) and tc:IsRelateToEffect(e) and not tc:IsImmuneToEffect(e) then
+		Duel.Overlay(c,tc,true)
 	end
 end
---draw
-function s.drcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return e:GetHandler():CheckRemoveOverlayCard(tp,1,REASON_COST) end
-	e:GetHandler():RemoveOverlayCard(tp,1,1,REASON_COST)
+
+--toki wo tomare
+function s.skipcost(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
+	if chk==0 then return c:CheckRemoveOverlayCard(tp,6,REASON_COST) end
+	c:RemoveOverlayCard(tp,6,6,REASON_COST)
 end
-function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsPlayerCanDraw(tp,2) end
-	Duel.SetTargetPlayer(tp)
-	Duel.SetTargetParam(2)
-	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,2)
+function s.skiptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return not Duel.IsPlayerAffectedByEffect(1-tp,EFFECT_SKIP_TURN) end
 end
-function s.drop(e,tp,eg,ep,ev,re,r,rp)
-	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
-	local ct=Duel.Draw(p,d,REASON_EFFECT)
-	if ct~=0 then
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
-		local g=Duel.SelectMatchingCard(tp,aux.TRUE,tp,LOCATION_HAND,0,2,2,nil)
-		Duel.SendtoDeck(g,nil,2,REASON_EFFECT)
-	end
+function s.skipop(e,tp,eg,ep,ev,re,r,rp)
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_FIELD)
+	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetCode(EFFECT_SKIP_TURN)
+	e1:SetTargetRange(0,1)
+	e1:SetReset(RESET_PHASE+PHASE_END+RESET_OPPO_TURN)
+	e1:SetCondition(s.skipcon)
+	Duel.RegisterEffect(e1,tp)
+end
+function s.skipcon(e)
+	return Duel.GetTurnPlayer()~=e:GetHandlerPlayer()
 end

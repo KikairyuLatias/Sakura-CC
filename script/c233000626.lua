@@ -55,6 +55,11 @@ function s.penop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
+--protection
+function s.indtg(e,c)
+	return c:IsSetCard(0x439) and c~=e:GetHandler()
+end
+
 --ss from pend zone
 function s.cfilter(c)
 	return c:IsSetCard(0x439) and c:IsType(TYPE_MONSTER) and c:IsAbleToRemoveAsCost() and aux.SpElimFilter(c,true)

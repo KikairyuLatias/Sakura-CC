@@ -1,13 +1,15 @@
 -- Psychic Dragon Emperor
 local s,id=GetID()
 function s.initial_effect(c)
-	--special summon
+	--Special Summon itself from the hand
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetCode(EFFECT_SPSUMMON_PROC)
-	e1:SetProperty(EFFECT_FLAG_UNCOPYABLE)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
+	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_HAND)
-	e1:SetCondition(s.spcon)
+	e1:SetCondition(s.sscon)
+	e1:SetTarget(s.sstg)
+	e1:SetOperation(s.ssop)
 	c:RegisterEffect(e1)
 	--cannot target for attacks
 	local e2=Effect.CreateEffect(c)
@@ -30,12 +32,18 @@ function s.initial_effect(c)
 end
 
 --ss
-function s.filter(c)
-	return c:IsFaceup() and c:IsSetCard(0x5f1)
+function s.sscon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x5f1),tp,LOCATION_MZONE,0,3,nil)
 end
-function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_MZONE,0,nil)
-	return g:GetClassCount(Card.GetCode)>=3
+function s.sstg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+		and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,LOCATION_HAND)
+end
+function s.ssop(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
+	if not c:IsRelateToEffect(e) then return end
+	Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
 end
 
 --protection

@@ -21,11 +21,12 @@ function s.initial_effect(c)
 	e2:SetOperation(s.disop)
 	c:RegisterEffect(e2)
 end
+
 --protection
 function s.cfilter(c)
 	return c:IsDiscardable()
 end
-function s.negcost(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.discost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_HAND,0,1,nil) end
 	Duel.DiscardHand(tp,s.cfilter,1,1,REASON_COST+REASON_DISCARD,nil)
 end

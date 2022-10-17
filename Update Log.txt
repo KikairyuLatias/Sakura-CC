@@ -195,3 +195,8 @@ https://sites.google.com/view/sakuracarddesign/home
 - Image updates with text changes
 - Addition of Numbers 114 and C171
 - Some balancing/PSCT fixes so cards are a bit easier to work with/against, and actually doable. (i.e. Certain effects are not workable with EDOPro's current core)
+
+10/10/2022
+
+- Script fixes
+- Added new cards for Diver Vulpine, Snowstorm Reindeer and a few other archetypes.

@@ -1,5 +1,4 @@
 --Flash Resistance Reindeer Deployment
---Radiant Dragon Reindeer Midnight Launch
 local s,id=GetID()
 function s.initial_effect(c)
 	--Special Summon "Flash Resistance Reindeer" monsters

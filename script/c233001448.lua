@@ -43,6 +43,14 @@ function s.initial_effect(c)
 end
 s.listed_series={0x7dc}
 
+function s.atklimit(e,tp,eg,ep,ev,re,r,rp)
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_CANNOT_ATTACK)
+	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+	e:GetHandler():RegisterEffect(e1)
+end
+
 --stat boost
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local phase=Duel.GetCurrentPhase()
@@ -50,8 +58,9 @@ function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=Duel.GetAttackTarget()
 	if not c then return false end
 	if c:IsControler(1-tp) then c=Duel.GetAttacker() end
-		return c and c:IsSetCard(0x4ca) and c~=e:GetHandler() and c:IsRelateToBattle()
+		return c and c:IsSetCard(0x7dc) and c:IsRelateToBattle() and c~=e:GetHandler()
 end
+
 function s.atkop(e,tp,eg,ep,ev,re,r,rp,chk)
 	local a=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
@@ -65,6 +74,13 @@ function s.atkop(e,tp,eg,ep,ev,re,r,rp,chk)
 	e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_DAMAGE_CAL)
 	e1:SetValue(d:GetAttack())
 	a:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(e:GetHandler())
+	e2:SetOwnerPlayer(tp)
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_UPDATE_DEFENSE)
+	e2:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_DAMAGE_CAL)
+	e2:SetValue(d:GetDefense())
+	a:RegisterEffect(e2)
 end
 
 --special summon

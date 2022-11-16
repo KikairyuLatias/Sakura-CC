@@ -34,7 +34,7 @@ function s.thfilter(c)
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local c=e:GetHandler()
-	local ct=e:GetHandler():GetLinkedGroup():FilterCount(aux.FilterFaceupFunction(Card.IsSetCard,0x14af),nil)
+	local ct=e:GetHandler():GetLinkedGroup():FilterCount(aux.FaceupFilter(Card.IsSetCard,0x14af),nil)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and s.thfilter(chkc) end
 	if chk==0 then return ct>0 and Duel.IsExistingTarget(s.thfilter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)

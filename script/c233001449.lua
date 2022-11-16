@@ -19,16 +19,6 @@ function s.initial_effect(c)
 	local e3=e2:Clone()
 	e3:SetCode(EFFECT_UPDATE_DEFENSE)
 	c:RegisterEffect(e3)
-	--prevent the opponent from chaining to your battles
-	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_FIELD)
-	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e4:SetCode(EFFECT_CANNOT_ACTIVATE)
-	e4:SetRange(LOCATION_FZONE)
-	e4:SetTargetRange(0,1)
-	e4:SetValue(1)
-	e4:SetCondition(s.actcon)
-	c:RegisterEffect(e4)
 	--actlimit
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -36,6 +26,15 @@ function s.initial_effect(c)
 	e5:SetRange(LOCATION_FZONE)
 	e5:SetOperation(s.chainop)
 	c:RegisterEffect(e5)
+	--extra summon
+	local e6=Effect.CreateEffect(c)
+	e6:SetDescription(aux.Stringid(id,0))
+	e6:SetType(EFFECT_TYPE_FIELD)
+	e6:SetTargetRange(LOCATION_HAND+LOCATION_MZONE,0)
+	e6:SetCode(EFFECT_EXTRA_SUMMON_COUNT)
+	e6:SetRange(LOCATION_FZONE)
+	e6:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x7dc))
+	c:RegisterEffect(e6)
 end
 
 --power up

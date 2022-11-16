@@ -14,6 +14,13 @@ function s.initial_effect(c)
 	e0:SetValue(1)
 	e0:SetCondition(s.actcon)
 	c:RegisterEffect(e0)
+	--Disable[iffy]
+	local e0a=Effect.CreateEffect(c)
+	e0a:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e0a:SetCode(EVENT_ATTACK_ANNOUNCE)
+	e0a:SetRange(LOCATION_MZONE)
+	e0a:SetOperation(s.actop)
+	c:RegisterEffect(e0a)
 	--shuffle and draw
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
@@ -53,6 +60,28 @@ function s.actcon(e)
 	local a=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
 	return (a and s.bfilter(a,tp)) or (d and s.bfilter(d,tp))
+end
+
+--negate stuff when battling [iffy]
+function s.actop(e,tp,eg,ep,ev,re,r,rp)
+	local a=Duel.GetAttacker()
+	local d=Duel.GetAttackTarget()
+	local p=e:GetHandler():GetControler()
+	if d==nil then return end
+	local tc=nil
+	if a:GetControler()==p then tc=d
+	elseif d:GetControler()==p then tc=a end
+	if not tc then return end
+	local e1=Effect.CreateEffect(e:GetHandler())
+	e1:SetType(EFFECT_TYPE_SINGLE)
+	e1:SetCode(EFFECT_DISABLE)
+	e1:SetReset(RESET_EVENT+0x17a0000)
+	tc:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(e:GetHandler())
+	e2:SetType(EFFECT_TYPE_SINGLE)
+	e2:SetCode(EFFECT_DISABLE_EFFECT)
+	e2:SetReset(RESET_EVENT+0x17a0000)
+	tc:RegisterEffect(e2)
 end
 
 --shuffle and replace

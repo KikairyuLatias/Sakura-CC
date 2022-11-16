@@ -200,3 +200,9 @@ https://sites.google.com/view/sakuracarddesign/home
 
 - Script fixes
 - Added new cards for Diver Vulpine, Snowstorm Reindeer and a few other archetypes.
+
+11/15/2022
+
+- Script/card fixes
+- Addition of newer cards for certain archetypes
+- "Bunny" archetype got pictures updated to be uniform in template; also some cards have newer art period.

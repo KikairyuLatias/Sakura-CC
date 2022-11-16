@@ -85,7 +85,7 @@ function s.actcon(e)
 	local tp=e:GetHandlerPlayer()
 	local a=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
-	return (a and s.cfilter(a,tp)) or (d and s.cfilter(d,tp))
+	return (a and s.cfilter(a,tp)) or (d and s.cfilter(d,tp)) and e:GetHandler():GetCounter(0x7de)>=8
 end
 
 function s.actcon2(e)

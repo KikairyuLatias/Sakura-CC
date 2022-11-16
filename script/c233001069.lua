@@ -20,22 +20,27 @@ function s.initial_effect(c)
 	e2:SetProperty(EFFECT_FLAG_DELAY)
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e2:SetRange(LOCATION_MZONE)
-	e2:SetCondition(aux.zptcon(nil))
+	e2:SetCondition(s.drcon)
 	e2:SetTarget(s.drtg)
 	e2:SetOperation(s.drop)
 	c:RegisterEffect(e2)
 end
 
 --draw cards
-s.mfilter=aux.FilterFaceupFunction(Card.IsSetCard,0x5f9)
-
+function s.drfilter(c,tp,lg)
+	return c:IsSetCard(0x5f9) and c:IsPreviousLocation(LOCATION_EXTRA) and lg:IsContains(c)
+end
+function s.drcon(e,tp,eg,ep,ev,re,r,rp)
+	local lg=e:GetHandler():GetLinkedGroup()
+	return eg:IsExists(s.drfilter,1,nil,tp,lg)
+end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return e:GetHandler():GetLinkedGroup():IsExists(s.mfilter,1,nil) and Duel.IsPlayerCanDraw(tp,1) end
+	if chk==0 then return true end
+	Duel.SetTargetPlayer(tp)
+	Duel.SetTargetParam(1)
 	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,1)
 end
-
 function s.drop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.Draw(tp,1,REASON_EFFECT)==1 then
-		Duel.ShuffleHand(tp)
-	end
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Draw(p,d,REASON_EFFECT)
 end

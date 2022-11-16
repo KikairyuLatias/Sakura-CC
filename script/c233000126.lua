@@ -12,6 +12,7 @@ function s.initial_effect(c)
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetRange(LOCATION_SZONE)
+	e2:SetCountLimit(1,id)
 	e2:SetCondition(s.spcon)
 	e2:SetTarget(s.sptg)
 	e2:SetOperation(s.spop)
@@ -27,9 +28,10 @@ function s.initial_effect(c)
 	e3:SetOperation(s.operation)
 	c:RegisterEffect(e3,false,1)
 end
+
 --spsummon condition
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(Card.IsSetCard,tp,LOCATION_MZONE,0,1,nil,id)
+	return Duel.IsExistingMatchingCard(Card.IsSetCard,tp,LOCATION_MZONE,0,1,nil,0x4b0)
 end
 
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -56,6 +58,35 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SpecialSummonComplete()
 	end
 end
+function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return Duel.IsPlayerCanSpecialSummonMonster(tp,233000131,0x4b0,TYPES_TOKEN+TYPE_TUNER,1000,1000,3,RACE_MACHINE,ATTRIBUTE_EARTH)
+		and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
+	Duel.SetOperationInfo(0,CATEGORY_TOKEN,nil,1,tp,0)
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,0)
+end
+function s.spop(e,tp,eg,ep,ev,re,r,rp)
+	if e:GetHandler():IsRelateToEffect(e) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
+	and Duel.IsPlayerCanSpecialSummonMonster(tp,233000131,0x4b0,TYPES_TOKEN+TYPE_TUNER,1000,1000,3,RACE_MACHINE,ATTRIBUTE_EARTH) then
+		local token=Duel.CreateToken(tp,233000131)
+		Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP)
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_CANNOT_BE_SYNCHRO_MATERIAL)
+		e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE+EFFECT_FLAG_CANNOT_DISABLE)
+		e1:SetValue(s.synlimit)
+		token:RegisterEffect(e1)
+		local e2=e1:Clone()
+		e2:SetCode(EFFECT_CANNOT_BE_FUSION_MATERIAL)
+		token:RegisterEffect(e2)
+		local e3=e1:Clone()
+		e3:SetCode(EFFECT_CANNOT_BE_XYZ_MATERIAL)
+		token:RegisterEffect(e3)
+		local e4=e1:Clone()
+		e4:SetCode(EFFECT_CANNOT_BE_LINK_MATERIAL)
+		token:RegisterEffect(e4)
+	end
+end
+
 function s.synlimit(e,c)
 	return c:IsSetCard(0x4b0)
 end

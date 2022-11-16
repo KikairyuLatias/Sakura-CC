@@ -87,7 +87,7 @@ end
 function s.lktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then
 		local el={}
-		local mg=Duel.GetMatchingGroup(aux.FilterFaceupFunction(Card.IsSetCard,0x14af),tp,LOCATION_MZONE,0,nil)
+		local mg=Duel.GetMatchingGroup(aux.FaceupFilter(Card.IsSetCard,0x14af),tp,LOCATION_MZONE,0,nil)
 		local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,0,mg)
 		for tc in aux.Next(g) do
 			local e1=Effect.CreateEffect(e:GetHandler())
@@ -108,7 +108,7 @@ function s.lkop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if not c:IsRelateToEffect(e) then return end
 	local el={}
-	local mg=Duel.GetMatchingGroup(aux.FilterFaceupFunction(Card.IsSetCard,0x120),tp,LOCATION_MZONE,0,nil)
+	local mg=Duel.GetMatchingGroup(aux.FaceupFilter(Card.IsSetCard,0x120),tp,LOCATION_MZONE,0,nil)
 	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,0,mg)
 	for tc in aux.Next(g) do
 		local e1=Effect.CreateEffect(c)

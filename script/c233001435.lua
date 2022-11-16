@@ -1,6 +1,7 @@
 --Sapphire☆Dream Honor Guard Rider Naotora
 local s,id=GetID()
 function s.initial_effect(c)
+	c:SetUniqueOnField(1,0,id)
 	--fusion material
 	c:EnableReviveLimit()
 	Fusion.AddProcMixN(c,true,true,s.ffilter,3)
@@ -55,7 +56,7 @@ function s.matfil(c,tp)
 	return c:IsAbleToRemoveAsCost() and (c:IsLocation(LOCATION_MZONE) or aux.SpElimFilter(c,false,true)) and c:IsType(TYPE_MONSTER)
 end
 function s.contactfil(tp)
-	return Duel.GetMatchingGroup(s.matfil,tp,LOCATION_ONFIELD+LOCATION_GRAVE,0,nil,tp)
+	return Duel.GetMatchingGroup(s.matfil,tp,LOCATION_ONFIELD,0,nil,tp)
 end
 function s.contactop(g)
 	Duel.Remove(g,POS_FACEUP,REASON_COST+REASON_MATERIAL)

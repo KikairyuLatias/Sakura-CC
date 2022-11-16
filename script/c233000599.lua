@@ -52,7 +52,7 @@ end
 
 --self-destruct
 function s.descon(e)
-	return not Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(s.cfilter8),e:GetHandlerPlayer(),LOCATION_MZONE,0,2,nil)
+	return not Duel.IsExistingMatchingCard(aux.FaceupFilter(s.cfilter8),e:GetHandlerPlayer(),LOCATION_MZONE,0,2,nil)
 end
 
 --neg clause

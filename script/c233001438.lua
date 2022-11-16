@@ -4,14 +4,25 @@ function s.initial_effect(c)
 	--materials
 	Synchro.AddProcedure(c,nil,1,1,aux.FilterSummonCode(233001428),1,1)
 	c:EnableReviveLimit()
-	--Your "Sapphire Dream" monsters are unaffected by opponent's card effects
+	--Your "Sapphire Dream" monsters cannot be targeted or destroyed by opponent's card effects
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_FIELD)
+	e0:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
+	e0:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
+	e0:SetRange(LOCATION_MZONE)
+	e0:SetTargetRange(LOCATION_MZONE,0)
+	e0:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x7de))
+	e0:SetValue(aux.indoval)
+	c:RegisterEffect(e0)
+	--cannot target
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetCode(EFFECT_IMMUNE_EFFECT)
+	e1:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
+	e1:SetProperty(EFFECT_FLAG_SET_AVAILABLE+EFFECT_FLAG_IGNORE_IMMUNE)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetTargetRange(LOCATION_MZONE,0)
-	e1:SetTarget(s.etarget)
-	e1:SetValue(s.efilter)
+	e1:SetTarget(aux.TargetBoolFunction(Card.IsSetCard,0x7de))
+	e1:SetValue(aux.tgoval)
 	c:RegisterEffect(e1)
 	--spsummon
 	local e2=Effect.CreateEffect(c)
@@ -36,14 +47,6 @@ function s.initial_effect(c)
 	e3:SetTarget(s.hdtg)
 	e3:SetOperation(s.hdop)
 	c:RegisterEffect(e3)
-end
-
---immunity
-function s.etarget(e,c)
-	return c:IsSetCard(0x7de) and not c:IsType(TYPE_EFFECT)
-end
-function s.efilter(e,re)
-	return re:GetOwnerPlayer()~=e:GetHandlerPlayer()
 end
 
 -- spsummon

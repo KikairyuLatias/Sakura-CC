@@ -25,10 +25,12 @@ function s.initial_effect(c)
 	e3:SetValue(1)
 	c:RegisterEffect(e3)
 end
+
 --req
 function s.lcheck(g,lc,tp)
 	return g:IsExists(Card.IsSetCard,1,nil,0x5f9,lc,SUMMON_TYPE_LINK,tp)
 end
+
 --zero damage
 function s.efilter(e,c)
 	return c:IsSetCard(0x5f9)

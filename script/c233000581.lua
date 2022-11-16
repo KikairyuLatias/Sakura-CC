@@ -118,7 +118,6 @@ function s.val(e)
 	return e:GetHandler():GetCounter(0x43a)*-100
 end
 
---boost
 function s.hztg(e,c)
 	return not c:IsSetCard(0x43a) and c:IsType(TYPE_MONSTER)
 end

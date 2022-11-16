@@ -49,7 +49,7 @@ function s.initial_effect(c)
 	local e6=e2:Clone()
 	e6:SetRange(LOCATION_MZONE)
 	c:RegisterEffect(e6)
-	--pendulum (add in destruction thing later)
+	--pendulum
 	local e7=Effect.CreateEffect(c)
 	e7:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e7:SetCode(EVENT_DESTROYED)
@@ -59,6 +59,7 @@ function s.initial_effect(c)
 	e7:SetOperation(s.penop)
 	c:RegisterEffect(e7)
 end
+
 --to pendulumZ
 function s.pencon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

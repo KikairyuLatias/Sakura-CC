@@ -21,14 +21,12 @@ end
 
 --stuff
 function s.filter(c,tp)
-	return c:IsFaceup()
-		and Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x44af,0x21,c:GetAttack(),c:GetDefense(),4,RACE_BEASTWARRIOR,ATTRIBUTE_WATER)
+	return c:IsFaceup() and Duel.IsPlayerCanSpecialSummonMonster(tp,id,0x44af,0x21,c:GetAttack(),c:GetDefense(),4,RACE_BEASTWARRIOR,ATTRIBUTE_WATER)
 end
 
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and s.filter(chkc,tp) end
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>-2
-		and Duel.IsExistingTarget(s.filter,tp,0,LOCATION_MZONE,1,nil,tp) end
+	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,0,LOCATION_MZONE,1,nil,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TARGET)
 	Duel.SelectTarget(tp,s.filter,tp,0,LOCATION_MZONE,1,1,nil,tp)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,e:GetHandler(),1,0,0)

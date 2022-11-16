@@ -47,6 +47,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e5)
 	--pendulum (standard)
 	local e6=Effect.CreateEffect(c)
+	e6:SetDescription(aux.Stringid(id,0))
 	e6:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e6:SetCode(EVENT_DESTROYED)
 	e6:SetProperty(EFFECT_FLAG_DELAY)
@@ -56,6 +57,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e6)
 	--negation in P-zone
 	local e7=Effect.CreateEffect(c)
+	e7:SetDescription(aux.Stringid(id,1))
 	e7:SetCategory(CATEGORY_NEGATE+CATEGORY_REMOVE)
 	e7:SetType(EFFECT_TYPE_QUICK_O)
 	e7:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
@@ -66,7 +68,6 @@ function s.initial_effect(c)
 	e7:SetTarget(s.negtg)
 	e7:SetOperation(s.negop)
 	c:RegisterEffect(e7)
-	--pendulum zone (destroy stuff)
 end
 
 --to pendulumZ

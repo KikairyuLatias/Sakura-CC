@@ -63,7 +63,7 @@ function s.lvcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x24af),tp,LOCATION_MZONE,0,1,e:GetHandler())
 end
 function s.filter(c)
-	return c:IsSetCard(0x24af) and c:IsType(TYPE_RITUAL)
+	return c:IsSetCard(0x24af) and c:IsType(TYPE_RITUAL) and c:IsMonster()
 end
 function s.lvtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_HAND,0,1,nil) end

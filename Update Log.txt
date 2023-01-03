@@ -206,3 +206,9 @@ https://sites.google.com/view/sakuracarddesign/home
 - Script/card fixes
 - Addition of newer cards for certain archetypes
 - "Bunny" archetype got pictures updated to be uniform in template; also some cards have newer art period.
+
+1/2/2023
+
+- Addition of "Starry Snow Blossom Reindeer" (AKA "Rudolph 2022")
+- Scripting fixes for a few cards
+- Standardization of card proxies and other stuff

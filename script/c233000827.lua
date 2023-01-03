@@ -8,6 +8,7 @@ function s.initial_effect(c)
 	e1:SetCode(EFFECT_PUBLIC)
 	e1:SetRange(LOCATION_PZONE)
 	e1:SetTargetRange(0,LOCATION_HAND)
+	e1:SetCondition(s.handcon)
 	c:RegisterEffect(e1)
 	--banish
 	local e2=Effect.CreateEffect(c)
@@ -24,8 +25,13 @@ function s.initial_effect(c)
 end
 
 --condition
-function s.handcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsCode,233000828),tp,LOCATION_PZONE,0,1,nil)
+s.listed_names={233000828}
+
+function s.scfilter(c)
+	return c:IsFaceup() and c:IsCode(233000828)
+end
+function s.handcon(e)
+	return Duel.IsExistingMatchingCard(s.scfilter,e:GetHandlerPlayer(),LOCATION_PZONE,0,1,e:GetHandler())
 end
 
 --banish

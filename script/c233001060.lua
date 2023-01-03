@@ -30,9 +30,10 @@ function s.initial_effect(c)
 	e4:SetOperation(s.op)
 	c:RegisterEffect(e4)
 end
+
 --searching on summon
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>2 end
+	if chk==0 then return Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>5 end
 end
 function s.thfilter(c)
 	return c:IsSetCard(0x5f9) and c:IsAbleToHand()
@@ -50,6 +51,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	end
 	Duel.ShuffleDeck(tp)
 end
+
 --return
 function s.con(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.GetTurnPlayer()==tp

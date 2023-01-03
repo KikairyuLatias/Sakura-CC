@@ -4,18 +4,18 @@ function s.initial_effect(c)
 	--can revive
 	c:EnableReviveLimit()
 	--destroy
-	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,0))
-	e1:SetCategory(CATEGORY_DAMAGE)
-	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
-	e1:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
-	e1:SetCode(EVENT_BATTLE_DESTROYING)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetCountLimit(1,id)
-	e1:SetCondition(s.damcon)
-	e1:SetTarget(s.damtg)
-	e1:SetOperation(s.damop)
-	c:RegisterEffect(e1)
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetCategory(CATEGORY_DAMAGE)
+	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
+	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
+	e2:SetCode(EVENT_BATTLE_DESTROYING)
+	e2:SetRange(LOCATION_MZONE)
+	e2:SetCountLimit(1)
+	e2:SetCondition(s.damcon)
+	e2:SetTarget(s.damtg)
+	e2:SetOperation(s.damop)
+	c:RegisterEffect(e2)
 	--special summon self
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
@@ -42,22 +42,15 @@ function s.damcon(e,tp,eg,ep,ev,re,r,rp)
 end
 function s.damtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
-	local bc=e:GetHandler():GetBattleTarget()
-	Duel.SetTargetCard(bc)
-	local dam=bc:GetAttack()
-	if dam<0 then dam=0 end
 	Duel.SetTargetPlayer(1-tp)
-	Duel.SetTargetParam(dam)
-	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,dam)
+	local atk=eg:GetFirst():GetBattleTarget():GetAttack()
+	if atk<0 then atk=0 end
+	Duel.SetTargetParam(atk)
+	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,atk)
 end
 function s.damop(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if tc and tc:IsRelateToEffect(e) then
-		local p=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER)
-		local dam=tc:GetPreviousAttackOnField()
-		if dam<0 then dam=0 end
-		Duel.Damage(p,dam,REASON_EFFECT)
-	end
+	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	Duel.Damage(p,d,REASON_EFFECT)
 end
 
 --special summon

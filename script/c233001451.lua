@@ -29,13 +29,14 @@ function s.cfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x7dc) and c:IsType(TYPE_MONSTER)
 end
 function s.desfilter(c)
-	return c:IsFaceup() and c:IsAbleToDeck()
+	return c:IsAbleToDeck()
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
 		and Duel.IsExistingMatchingCard(s.desfilter,tp,0,LOCATION_ONFIELD,1,nil) end
 	local g=Duel.GetMatchingGroup(s.desfilter,tp,0,LOCATION_ONFIELD,nil)
+	local ct=g:GetClassCount(Card.GetCode)
 	Duel.SetOperationInfo(0,CATEGORY_TODECK,g,1,0,0)
 	--if you got a ritual monster (and still want to just shuffle into deck)
 	if Duel.IsExistingMatchingCard(s.lmfilter,tp,LOCATION_MZONE,0,1,nil) and e:IsHasType(EFFECT_TYPE_ACTIVATE) then
@@ -66,13 +67,14 @@ function s.cfilter2(c)
 	return c:IsFaceup() and c:IsSetCard(0x7dc) and c:IsType(TYPE_RITUAL)
 end
 function s.banfilter(c)
-	return c:IsFaceup() and c:IsAbleToRemove()
+	return c:IsAbleToRemove()
 end
 function s.remtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local c=e:GetHandler()
 	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
 		and Duel.IsExistingMatchingCard(s.banfilter,tp,0,LOCATION_ONFIELD,1,nil) end
 	local g=Duel.GetMatchingGroup(s.banfilter,tp,0,LOCATION_ONFIELD,nil)
+	local ct=g:GetClassCount(Card.GetCode)
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,g,1,0,0)
 	--opponent cannot chain (or least they should not be, as this condition is already satisfied)
 	Duel.SetChainLimit(s.chainlm)

@@ -29,7 +29,7 @@ end
 
 --yes
 function s.xyzfilter(c)
-	return c:IsSetCard(0x44af) and c:IsMonster()
+	return c:IsSetCard(0x44af) and c:IsMonster() and c:IsType(TYPE_XYZ)
 end
 function s.filter2(c)
 	return c:IsSetCard(0x4af)

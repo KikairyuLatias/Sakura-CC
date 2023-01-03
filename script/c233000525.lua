@@ -28,22 +28,19 @@ function s.initial_effect(c)
 end
 
 --ss condition
-function s.spfilter(c)
-	return c:IsFaceup() and c:IsSetCard(0x14af) and c:IsAbleToDeckOrExtraAsCost()
+function s.cfilter(c)
+	return c:IsFaceup() and c:IsSetCard(0x14af) and c:IsAbleToDeckAsCost()
 end
 function s.spcon(e,c)
 	if c==nil then return true end
-	local tp=e:GetHandlerPlayer()
-	local rg=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_MZONE,0,nil)
-	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+	local tp=c:GetControler()
+	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,2,nil)
+	return g:GetClassCount(Card.GetCode)>=2
 end
-
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,c)
-	local c=e:GetHandler()
-	local g=nil
-	local rg=Duel.GetMatchingGroup(s.spfilter,tp,LOCATION_MZONE,0,nil)
-	local g=aux.SelectUnselectGroup(rg,e,tp,2,2,nil,1,tp,HINTMSG_TODECK,nil,nil,true)
-	if #g>0 then
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
+	local g=Duel.SelectMatchingCard(tp,s.cfilter,tp,LOCATION_MZONE,0,2,2,true,nil)
+	if g and #g>0 then
 		g:KeepAlive()
 		e:SetLabelObject(g)
 		return true
@@ -53,8 +50,8 @@ end
 function s.spop(e,tp,eg,ep,ev,re,r,rp,c)
 	local g=e:GetLabelObject()
 	if not g then return end
-	Duel.SendtoDeck(g,nil,2,REASON_COST)
-	g:DeleteGroup()
+	Duel.HintSelection(g,true)
+	Duel.SendtoDeck(g,nil,SEQ_DECKSHUFFLE,REASON_COST)
 end
 
 --protecc

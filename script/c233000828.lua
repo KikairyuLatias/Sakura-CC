@@ -18,6 +18,7 @@ function s.initial_effect(c)
 	e2:SetCode(EFFECT_UPDATE_ATTACK)
 	e2:SetRange(LOCATION_PZONE)
 	e2:SetTargetRange(LOCATION_MZONE,0)
+	e2:SetCondition(s.statcon)
 	e2:SetTarget(s.efilter)
 	e2:SetValue(700)
 	c:RegisterEffect(e2)
@@ -31,7 +32,16 @@ function s.splimit(e,c)
 	return not (c:IsRace(RACE_BEASTWARRIOR) and c:IsAttribute(ATTRIBUTE_WATER))
 end
 
+s.listed_names={233000827}
+
 --stat boost
+function s.scfilter(c)
+	return c:IsFaceup() and c:IsCode(233000827)
+end
+function s.statcon(e)
+	return Duel.IsExistingMatchingCard(s.scfilter,e:GetHandlerPlayer(),LOCATION_PZONE,0,1,e:GetHandler())
+end
+
 function s.efilter(e,c)
 	return c:IsRace(RACE_BEASTWARRIOR) and c:IsAttribute(ATTRIBUTE_WATER)
 end

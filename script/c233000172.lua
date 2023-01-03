@@ -60,6 +60,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e7)
 	--float back original form
 	local e8=Effect.CreateEffect(c)
+	e8:SetDescription(aux.Stringid(id,2))
 	e8:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e8:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
 	e8:SetCode(EVENT_DESTROYED)

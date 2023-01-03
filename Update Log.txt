@@ -212,3 +212,8 @@ https://sites.google.com/view/sakuracarddesign/home
 - Addition of "Starry Snow Blossom Reindeer" (AKA "Rudolph 2022")
 - Scripting fixes for a few cards
 - Standardization of card proxies and other stuff
+
+1/3/2023
+
+- Legacy support for "Baofeng Dragon" and "Techzodiac"
+- Grammar checking for stuff

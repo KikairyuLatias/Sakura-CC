@@ -2,7 +2,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	--synchro summon
-	Synchro.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x14af),1,1,Synchro.NonTunerEx(Card.IsSetCard,0x14af),1,99)
+	Synchro.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x14af),1,1,Synchro.NonTunerEx(Card.IsSetCard,0x14af),1,99,nil,nil,nil,s.matfilter)
 	--spsummon
 	local e1=Effect.CreateEffect(c)
 	e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
@@ -21,16 +21,8 @@ function s.initial_effect(c)
 	e3:SetCode(EFFECT_IMMUNE_EFFECT)
 	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e3:SetRange(LOCATION_MZONE)
-	e3:SetCondition(s.immcon)
 	e3:SetValue(s.efilter)
 	c:RegisterEffect(e3)
-	--material count check
-	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_SINGLE)
-	e4:SetCode(EFFECT_MATERIAL_CHECK)
-	e4:SetValue(s.valcheckmat)
-	e4:SetLabelObject(e3)
-	c:RegisterEffect(e4)
 	--register effect (and can do all the nasty things)
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_SINGLE)
@@ -46,15 +38,6 @@ function s.initial_effect(c)
 	e6:SetValue(s.valcheck)
 	e6:SetLabelObject(e5)
 	c:RegisterEffect(e6)
-	--make this one a quick effect if you did use a Synchro Monster as ladder
-	local e7=e5:Clone()
-	e7:SetValue(s.valcheck2)
-	e7:SetCondition(s.regcon2)
-	e7:SetOperation(s.regop2)
-	c:RegisterEffect(e7)
-	local e8=e6:Clone()
-	e8:SetLabelObject(e7)
-	c:RegisterEffect(e8)
 	--Special Summon
 	local e9=Effect.CreateEffect(c)
 	e9:SetDescription(aux.Stringid(id,1))
@@ -68,6 +51,14 @@ function s.initial_effect(c)
 	c:RegisterEffect(e9)
 end
 
+--you need a synchro to make me
+function s.cfilter(c,sc,tp)
+	return c:IsType(TYPE_SYNCHRO,sc,SUMMON_TYPE_SYNCHRO,tp)
+end
+function s.matfilter(g,sc,tp)
+	return g:IsExists(s.cfilter,1,nil,sc,tp)
+end
+
 --triggers
 function s.valcheckmat(e,c)
 	local g=c:GetMaterial()
@@ -77,10 +68,6 @@ function s.valcheckmat(e,c)
 		e:GetLabelObject():SetLabel(0)
 	end
 end
-function s.immcon(e)
-   return e:GetHandler():IsSummonType(SUMMON_TYPE_SYNCHRO) and e:GetLabel()==1
-end
-
 function s.efilter(e,te)
 	return te:GetOwnerPlayer()~=e:GetHandlerPlayer()
 end
@@ -129,44 +116,6 @@ function s.banop(e,tp,eg,ep,ev,re,r,rp)
 	e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+0x1fe0000,0,1)
 	Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
 	Duel.Damage(1-tp,800,REASON_EFFECT)
-end
-
---georgian tochi power 2
-function s.mfilter(c)
-	return not c:IsType(TYPE_TUNER)
-end
-
-function s.valcheck2(e,c)
-	local g=c:GetMaterial()
-	if g:IsExists(Card.IsType,1,nil,TYPE_SYNCHRO) then
-		e:GetLabelObject():SetLabel(2)
-	else
-		e:GetLabelObject():SetLabel(0)
-	end
-	local ct=g:FilterCount(s.mfilter,nil)
-	e:GetLabelObject():SetLabel(ct)
-end
-function s.regcon2(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	return c:IsSummonType(SUMMON_TYPE_SYNCHRO) and e:GetLabel()>1
-end
-function s.chkfilter(c,label)
-	return c:GetFlagEffect(label)>1
-end
-function s.regop2(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local ct=e:GetLabel()
-	local e9=Effect.CreateEffect(c)
-	e9:SetCategory(CATEGORY_REMOVE+CATEGORY_DAMAGE)
-	e9:SetDescription(aux.Stringid(id,0))
-	e9:SetType(EFFECT_TYPE_QUICK_O)
-	e9:SetCode(EVENT_FREE_CHAIN)
-	e9:SetRange(LOCATION_MZONE)
-	e9:SetReset(RESET_EVENT+(RESETS_STANDARD&~RESET_TURN_SET))
-	e9:SetCountLimit(ct,id)
-	e9:SetTarget(s.bantg)
-	e9:SetOperation(s.banop)
-	c:RegisterEffect(e9)
 end
 
 --special

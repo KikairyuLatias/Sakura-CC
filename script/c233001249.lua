@@ -54,6 +54,7 @@ function s.initial_effect(c)
 	e3:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e3:SetRange(LOCATION_MZONE)
 	e3:SetCode(EFFECT_IMMUNE_EFFECT)
+	e3:SetCondition(s.unaffectcon)
 	e3:SetValue(s.unaffectedval)
 	c:RegisterEffect(e3)
 	--kirin time
@@ -141,7 +142,7 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 --I transcend your common sense (when ritual summoned)
-function s.lockcon(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.unaffectcon(e,tp,eg,ep,ev,re,r,rp,chk)
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_RITUAL)
 end
 function s.unaffectedval(e,te)

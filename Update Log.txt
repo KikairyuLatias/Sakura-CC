@@ -217,3 +217,10 @@ https://sites.google.com/view/sakuracarddesign/home
 
 - Legacy support for "Baofeng Dragon" and "Techzodiac"
 - Grammar checking for stuff
+
+2/5/2023
+
+- Legacy support for "Bunny" (actually retooling some old cards)
+- Scripting some back burner stuff
+- Addition of "Starry Snow Blossom Reindeer"
+- Other misc script fixes

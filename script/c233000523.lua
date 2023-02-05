@@ -14,9 +14,9 @@ function s.initial_effect(c)
 	local e3=e1:Clone()
 	e3:SetCode(EFFECT_XYZ_MAT_RESTRICTION)
 	c:RegisterEffect(e3)
-	--local e4=e1:Clone()
-	--e4:SetCode(EFFECT_LINK_MAT_RESTRICTION)
-	--c:RegisterEffect(e4)
+	local e4=e1:Clone()
+	e4:SetCode(EFFECT_CANNOT_BE_LINK_MATERIAL)
+	c:RegisterEffect(e4)
 	--lv change
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_IGNITION)
@@ -47,7 +47,7 @@ end
 
 --level change
 function s.filter(c)
-	return c:IsFaceup() and c:GetLevel()>0 and c:IsSetCard(0x14af)
+	return c:IsFaceup() and c:HasLevel() and c:IsSetCard(0x14af)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.filter(chkc) end

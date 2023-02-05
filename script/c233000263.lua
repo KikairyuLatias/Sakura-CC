@@ -1,8 +1,7 @@
 --Psychic Dragon Twin Strike
 local s,id=GetID()
 function s.initial_effect(c)
-	--borrow from chaos alliance
-	--Activate
+	--Activate (borrow from chaos alliance)
 	local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_ATKCHANGE)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
@@ -25,15 +24,19 @@ end
 function s.filter(c,atk)
 	return c:IsSetCard(0x5f1) and c:IsFaceup() and c:GetAttack()<atk
 end
+function s.filter2(c,atk)
+	return c:IsSetCard(0x5f1) and c:IsFaceup() and c:GetAttack()<atk
+end
+
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	local ag=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,0,nil):GetMaxGroup(Card.GetAttack)
+	local ag=Duel.GetMatchingGroup(s.filter2,tp,LOCATION_MZONE,0,nil):GetMaxGroup(Card.GetAttack)
 	if chkc then return ag and #ag>0 and chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.filter(chkc,ag:GetFirst():GetAttack()) end
 	if chk==0 then return ag and #ag>0 and Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,nil,ag:GetFirst():GetAttack()) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil,ag:GetFirst():GetAttack())
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	local ag=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,0,nil):GetMaxGroup(Card.GetAttack)
+	local ag=Duel.GetMatchingGroup(s.filter2,tp,LOCATION_MZONE,0,nil):GetMaxGroup(Card.GetAttack)
 	if #ag==0 then return end
 	local atk=ag:GetFirst():GetAttack()
 	local tc=Duel.GetFirstTarget()

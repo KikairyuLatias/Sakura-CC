@@ -57,7 +57,7 @@ end
 
 --protection
 function s.efilter(e,te)
-	return te:GetOwnerPlayer()~=e:GetHandlerPlayer() and te:IsActivated() and te:GetHandler():IsLinkBelow(3)
+	return te:GetOwnerPlayer()~=e:GetHandlerPlayer()
 end
 
 --special summon myself

@@ -61,7 +61,7 @@ end
 
 --insert The Rock`s war cry in Samoan here
 function s.accon(e)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x14af),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,e:GetHandler())
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x14af),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,e:GetHandler())
 end
 function s.aclimit(e,re,tp)
 	local loc=re:GetActivateLocation()

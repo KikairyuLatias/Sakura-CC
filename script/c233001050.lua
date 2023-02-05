@@ -32,7 +32,7 @@ function s.filter(c)
 	return c:IsType(TYPE_SPELL+TYPE_TRAP)
 end
 function s.cfilter(c)
-	return c:IsFaceup() and (c:IsCode(233001001) or (c:IsType(TYPE_SYNCHRO) and aux.IsCodeListed(c,233001001)))
+	return c:IsFaceup() and (c:IsCode(233001001) or (c:IsType(TYPE_SYNCHRO) and c:ListsCode(233001001)))
 end
 function s.bancon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
@@ -51,7 +51,7 @@ end
 
 --this banishes everything and burns
 function s.cfilter2(c)
-	return c:IsFaceup() and (c:IsSetCard(0x5f7) or c:IsSetCard(0x5f8)) and c:IsLevelAbove(10) and c:IsType(TYPE_SYNCHRO) and aux.IsCodeListed(c,233001001)
+	return c:IsFaceup() and ((c:IsSetCard(0x5f7) or c:IsSetCard(0x5f8)) and c:IsLevelAbove(10) and c:IsType(TYPE_SYNCHRO))
 end
 function s.bancon2(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.cfilter2,tp,LOCATION_MZONE,0,2,nil)

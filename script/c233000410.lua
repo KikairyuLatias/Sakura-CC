@@ -60,12 +60,12 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 --forget about triggering
+function s.cfilter(c,tp)
+	return c:IsFaceup() and c:IsSetCard(0x7c7) and c:IsControler(tp)
+end
 function s.actcon(e)
-	local c=Duel.GetAttackTarget()
-	if not c then return false end
+	local tp=e:GetHandlerPlayer()
 	local a=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
 	return (a and s.cfilter(a,tp)) or (d and s.cfilter(d,tp))
-	e:SetLabelObject(c)
-	return c and c:IsAttribute(ATTRIBUTE_WIND) and c:IsRace(RACE_MACHINE) and c:IsRelateToBattle()
 end

@@ -42,7 +42,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3c)
 	local e3d=Effect.CreateEffect(c)
 	e3d:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e3d:SetRange(LOCATION_GRAVE)
+	e3d:SetRange(LOCATION_FZONE)
 	e3d:SetCode(EVENT_CHAIN_END)
 	e3d:SetOperation(s.limop2)
 	c:RegisterEffect(e3d)
@@ -59,8 +59,7 @@ function s.initial_effect(c)
 	local e5=Effect.CreateEffect(c)
 	e5:SetDescription(aux.Stringid(id,1))
 	e5:SetCategory(CATEGORY_TODECK+CATEGORY_DRAW)
-	e5:SetType(EFFECT_TYPE_QUICK_O)
-	e5:SetCode(EVENT_FREE_CHAIN)
+	e5:SetType(EFFECT_TYPE_IGNITION)
 	e5:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e5:SetRange(LOCATION_FZONE)
 	e5:SetCountLimit(1,{id,1})
@@ -144,11 +143,11 @@ function s.target1(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:GetLocation()==LOCATION_GRAVE+LOCATION_REMOVED and chkc:GetControler()==tp and s.filter(chkc) end
+	if chkc then return chkc:GetLocation()==LOCATION_GRAVE+LOCATION_REMOVED and chkc:GetControler()==tp and s.filter2(chkc) end
 	if chk==0 then return Duel.IsPlayerCanDraw(tp,1) and e:GetHandler():GetFlagEffect(tp,id)==0
-		and Duel.IsExistingTarget(s.filter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,5,nil) end
+		and Duel.IsExistingTarget(s.filter2,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,5,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
-	local g=Duel.SelectTarget(tp,s.filter,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,5,5,nil)
+	local g=Duel.SelectTarget(tp,s.filter2,tp,LOCATION_GRAVE+LOCATION_REMOVED,0,5,5,nil)
 	Duel.SetOperationInfo(0,CATEGORY_TODECK,g,g:GetCount(),0,0)
 	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,2)
 end

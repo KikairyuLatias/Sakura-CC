@@ -55,7 +55,7 @@ function s.filter2x(c)
 end
 function s.con2(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(s.filter1x,tp,LOCATION_MZONE,0,nil)
-	return g:GetClassCount(Card.GetCode)>=2 and Duel.IsExistingMatchingCard(s.filter2x,tp,LOCATION_MZONE,0,1,nil)
+	return g:GetClassCount(Card.GetCode)>=3 and Duel.IsExistingMatchingCard(s.filter2x,tp,LOCATION_MZONE,0,1,nil)
 end
 function s.tg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,0,LOCATION_ONFIELD,1,nil) end

@@ -224,3 +224,14 @@ https://sites.google.com/view/sakuracarddesign/home
 - Scripting some back burner stuff
 - Addition of "Starry Snow Blossom Reindeer"
 - Other misc script fixes
+
+3/4/2023
+
+- Addition of new cards (mostly Legacy and stuff related to Diver.dek)
+- Scripting stuff on the backburner like I'm supposed to.
+- A few script changes for the stuff that should not be missing timing (yes, missing the timing is dumb)
+
+3/26/2023
+
+- Small updates in the CDB files (mostly stuff that shouldn't be Normal but are marked as such have been corrected)
+- Starry Snow Blossom Cupid's SS effect not hard OPT (probably got removed or I c/p'd off her previous forms that lacked them)

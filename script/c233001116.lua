@@ -4,52 +4,44 @@ function s.initial_effect(c)
 	--lvchange
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
-	e1:SetCategory(CATEGORY_LVCHANGE)
+	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetType(EFFECT_TYPE_IGNITION)
 	e1:SetRange(LOCATION_MZONE)
-	e1:SetCountLimit(1,EFFECT_COUNT_CODE_SINGLE)
-	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
-	e1:SetTarget(s.lvtg)
-	e1:SetOperation(s.lvop)
+	e1:SetCountLimit(1)
+	e1:SetTarget(s.target)
+	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
-	--lvchange (down)
-	local e2=e1:Clone()
-	e2:SetDescription(aux.Stringid(id,1))
-	e2:SetOperation(s.lvop2)
-	c:RegisterEffect(e2)
 end
 
+--level change
 function s.filter(c)
-	return c:IsFaceup() and c:IsSetCard(0x7D0) and not c:IsType(TYPE_XYZ) or c:IsType(TYPE_LINK)
+	return c:IsFaceup() and c:IsSetCard(0x7d0) and c:HasLevel()
 end
-
-function s.lvtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.filter(chkc) end
-	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,e:GetHandler()) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,e:GetHandler())
-end
-
-function s.lvop(e,tp,eg,ep,ev,re,r,rp)
-	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e1) and tc:IsFaceup() then
-		local e1=Effect.CreateEffect(e:GetHandler())
-		e1:SetType(EFFECT_TYPE_SINGLE)
-		e1:SetCode(EFFECT_UPDATE_LEVEL)
-		e1:SetValue(1)
-		e1:SetReset(RESET_EVENT+0x1fe0000)
-		tc:RegisterEffect(e1)
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and s.filter(chkc) end
+	if chk==0 then 
+		return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) 
 	end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
+	local g=Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,1,nil)
+	local tc=g:GetFirst()
+	local op=0
+	if tc:GetLevel()==1 then op=Duel.SelectOption(tp,aux.Stringid(id,0))
+	else op=Duel.SelectOption(tp,aux.Stringid(id,0),aux.Stringid(id,1)) end
+	e:SetLabel(op)
 end
-
-function s.lvop2(e,tp,eg,ep,ev,re,r,rp)
+function s.operation(e,tp,eg,ep,ev,re,r,rp)
+	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
-	if tc:IsRelateToEffect(e2) and tc:IsFaceup() then
-		local e2=Effect.CreateEffect(e:GetHandler())
-		e2:SetType(EFFECT_TYPE_SINGLE)
-		e2:SetCode(EFFECT_UPDATE_LEVEL)
-		e2:SetValue(-1)
-		e2:SetReset(RESET_EVENT+0x1fe0000)
-		tc:RegisterEffect(e2)
+	if tc:IsFaceup() and tc:IsRelateToEffect(e) then
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+		e1:SetCode(EFFECT_UPDATE_LEVEL)
+		e1:SetReset(RESET_EVENT+0x1fe0000)
+		if e:GetLabel()==0 then
+			e1:SetValue(1)
+		else e1:SetValue(-1) end
+		tc:RegisterEffect(e1)
 	end
 end

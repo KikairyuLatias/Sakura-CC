@@ -74,12 +74,13 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		end
 	end
 end
+
 --perma increase
 function s.filter(c)
 	return c:IsSetCard(0x439) and c:IsFaceup()
 end
 function s.lvfilter(c)
-	return c:IsFaceup() and c:IsSetCard(0x439) and c:GetLevel()>0
+	return c:IsFaceup() and c:IsSetCard(0x439) and c:HasLevel()
 end
 function s.target2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,0,1,nil) end

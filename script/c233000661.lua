@@ -58,18 +58,18 @@ end
 
 --send
 function s.cfilter(c)
-	return c:IsType(TYPE_MONSTER)
+	return Duel.IsExistingTarget(Card.IsAbleToGrave,0,LOCATION_MZONE,LOCATION_MZONE,1,c)
 end
 function s.descost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.CheckReleaseGroup(tp,s.cfilter,1,nil) end
-	local sg=Duel.SelectReleaseGroup(tp,s.cfilter,1,1,nil)
-	Duel.Release(sg,REASON_COST)
+	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.cfilter,1,false,nil,nil) end
+	local g=Duel.SelectReleaseGroupCost(tp,s.cfilter,1,1,false,nil,nil)
+	Duel.Release(g,REASON_COST)
 end
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsOnField() and chkc:IsControler(1-tp) end
-	if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_ONFIELD,1,nil) end
+	if chkc then return chkc:IsLocation(LOCATION_ONFIELD) and chkc:IsAbleToGrave() end
+	if chk==0 then return Duel.IsExistingTarget(Card.IsAbleToGrave,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
-	local g=Duel.SelectTarget(tp,aux.TRUE,tp,0,LOCATION_ONFIELD,1,1,nil)
+	local g=Duel.SelectTarget(tp,Card.IsAbleToGrave,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_TOGRAVE,g,1,0,0)
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)

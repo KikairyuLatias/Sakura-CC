@@ -20,7 +20,7 @@ function s.initial_effect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e1:SetProperty(EFFECT_FLAG_DELAY+EFFECT_FLAG_DAMAGE_STEP)
-	e1:SetCode(EVENT_LEAVE_FIELD)
+	e1:SetCode(EVENT_TO_GRAVE)
 	e1:SetCondition(s.sumcon)
 	e1:SetTarget(s.sumtg)
 	e1:SetOperation(s.sumop)
@@ -29,7 +29,7 @@ end
 
 --float stuff
 function s.sumcon(e,tp,eg,ep,ev,re,r,rp)
-	return e:GetHandler():IsPreviousPosition(POS_FACEUP) and e:GetHandler():IsPreviousLocation(LOCATION_ONFIELD)
+	return e:GetHandler():IsReason(REASON_DESTROY) and e:GetHandler():IsPreviousLocation(LOCATION_ONFIELD)
 end
 function s.sumtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -40,7 +40,7 @@ function s.sumop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 or not c:IsRelateToEffect(e) then return end
 	if Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP) then  
-		Duel.Damage(tp,1500,REASON_EFFECT)
+		Duel.Damage(tp,2000,REASON_EFFECT)
 	end
 end
 

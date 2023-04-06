@@ -57,9 +57,9 @@ function s.negfilter(c)
 	return c:IsSetCard(0x14af)
 end
 function s.negcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	local dg=Duel.GetMatchingGroup(s.desfilter,tp,0,LOCATION_ONFIELD,nil,e)
+	local dg=Duel.GetMatchingGroup(s.negfilter,tp,0,LOCATION_ONFIELD,nil,e)
 	if chk==0 then return Duel.CheckReleaseGroupCost(tp,s.negfilter,1,true,aux.ReleaseCheckTarget,e:GetHandler(),dg) end
-	local g=Duel.SelectReleaseGroupCost(tp,s.descfilter,1,1,true,aux.ReleaseCheckTarget,e:GetHandler(),dg)
+	local g=Duel.SelectReleaseGroupCost(tp,s.negfilter,1,1,true,aux.ReleaseCheckTarget,e:GetHandler(),dg)
 	Duel.Release(g,REASON_COST)
 end
 function s.negop(e,tp,eg,ep,ev,re,r,rp)

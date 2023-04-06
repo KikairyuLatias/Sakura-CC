@@ -28,7 +28,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
 	if chkc then return chkc:IsOnField() and chkc:IsType(TYPE_SPELL+TYPE_TRAP) and chkc~=c end
 	if chk==0 then return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x14af),tp,LOCATION_MZONE,0,1,nil) end
-	local g=Duel.GetMatchingGroup(aux.FilterFaceupFunction(Card.IsSetCard,0x14af),tp,LOCATION_MZONE,0,nil)
+	local g=Duel.GetMatchingGroup(aux.FaceupFilter(Card.IsSetCard,0x14af),tp,LOCATION_MZONE,0,nil)
 	local ct=g:GetClassCount(Card.GetCode)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
 	local sg=Duel.SelectTarget(tp,Card.IsType,TYPE_SPELL+TYPE_TRAP,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,1,ct,c)

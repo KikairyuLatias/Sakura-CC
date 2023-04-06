@@ -132,7 +132,7 @@ end
 function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	if not c:IsRelateToEffect(e) then return end
-	local g=Duel.GetMatchingGroup(aux.disfilter3,tp,0,LOCATION_ONFIELD,nil)
+	local g=Duel.GetMatchingGroup(Card.IsNegatable,tp,0,LOCATION_ONFIELD,nil)
 	for tc in aux.Next(g) do
 		Duel.NegateRelatedChain(tc,RESET_TURN_SET)
 		local e1=Effect.CreateEffect(c)

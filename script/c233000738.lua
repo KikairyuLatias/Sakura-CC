@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e2:SetRange(LOCATION_GRAVE)
 	e2:SetCode(EVENT_FREE_CHAIN)
 	e2:SetCountLimit(1,id)
-	e2:SetCondition(aux.exccon)
+	e2:SetCondition(s.negcon)
 	e2:SetCost(aux.bfgcost)
 	e2:SetTarget(s.distg)
 	e2:SetOperation(s.disop)
@@ -41,7 +41,7 @@ end
 
 --negate
 function s.negcon(e,tp,eg,ep,ev,re,r,rp)
-	return aux.exccon(e) and Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x640),tp,LOCATION_ONFIELD,0,1,nil)
+	return aux.exccon(e) and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x640),tp,LOCATION_ONFIELD,0,1,nil)
 end
 function s.dfilter(c)
 	return c:IsFaceup()

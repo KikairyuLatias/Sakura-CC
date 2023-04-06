@@ -76,10 +76,12 @@ function s.op2(tc,c,def)
 	e2:SetValue(-def)
 	tc:RegisterEffect(e2)
 end
+
 --protect
 function s.indtg(e,c)
 	return e:GetHandler():GetLinkedGroup():IsContains(c)
 end
+
 --negate
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
 	return not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) and Duel.IsChainNegatable(ev) and e:GetHandler():GetLinkedGroupCount()>0
@@ -87,14 +89,14 @@ end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
 	Duel.SetOperationInfo(0,CATEGORY_NEGATE,eg,1,0,0)
-	if re:GetHandler():IsRemovable() and re:GetHandler():IsRelateToEffect(re) then
+	if re:GetHandler():IsAbleToRemove() and re:GetHandler():IsRelateToEffect(re) then
 		Duel.SetOperationInfo(0,CATEGORY_REMOVE,eg,1,0,0)
 	end
 end
 function s.disop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateActivation(ev)
 	if re:GetHandler():IsRelateToEffect(re) then
-		Duel.Remove(eg,REASON_EFFECT)
+		Duel.SendtoDeck(eg,nil,2,REASON_EFFECT)
 	end
 local e1=Effect.CreateEffect(e:GetHandler())
 	e1:SetType(EFFECT_TYPE_FIELD)

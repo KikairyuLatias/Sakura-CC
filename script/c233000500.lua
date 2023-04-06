@@ -72,12 +72,12 @@ end
 
 function s.tg2(e,tp,eg,ep,ev,re,r,rp,chk)
    if chkc then return false end
-	if chk==0 then return Duel.IsExistingtg(Card.IsAbleToRemove,tp,0,LOCATION_ONFIELD+LOCATION_GRAVE,1,nil) end
-	Duel.SetOperationInfo(0,CATEGORY_REMOVE,g1,g1:GetCount(),0,0)
+	if chk==0 then return Duel.IsExistingTarget(Card.IsAbleToRemove,tp,0,LOCATION_ONFIELD+LOCATION_GRAVE,1,nil) end
+	Duel.SetOperationInfo(0,CATEGORY_REMOVE,g,2,0,0)
 end
 function s.op2(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local tc=Duel.SelectMatchingCard(tp,Card.IsAbleToRemove,tp,0,LOCATION_ONFIELD+LOCATION_GRAVE,1,2,nil)
+	local tc=Duel.SelectMatchingCard(tp,Card.IsAbleToRemove,tp,0,LOCATION_ONFIELD+LOCATION_GRAVE,2,2,nil)
 	Duel.Remove(tc,POS_FACEDOWN,REASON_EFFECT)
 end
 

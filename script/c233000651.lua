@@ -39,7 +39,7 @@ function s.val(e,c)
 end
 --level mod
 function s.filter(c)
-	return c:IsFaceup() and c:GetLevel()>0 and not (c:IsType(TYPE_XYZ) or c:IsType(TYPE_LINK))
+	return c:IsFaceup() and c:HasLevel()
 end
 function s.lvtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,LOCATION_MZONE,1,nil) end
@@ -47,7 +47,7 @@ function s.lvtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	e:SetLabel(opt)
 end
 function s.lvop(e,tp,eg,ep,ev,re,r,rp)
-	local opt=e:GetLabel()
+	local opt=e:GetLabel(0)
 	local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_MZONE,LOCATION_MZONE,nil)
 	local tc=g:GetFirst()
 	while tc do
@@ -61,7 +61,7 @@ function s.lvop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.lvop2(e,tp,eg,ep,ev,re,r,rp)
-	local opt=e:GetLabel()
+	local opt=e:GetLabel(1)
 	local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_MZONE,0,nil)
 	local tc=g:GetFirst()
 	while tc do

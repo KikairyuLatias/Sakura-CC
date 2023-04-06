@@ -25,41 +25,39 @@ function s.initial_effect(c)
 	e3:SetOperation(s.desop)
 	c:RegisterEffect(e3)
 end
+
 --special summon banished
 function s.filter(c,e,tp)
-	return c:IsFaceup() and c:IsSetCard(0x7d0) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsSetCard(0x7d0) and c:IsType(TYPE_MONSTER) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
-function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_REMOVED) and chkc:IsControler(tp) and s.filter(chkc,e,tp) end
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingTarget(s.filter,tp,LOCATION_REMOVED,0,1,nil,e,tp) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectTarget(tp,s.filter,tp,LOCATION_REMOVED,0,1,1,nil,e,tp)
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,g,1,0,0)
+		and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_REMOVED,0,1,nil,e,tp) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_REMOVED)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	local tc=Duel.GetFirstTarget()
-	if c:IsRelateToEffect(e) and tc:IsRelateToEffect(e)
-		and Duel.SpecialSummonStep(tc,0,tp,tp,false,false,POS_FACEUP) then
-		c:SetCardTarget(tc)
-		e:SetLabelObject(tc)
-		c:CreateRelation(tc,RESET_EVENT+0x1fe0000)
-		tc:CreateRelation(c,RESET_EVENT+0x1fe0000)
-		Duel.SpecialSummonComplete()
+	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
+	local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_REMOVED,0,1,1,nil,e,tp)
+	if g:GetCount()>0 then
+		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
 end
 
 --banish to take out 2
 function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(aux.TRUE,tp,0,LOCATION_ONFIELD_LOCATION_HAND,1,nil) end
-	Duel.SetOperationInfo(0,CATEGORY_REMOVE,nil,0,2)
+	if chk==0 then return true end
+	local g=Duel.GetMatchingGroup(Card.IsAbleToRemove,tp,0,LOCATION_ONFIELD+LOCATION_HAND,nil)
+	if g:GetCount()>0 then
+	Duel.SetOperationInfo(0,CATEGORY_REMOVE,g,g:GetCount(),0,0)
+	end
 end
 function s.desop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local g=Duel.SelectMatchingCard(tp,aux.TRUE,tp,0,LOCATION_ONFIELD_LOCATION_HAND,0,2)
-	local tc=g:GetFirst()
-	if #g>0 then
-		Duel.Remove(tc,POS_FACEUP,REASON_EFFECT)
+	 Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
+	local g=Duel.GetMatchingGroup(Card.IsAbleToRemove,tp,0,LOCATION_ONFIELD+LOCATION_HAND,nil)
+	if g:GetCount()>0 then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
+		local sg=g:Select(tp,1,2,nil)
+		Duel.Remove(sg,POS_FACEUP,REASON_EFFECT)
 	end
 end

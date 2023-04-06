@@ -24,13 +24,11 @@ function s.initial_effect(c)
 end
 
 --ss
-function s.cfilter(c)
+function s.spconfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x14af)
 end
-function s.spcon(e,c)
-	if c==nil then return true end
-	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(s.cfilter,c:GetControler(),LOCATION_MZONE,0,1,nil)
+function s.spcon(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.IsExistingMatchingCard(s.spconfilter,tp,LOCATION_MZONE,0,1,nil)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
@@ -45,5 +43,5 @@ end
 
 --protection
 function s.indcon(e)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x14af),0,LOCATION_MZONE,LOCATION_MZONE,1,e:GetHandler())
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x14af),0,LOCATION_MZONE,LOCATION_MZONE,1,e:GetHandler())
 end

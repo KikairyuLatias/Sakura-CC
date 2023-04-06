@@ -53,34 +53,3 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Destroy(g,REASON_EFFECT)
 	end
 end
-function s.regop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if c:IsReason(REASON_COST) and re and re:IsActivated() and re:IsActiveType(TYPE_MONSTER)
-		and re:GetHandler():IsCode(CARD_ALBAZ) then
-		local e1=Effect.CreateEffect(c)
-		e1:SetDescription(aux.Stringid(id,1))
-		e1:SetType(EFFECT_TYPE_QUICK_O)
-		e1:SetCode(EVENT_FREE_CHAIN)
-		e1:SetRange(LOCATION_GRAVE)
-		e1:SetCountLimit(1,id)
-		e1:SetHintTiming(TIMING_END_PHASE)
-		e1:SetCondition(s.setcon)
-		e1:SetTarget(s.settg)
-		e1:SetOperation(s.setop)
-		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-		c:RegisterEffect(e1)
-	end
-end
-function s.setcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentPhase()==PHASE_END
-end
-function s.settg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return e:GetHandler():IsSSetable() end
-	Duel.SetOperationInfo(0,CATEGORY_LEAVE_GRAVE,e:GetHandler(),1,0,0)
-end
-function s.setop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	if c:IsRelateToEffect(e) and c:IsSSetable() then
-		Duel.SSet(tp,c)
-	end
-end

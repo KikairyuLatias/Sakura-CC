@@ -20,6 +20,7 @@ function s.initial_effect(c)
 	e2:SetCode(EVENT_CHAINING)
 	e2:SetCountLimit(1)
 	e2:SetRange(LOCATION_MZONE)
+	e2:SetCost(s.discost)
 	e2:SetCondition(s.discon)
 	e2:SetTarget(s.distg)
 	e2:SetOperation(s.disop)
@@ -88,6 +89,11 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
 
 --negation
+function s.discost(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
+	if chk==0 then return c:IsAbleToGraveAsCost() end
+	Duel.SendtoGrave(c,REASON_COST)
+end
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
 	return not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) and Duel.IsChainNegatable(ev) and ep~=tp
 end
@@ -108,7 +114,7 @@ end
 --return from effect
 function s.sumtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	local c=e:GetHandler()
-	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and c:GetFlagEffect(id)>0
+	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and c:GetFlagEffect(id)==1
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,0,0)
 end

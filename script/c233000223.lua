@@ -15,9 +15,10 @@ function s.initial_effect(c)
 	e3:SetCountLimit(1,id)
 	c:RegisterEffect(e3)
 end
+
 --draw when you summon with me (add restriction)
 function s.drcon(e,tp,eg,ep,ev,re,r,rp)
-	return r==REASON_SYNCHRO and c:GetReasonCard():IsRace(RACE_DINOSAUR)
+	return r==REASON_SYNCHRO and re:GetHandler():IsRace(RACE_DRAGON)
 end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

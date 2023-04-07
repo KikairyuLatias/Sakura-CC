@@ -19,7 +19,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 	--lv change
 	local e4=Effect.CreateEffect(c)
-	e4:SetDescription(aux.Stringid(id,0))
+	e4:SetDescription(aux.Stringid(id,1))
 	e4:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e4:SetType(EFFECT_TYPE_IGNITION)
 	e4:SetRange(LOCATION_MZONE)
@@ -49,7 +49,7 @@ end
 
 --level mod
 function s.filter2(c)
-	return c:IsFaceup() and not c:IsType(TYPE_XYZ+TYPE_LINK)
+	return c:IsFaceup() and c:HasLevel()
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and s.filter2(chkc) end

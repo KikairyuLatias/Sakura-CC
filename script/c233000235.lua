@@ -3,7 +3,6 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e1:SetCode(EVENT_FREE_CHAIN)
@@ -11,33 +10,29 @@ function s.initial_effect(c)
 	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
 end
-function s.filter1(c,tp)
-	return c:IsLevelBelow(4) and c:IsSetCard(0x5f1)
-end
-function s.filter2(c,rac)
-	return c:IsLevelBelow(4) and c:IsSetCard(0x5f1)
+
+--change
+function s.filter(c,tp)
+	return c:IsSetCard(0x5f1) and c:IsLevelBelow(4)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsFaceup() end
-	if chk==0 then return Duel.IsExistingTarget(s.filter1,tp,LOCATION_MZONE,0,1,nil,tp) end
+	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and chkc:IsLevelAbove(1) end
+	if chk==0 then return Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,2,nil,1) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	local g1=Duel.SelectTarget(tp,s.filter1,tp,LOCATION_MZONE,0,1,1,nil,tp)
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	Duel.SelectTarget(tp,s.filter2,tp,LOCATION_MZONE,0,1,1,g1:GetFirst(),g1:GetFirst():GetRace())
+	Duel.SelectTarget(tp,Card.IsLevelAbove,tp,LOCATION_MZONE,0,2,2,nil,1)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetChainInfo(0,CHAININFO_TARGET_CARDS)
-	local tc1=g:GetFirst()
-	local tc2=g:GetNext()
-	if tc1:IsRelateToEffect(e) and tc1:IsFaceup() and tc2:IsRelateToEffect(e) and tc2:IsFaceup() then
-		local lv=tc1:GetLevel()+tc2:GetLevel()
+	local g=Duel.GetTargetCards(e):Filter(Card.IsFaceup,nil)
+	if #g<=1 then return end
+	local lv=g:GetSum(Card.GetLevel)
+	local tc=g:GetFirst()
+	while tc do
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_CHANGE_LEVEL_FINAL)
 		e1:SetValue(lv)
-		e1:SetReset(RESET_EVENT+0x1fe0000)
-		tc1:RegisterEffect(e1)
-		local e2=e1:Clone()
-		tc2:RegisterEffect(e2)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+		tc:RegisterEffect(e1)
+		tc=g:GetNext()
 	end
 end

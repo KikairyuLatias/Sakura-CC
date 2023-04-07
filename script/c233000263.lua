@@ -20,25 +20,20 @@ end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingTarget(s.cfilter,tp,LOCATION_MZONE,0,2,nil)
 end
-
-function s.filter(c,atk)
+function s.cfilter2(c,atk)
 	return c:IsSetCard(0x5f1) and c:IsFaceup() and c:GetAttack()<atk
 end
-function s.filter2(c,atk)
-	return c:IsSetCard(0x5f1) and c:IsFaceup() and c:GetAttack()<atk
-end
-
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	local ag=Duel.GetMatchingGroup(s.filter2,tp,LOCATION_MZONE,0,nil):GetMaxGroup(Card.GetAttack)
-	if chkc then return ag and #ag>0 and chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.filter(chkc,ag:GetFirst():GetAttack()) end
-	if chk==0 then return ag and #ag>0 and Duel.IsExistingTarget(s.filter,tp,LOCATION_MZONE,0,1,nil,ag:GetFirst():GetAttack()) end
+	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,0,nil):GetMaxGroup(Card.GetAttack)
+	if chkc then return g and #g>0 and chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.cfilter2(chkc,g:GetFirst():GetAttack()) end
+	if chk==0 then return g and #g>0 and Duel.IsExistingTarget(s.cfilter2,tp,LOCATION_MZONE,0,1,nil,g:GetFirst():GetAttack()) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil,ag:GetFirst():GetAttack())
+	Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil,g:GetFirst():GetAttack())
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	local ag=Duel.GetMatchingGroup(s.filter2,tp,LOCATION_MZONE,0,nil):GetMaxGroup(Card.GetAttack)
-	if #ag==0 then return end
-	local atk=ag:GetFirst():GetAttack()
+	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,LOCATION_MZONE,0,nil):GetMaxGroup(Card.GetAttack)
+	if #g==0 then return end
+	local atk=g:GetFirst():GetAttack()
 	local tc=Duel.GetFirstTarget()
 	if tc and tc:IsRelateToEffect(e) and tc:IsFaceup() and tc:GetAttack()<atk then
 		local e1=Effect.CreateEffect(e:GetHandler())

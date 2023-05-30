@@ -40,6 +40,9 @@ end
 function s.contactop(g)
 	Duel.Release(g,REASON_COST+REASON_MATERIAL)
 end
+function s.splimit(e,se,sp,st)
+	return e:GetHandler():GetLocation()~=LOCATION_EXTRA
+end
 
 --activate field spell
 function s.fieldfilter(c,tp)

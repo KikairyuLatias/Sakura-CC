@@ -50,7 +50,7 @@ end
 
 --self destruct
 function s.descon(e)
-	return not Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x4ad),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
+	return not Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x4ad),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
 end
 
 --banish stuff

@@ -46,7 +46,7 @@ s.listed_series={0x5f3}
 function s.spcon(e,c)
 	if c==nil then return true end
 	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 and
-		Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(Card.IsSetCard,0x5f3),c:GetControler(),LOCATION_MZONE,0,2,nil)
+		Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x5f3),c:GetControler(),LOCATION_MZONE,0,2,nil)
 end
 
 --place
@@ -71,7 +71,7 @@ end
 
 --destroy
 function s.cfilter(c,tp)
-	return c:IsSetCard(0x5f3) and c:IsPreviousControler(tp) and c:IsPreviousLocation(LOCATION_ONFIELD)
+	return c:IsPreviousLocation(LOCATION_ONFIELD) and c:IsSetCard(0x5f3)
 end
 function s.descon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.cfilter,1,nil,tp)

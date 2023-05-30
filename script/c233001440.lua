@@ -80,9 +80,8 @@ end
 function s.negop(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.NegateActivation(ev) and re:IsHasType(EFFECT_TYPE_ACTIVATE) and re:GetHandler():IsRelateToEffect(re) then
 		Duel.Remove(eg,POS_FACEDOWN,REASON_EFFECT)
-	Duel.BreakEffect()
-	Duel.Damage(1-tp,800,REASON_EFFECT)
 	end
+	Duel.Damage(1-tp,800,REASON_EFFECT)
 end
 
 --i never say die

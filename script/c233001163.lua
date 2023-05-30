@@ -35,8 +35,28 @@ function s.initial_effect(c)
 	e5:SetTarget(s.target)
 	e5:SetOperation(s.activate)
 	c:RegisterEffect(e5)
+	--Your "Cherry Rabbit" monsters cannot be targeted by opponent's card effects
+	local e6=Effect.CreateEffect(c)
+	e6:SetType(EFFECT_TYPE_FIELD)
+	e6:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
+	e6:SetRange(LOCATION_FZONE)
+	e6:SetProperty(EFFECT_FLAG_IGNORE_IMMUNE)
+	e6:SetTargetRange(LOCATION_ONFIELD,0)
+	e6:SetTarget(s.tgtg)
+	e6:SetValue(aux.tgoval)
+	c:RegisterEffect(e6)
+	--Your "Cherry Rabbit" monsters cannot be destroyed by opponent's card effects
+	local e7=Effect.CreateEffect(c)
+	e7:SetType(EFFECT_TYPE_FIELD)
+	e7:SetCode(EFFECT_INDESTRUCTABLE_EFFECT)
+	e7:SetRange(LOCATION_FZONE)
+	e7:SetTargetRange(LOCATION_ONFIELD,0)
+	e7:SetTarget(s.tgtg)
+	e7:SetValue(aux.indoval)
+	c:RegisterEffect(e7)
 end
---Blazefur power up
+
+--cherry rabbit power up
 function s.tg(e,c)
 	return c:IsSetCard(0x7db) and c:IsType(TYPE_MONSTER)
 end
@@ -45,6 +65,10 @@ function s.filter(c)
 end
 function s.val(e,c)
 	return Duel.GetMatchingGroupCount(s.filter,c:GetControler(),LOCATION_MZONE,0,nil)*200
+end
+--cannot target/destroy
+function s.tgtg(e,c)
+	return c:IsFaceup() and c:IsType(TYPE_MONSTER) and c:IsSetCard(0x7db)
 end
 
 -- spsummon

@@ -39,7 +39,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local tc=g:GetFirst()
 	local op=0
 	if tc:GetLevel()==1 then op=Duel.SelectOption(tp,aux.Stringid(id,0))
-	else op=Duel.SelectOption(tp,aux.Stringid(id,1),aux.Stringid(id,2)) end
+	else op=Duel.SelectOption(tp,aux.Stringid(id,0),aux.Stringid(id,1)) end
 	e:SetLabel(op)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)

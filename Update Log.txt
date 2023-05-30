@@ -231,13 +231,17 @@ https://sites.google.com/view/sakuracarddesign/home
 - Scripting stuff on the backburner like I'm supposed to.
 - A few script changes for the stuff that should not be missing timing (yes, missing the timing is dumb)
 
-3/26/2023
+4/5/2023
 
 - Small updates in the CDB files (mostly stuff that shouldn't be Normal but are marked as such have been corrected)
 - Starry Snow Blossom Cupid's SS effect not hard OPT (probably got removed or I c/p'd off her previous forms that lacked them)
-
-4/5/2023
 - Fixing a bunch of scripts with outdated coding and whatnot (i.e. mostly Diver Deer, Pony, and the massive old archetypes that lack hard OPTs in places). I haven't corrected all of them yet, but they will be addressed in the next update (or right after this)
 - Picture updating
 - Addition of Snowstorm Rabbit (2023 rabbit arch). I haven't added them yet b/c no pics or cards; the code is there as a placeholder, but will not be scripted/added for some amount of time
 - Legacy support for various archetypes. (I probably should make an update list of new cards added each time, so easier for you to spot)
+
+5/29/2023
+
+- Snowstorm Rabbit coded and scripted; some pictures exist
+- Legacy support for several archetypes (i.e. Hazmat Animal / Diver.dek)
+- Clean up some old code in places (in accordance with EDOPro things). The code would've still worked, but would like to not have frequent error messages every time (I know it is annoying)

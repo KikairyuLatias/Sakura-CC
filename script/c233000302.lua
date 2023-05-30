@@ -62,11 +62,11 @@ end
 
 --promote up
 function s.relfilter(c,e,tp,ft)
-	return c:IsSetCard(0x5f4) and (ft>0 or c:IsInMainMZone(tp)) 
+	return c:IsSetCard(0x5f4) and c:HasLevel() and (ft>0 or c:IsInMainMZone(tp)) 
 	and Duel.IsExistingMatchingCard(s.spfilter,tp,LOCATION_DECK,0,1,nil,e,tp,c:GetLevel())
 end
 function s.spfilter(c,e,tp,lv)
-	return c:IsSetCard(0x5f4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and (c:GetLevel()<=lv+2 and c:GetLevel()>lv)
+	return c:IsSetCard(0x5f4) and c:HasLevel() and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and (c:GetLevel()<=lv+2 and c:GetLevel()>lv)
 end
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
 	local ft=Duel.GetLocationCount(tp,LOCATION_MZONE)
@@ -101,6 +101,7 @@ function s.operation2(e,tp,eg,ep,ev,re,r,rp)
 	e:GetHandler():RegisterFlagEffect(90000852,RESET_EVENT+0x1fe0000,0,1)
 	Duel.SendtoDeck(tc,nil,2,REASON_EFFECT)
 end
+
 --piercer
 function s.target(e,c)
 	return c:IsSetCard(0x5f4)

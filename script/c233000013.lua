@@ -86,6 +86,9 @@ end
 function s.contactfil(tp)
 	return Duel.GetReleaseGroup(tp)
 end
+function s.splimit(e,se,sp,st)
+	return e:GetHandler():GetLocation()~=LOCATION_EXTRA
+end
 function s.contactop(g)
 	Duel.Release(g,REASON_COST+REASON_MATERIAL)
 end

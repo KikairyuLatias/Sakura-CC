@@ -68,8 +68,11 @@ function s.initial_effect(c)
 end
 
 --negate opponent's stuff
-function s.discon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(Card.IsSetCard,tp,LOCATION_PZONE,0,1,e:GetHandler(),0x4c8)
+function s.disfilter(c)
+	return c:IsSetCard(0x4c8)
+end
+function s.discon(e)
+	return not Duel.IsExistingMatchingCard(s.disfilter,e:GetHandlerPlayer(),LOCATION_PZONE,0,1,e:GetHandler())
 end
 function s.distg(e,c)
 	return c:IsStatus(STATUS_SUMMON_TURN)

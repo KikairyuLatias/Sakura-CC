@@ -52,7 +52,7 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
 	local g=Duel.SelectMatchingCard(tp,s.desfilter,tp,0,LOCATION_ONFIELD,1,ct,nil)
 	if g:GetCount()>0 then
-		local ct2=Duel.SendtoDeck(g,nil,2,REASON_EFFECT)
+		local ct=Duel.SendtoDeck(g,nil,2,REASON_EFFECT)
 	end
 end
 

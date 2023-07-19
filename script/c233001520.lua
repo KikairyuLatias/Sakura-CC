@@ -81,12 +81,12 @@ end
 
 --forget about triggering
 s.listed_series={0xa34}
-function s.cfilter(c,tp)
+function s.cfilter2(c,tp)
 	return c:IsFaceup() and c:IsSetCard(0xa34) and c:IsControler(tp)
 end
 function s.actcon(e)
 	local tp=e:GetHandlerPlayer()
 	local a=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
-	return (a and s.cfilter(a,tp)) or (d and s.cfilter(d,tp))
+	return (a and s.cfilter2(a,tp)) or (d and s.cfilter2(d,tp))
 end

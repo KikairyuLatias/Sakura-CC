@@ -245,3 +245,10 @@ https://sites.google.com/view/sakuracarddesign/home
 - Snowstorm Rabbit coded and scripted; some pictures exist
 - Legacy support for several archetypes (i.e. Hazmat Animal / Diver.dek)
 - Clean up some old code in places (in accordance with EDOPro things). The code would've still worked, but would like to not have frequent error messages every time (I know it is annoying)
+
+7/16/2023
+
+- Update Snowstorm Rabbit with actual pics (about time!)
+- Fix some old code (still WIP, and will be dealt with in due time)
+- Legacy support for stuff
+- Move around some cards to fit better in the ID coding and other schemes. (Just ID changes and no actual changes to effects)

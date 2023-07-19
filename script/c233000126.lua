@@ -59,15 +59,15 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsPlayerCanSpecialSummonMonster(tp,233000131,0x4b0,TYPES_TOKEN+TYPE_TUNER,1000,1000,3,RACE_MACHINE,ATTRIBUTE_EARTH)
+	if chk==0 then return Duel.IsPlayerCanSpecialSummonMonster(tp,233000127,0x4b0,TYPES_TOKEN+TYPE_TUNER,1000,1000,3,RACE_MACHINE,ATTRIBUTE_EARTH)
 		and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 end
 	Duel.SetOperationInfo(0,CATEGORY_TOKEN,nil,1,tp,0)
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,0)
 end
 function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	if e:GetHandler():IsRelateToEffect(e) and Duel.GetLocationCount(tp,LOCATION_MZONE)>0 
-	and Duel.IsPlayerCanSpecialSummonMonster(tp,233000131,0x4b0,TYPES_TOKEN+TYPE_TUNER,1000,1000,3,RACE_MACHINE,ATTRIBUTE_EARTH) then
-		local token=Duel.CreateToken(tp,233000131)
+	and Duel.IsPlayerCanSpecialSummonMonster(tp,233000127,0x4b0,TYPES_TOKEN+TYPE_TUNER,1000,1000,3,RACE_MACHINE,ATTRIBUTE_EARTH) then
+		local token=Duel.CreateToken(tp,233000127)
 		Duel.SpecialSummon(token,0,tp,tp,false,false,POS_FACEUP)
 		local e1=Effect.CreateEffect(e:GetHandler())
 		e1:SetType(EFFECT_TYPE_SINGLE)

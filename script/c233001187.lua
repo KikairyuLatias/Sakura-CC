@@ -45,8 +45,9 @@ end
 s.listed_series={0x7e7}
 function s.spcon(e,c)
 	if c==nil then return true end
-	if Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)<=0 then return false end
-	return Duel.GetMatchingGroup(Card.IsSetCard,c:GetControler(),LOCATION_MZONE,0,nil,0x7e7):GetClassCount(Card.GetCode)>=2
+	local tp=c:GetControler()
+	return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
+		and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x7e7),tp,LOCATION_MZONE,0,2,nil)
 end
 
 --to deck
@@ -88,4 +89,7 @@ function s.limop2(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SetChainLimitTillChainEnd(s.chainlm)
 	end
 	e:GetHandler():ResetFlagEffect(id)
+end
+function s.chainlm(e,rp,tp)
+	return tp==rp
 end

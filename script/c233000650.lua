@@ -22,22 +22,22 @@ function s.initial_effect(c)
 	e4:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
 	e4:SetValue(s.matlimit)
 	c:RegisterEffect(e4)
-	--synchro level
+	--Can be treated as a Level 4 or 5 monster for the Synchro Summon of a "Pony" Synchro monster
 	local e5=Effect.CreateEffect(c)
 	e5:SetType(EFFECT_TYPE_SINGLE)
-	e5:SetCode(EFFECT_SYNCHRO_LEVEL)
-	e5:SetValue(s.slv)
+	e5:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e5:SetCode(EFFECT_SYNCHRO_MATERIAL_CUSTOM)
+	e5:SetRange(LOCATION_MZONE)
+	e5:SetOperation(s.synop)
 	c:RegisterEffect(e5)
 end
 
 --level mod
-function s.slv(e,c)
-	if c:IsSetCard(0x439) then
-		local lv=e:GetHandler():GetLevel()
-		return 4*65536+lv	
-	else
-		return 5*65536+lv 
-	end
+function s.synop(e,tg,ntg,sg,lv,sc,tp)
+	local c=e:GetHandler()
+	local sum=(sg-c):GetSum(Card.GetSynchroLevel,sc)
+	if sum+c:GetSynchroLevel(sc)==lv then return true,true end
+	return sc:IsSetCard(0x439) and ((sum+4==lv) or (sum+5==lv)),true
 end
 
 --material

@@ -4,7 +4,7 @@ function s.initial_effect(c)
 	--link summon
 	Link.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x43a),2)
 	c:EnableReviveLimit()
-	--cannot be targeted by opponent card effects
+	--cannot be destroyed by opponent card effects
 	local e0=Effect.CreateEffect(c)
 	e0:SetType(EFFECT_TYPE_SINGLE)
 	e0:SetProperty(EFFECT_FLAG_SINGLE_RANGE)

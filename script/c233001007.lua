@@ -12,10 +12,10 @@ function s.initial_effect(c)
 	--synchro level
 	local e2=Effect.CreateEffect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_SYNCHRO_LEVEL)
 	e2:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
+	e2:SetCode(EFFECT_SYNCHRO_MATERIAL_CUSTOM)
 	e2:SetRange(LOCATION_MZONE)
-	e2:SetValue(s.slv)
+	e2:SetOperation(s.synop)
 	c:RegisterEffect(e2)
 end
 
@@ -31,11 +31,9 @@ function s.spcon(e,c)
 end
 
 --change level to 2 or 4
-function s.slv(e,c)
-	if c:IsSetCard(0x5f7) or c:IsSetCard(0x5f8) then
-		local lv=e:GetHandler():GetLevel()
-		return 2*65536+lv and 4*65536+lv
-	else
-		return e:GetHandler():GetLevel()
-	end
+function s.synop(e,tg,ntg,sg,lv,sc,tp)
+	local c=e:GetHandler()
+	local sum=(sg-c):GetSum(Card.GetSynchroLevel,sc)
+	if sum+c:GetSynchroLevel(sc)==lv then return true,true end
+	return (sc:IsSetCard(0x5f7) or sc:IsSetCard(0x5f8)) and ((sum+2==lv) or (sum+4==lv)),true
 end

@@ -4,6 +4,8 @@ function s.initial_effect(c)
 	--synchro summon
 	Synchro.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x5f3),1,1,Synchro.NonTunerEx(Card.IsSetCard,0x5f3),2,99)
 	c:EnableReviveLimit()
+	--pendulum summon
+	Pendulum.AddProcedure(c)
 	--protection
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)

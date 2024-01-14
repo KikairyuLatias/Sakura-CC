@@ -15,7 +15,7 @@ May need to correct some old code in case they call specific card names that wer
 Merry Christmas everyone!
 
 Modified the code for Dreamlight Speedstar and Pony Apprentice so they can render 2 different Levels if used to Synchro Summon.
-Added coding for Baofeng Dragon - Honghua (will do rest later)
+Added coding for Baofeng Dragon Honghua (will do rest later)
 Added a new code to the spreadsheet (Flash Blossom Reindeer / 1224 / 4c8), though I will get to coding them after Baofeng.
 
 1/6/2020
@@ -72,14 +72,14 @@ Other changes
 4/4/2020
 
 MASSIVE UPDATE
-- Moved ZP Delta to the 100-range behind ZPD/Magical Girl
-- Diver Deer range expanded to 544
-- Diver Equine range expanded to 20 cards (up to 564)
-- Hazmat Animal expanded to 20 cards (up to 584)
-- Remainder will be left as blanks
-- Rush Duel imports moved to Generic 1
-- 800 range will be for overflow archetypes
-- "Component Folder" inside "expansions" has the individual set files if you would like them.
+Moved ZP Delta to the 100-range behind ZPD/Magical Girl
+Diver Deer range expanded to 544
+Diver Equine range expanded to 20 cards (up to 564)
+Hazmat Animal expanded to 20 cards (up to 584)
+Remainder will be left as blanks
+Rush Duel imports moved to Generic 1
+800 range will be for overflow archetypes
+"Component Folder" inside "expansions" has the individual set files if you would like them.
 
 4/16/2020
 
@@ -108,147 +108,158 @@ Replacing some images for other stuff for updating/balancing
 
 7/22/2020
 
-- Updated Diver Deer stuff with new effects, some cards and fixes
-- Moved Diver Deer range to 500-549, Diver Equine to 550-569, Hazmat Animal to 570-589
-- A few of the Pony support (that are not actual) are revamped to be generic Beast support and moved accordingly.
-- Additional art for Enrique added and slight update to effect
-- Modified Scubapro a bit with summon requirements
-- Some code fixes
+Updated Diver Deer stuff with new effects, some cards and fixes
+Moved Diver Deer range to 500-549, Diver Equine to 550-569, Hazmat Animal to 570-589
+A few of the Pony support (that are not actual) are revamped to be generic Beast support and moved accordingly.
+Additional art for Enrique added and slight update to effect
+Modified Scubapro a bit with summon requirements
+Some code fixes
 
 You can also find a full list of cards and stuff on my new site:
 https://sites.google.com/view/sakuracarddesign/home
 
 8/18/2020
 
-- Minor code fixing (Pendulums)
-- Some images for Cherry Rabbit
-- Some images for other cards (Hieratics custom)
-- Moved Shira's stuff to the 800 range and made it generic Beast supports (with new cards)
-- Other changes
+Minor code fixing (Pendulums)
+Some images for Cherry Rabbit
+Some images for other cards (Hieratics custom)
+Moved Shira's stuff to the 800 range and made it generic Beast supports (with new cards)
+Other changes
 
 11/29/2020
 
-- Fixing scripts for several cards (e.g. Diver Deer Master Popohau's hand banish/burn)
-- Rush Duel cards are separated into their own category
-- Actual images for stuff instead of fillers
-- Addition of Skyfurry and Erpeta Metensar
-- New arts for some cards.
+Fixing scripts for several cards (e.g. Diver Deer Master Popohau's hand banish/burn)
+Rush Duel cards are separated into their own category
+Actual images for stuff instead of fillers
+Addition of Skyfurry and Erpeta Metensar
+New arts for some cards.
 
 02/27/2021
 
-- Correcting some scripts
-- Added legacy support for various archetypes
-- Addition of Radiant Dragon Reindeer in the 2330014xx range
+Correcting some scripts
+Added legacy support for various archetypes
+Addition of Radiant Dragon Reindeer in the 2330014xx range
 
 07/05/2021
 
-- Updated images
-- Addition of new cards (including "Resistance Avatar" archetype)
-- Modified some scripts
+Updated images
+Addition of new cards (including "Resistance Avatar" archetype)
+Modified some scripts
 
 01/17/2022
 
-- Addition of various cards
-- Updating of some scripts and pictures
+Addition of various cards
+Updating of some scripts and pictures
 
 05/03/2022
 
-- Updated images
-- Addition of cards
-- Modification of scripts (still WIP in a way)
+Updated images
+Addition of cards
+Modification of scripts (still WIP in a way)
 
 05/15/2022
 
-- Reconfigured GitHub to work with repositories. Please copy the below into your config file to allow downloads directly from GitHub instead of having to manually do it.
-- Updated images/scripts/cards
-- Cards added or modified according to scripting limitations, and probably general balance revisions later on.
+Reconfigured GitHub to work with repositories. Please copy the below into your config file to allow downloads directly from GitHub instead of having to manually do it.
+Updated images/scripts/cards
+Cards added or modified according to scripting limitations, and probably general balance revisions later on.
 
 05/30/2022
 
-- Updates to TRON Zoo code
-- Addition of A.G.M.
-- Rider Deer new artwork and some renovations for the Level 6 and 7 monsters re: promotion effects
-- Various fixes
+Updates to TRON Zoo code
+Addition of A.G.M.
+Rider Deer new artwork and some renovations for the Level 6 and 7 monsters re: promotion effects
+Various fixes
 
 06/04/2022
 
-- Addition of Flash Resistance Reindeer
-- Other random changes to codes and stuff for improvement
+Addition of Flash Resistance Reindeer
+Other random changes to codes and stuff for improvement
 
 (Still waiting for EDOPro to upload Advanced CB Amethyst's code so I can take that code for the direct attack members with halving damage stuff)
 
 06/11/2022
 
-- Update of code for cards that allow entire archetype members to attack directly (i.e. Advanced CB Amethyst's code)
-- Addition of new Dreamlight, Magical Girl stuff
-- Some other QoL things (including misc update of coding)
+Update of code for cards that allow entire archetype members to attack directly (i.e. Advanced CB Amethyst's code)
+Addition of new Dreamlight, Magical Girl stuff
+Some other QoL things (including misc update of coding)
 
 08/02/2022
 
-- Addition of Diver Vulpine and Aura Beast
-- Other misc updates
+Addition of Diver Vulpine and Aura Beast
+Other misc updates
 
 08/21/2022
 
-- Added pics/script for remaining Sunbeast stuff (Ritual monster/spell, and the new Trap)
-- Few script adjustments for existing cards, so they do what the text says (for most part)
-- Image updates with text changes
-- Addition of Numbers 114 and C171
-- Some balancing/PSCT fixes so cards are a bit easier to work with/against, and actually doable. (i.e. Certain effects are not workable with EDOPro's current core)
+Added pics/script for remaining Sunbeast stuff (Ritual monster/spell, and the new Trap)
+Few script adjustments for existing cards, so they do what the text says (for most part)
+Image updates with text changes
+Addition of Numbers 114 and C171
+Some balancing/PSCT fixes so cards are a bit easier to work with/against, and actually doable. (i.e. Certain effects are not workable with EDOPro's current core)
 
 10/10/2022
 
-- Script fixes
-- Added new cards for Diver Vulpine, Snowstorm Reindeer and a few other archetypes.
+Script fixes
+Added new cards for Diver Vulpine, Snowstorm Reindeer and a few other archetypes.
 
 11/15/2022
 
-- Script/card fixes
-- Addition of newer cards for certain archetypes
-- "Bunny" archetype got pictures updated to be uniform in template; also some cards have newer art period.
+Script/card fixes
+Addition of newer cards for certain archetypes
+"Bunny" archetype got pictures updated to be uniform in template; also some cards have newer art period.
 
 1/2/2023
 
-- Addition of "Starry Snow Blossom Reindeer" (AKA "Rudolph 2022")
-- Scripting fixes for a few cards
-- Standardization of card proxies and other stuff
+Addition of "Starry Snow Blossom Reindeer" (AKA "Rudolph 2022")
+Scripting fixes for a few cards
+Standardization of card proxies and other stuff
 
 1/3/2023
 
-- Legacy support for "Baofeng Dragon" and "Techzodiac"
-- Grammar checking for stuff
+Legacy support for "Baofeng Dragon" and "Techzodiac"
+Grammar checking for stuff
 
 2/5/2023
 
-- Legacy support for "Bunny" (actually retooling some old cards)
-- Scripting some back burner stuff
-- Addition of "Starry Snow Blossom Reindeer"
-- Other misc script fixes
+Legacy support for "Bunny" (actually retooling some old cards)
+Scripting some back burner stuff
+Addition of "Starry Snow Blossom Reindeer"
+Other misc script fixes
 
 3/4/2023
 
-- Addition of new cards (mostly Legacy and stuff related to Diver.dek)
-- Scripting stuff on the backburner like I'm supposed to.
-- A few script changes for the stuff that should not be missing timing (yes, missing the timing is dumb)
+Addition of new cards (mostly Legacy and stuff related to Diver.dek)
+Scripting stuff on the backburner like I'm supposed to.
+A few script changes for the stuff that should not be missing timing (yes, missing the timing is dumb)
 
 4/5/2023
 
-- Small updates in the CDB files (mostly stuff that shouldn't be Normal but are marked as such have been corrected)
-- Starry Snow Blossom Cupid's SS effect not hard OPT (probably got removed or I c/p'd off her previous forms that lacked them)
-- Fixing a bunch of scripts with outdated coding and whatnot (i.e. mostly Diver Deer, Pony, and the massive old archetypes that lack hard OPTs in places). I haven't corrected all of them yet, but they will be addressed in the next update (or right after this)
-- Picture updating
-- Addition of Snowstorm Rabbit (2023 rabbit arch). I haven't added them yet b/c no pics or cards; the code is there as a placeholder, but will not be scripted/added for some amount of time
-- Legacy support for various archetypes. (I probably should make an update list of new cards added each time, so easier for you to spot)
+Small updates in the CDB files (mostly stuff that shouldn't be Normal but are marked as such have been corrected)
+Starry Snow Blossom Cupid's SS effect not hard OPT (probably got removed or I c/p'd off her previous forms that lacked them)
+Fixing a bunch of scripts with outdated coding and whatnot (i.e. mostly Diver Deer, Pony, and the massive old archetypes that lack hard OPTs in places). I haven't corrected all of them yet, but they will be addressed in the next update (or right after this)
+Picture updating
+Addition of Snowstorm Rabbit (2023 rabbit arch). I haven't added them yet b/c no pics or cards; the code is there as a placeholder, but will not be scripted/added for some amount of time
+Legacy support for various archetypes. (I probably should make an update list of new cards added each time, so easier for you to spot)
 
 5/29/2023
 
-- Snowstorm Rabbit coded and scripted; some pictures exist
-- Legacy support for several archetypes (i.e. Hazmat Animal / Diver.dek)
-- Clean up some old code in places (in accordance with EDOPro things). The code would've still worked, but would like to not have frequent error messages every time (I know it is annoying)
+Snowstorm Rabbit coded and scripted; some pictures exist
+Legacy support for several archetypes (i.e. Hazmat Animal / Diver.dek)
+Clean up some old code in places (in accordance with EDOPro things). The code would've still worked, but would like to not have frequent error messages every time (I know it is annoying)
 
 7/16/2023
 
-- Update Snowstorm Rabbit with actual pics (about time!)
-- Fix some old code (still WIP, and will be dealt with in due time)
-- Legacy support for stuff
-- Move around some cards to fit better in the ID coding and other schemes. (Just ID changes and no actual changes to effects)
+Update Snowstorm Rabbit with actual pics (about time!)
+Fix some old code (still WIP, and will be dealt with in due time)
+Legacy support for stuff
+Move around some cards to fit better in the ID coding and other schemes. (Just ID changes and no actual changes to effects)
+
+11/1/2023
+
+Fix some old code (basically, fix some of the activation triggers for the archetype Counter Traps that negate Summons and other stuff)
+More Snowstorm Rabbit things
+Other misc fixes
+
+1/13/2024
+
+Scripting changes for a variety of cards (mostly the multiple Synchro Level things and whatever else, now that there is precedent for it in existing cards)
+Still need to script Prongstorm (pics are here, but file is removed; I have opted not to include Prongstorm's CDB in this update until cards have been scripted)

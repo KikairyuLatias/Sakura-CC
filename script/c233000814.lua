@@ -26,22 +26,19 @@ function s.initial_effect(c)
 end
 
 --banish
-function s.filter(c)
-	return c:IsFaceup() and c:IsSetCard(0x44af)
-end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,0,1,nil) and ep~=tp
-		and Duel.GetCurrentChain()==0
+	return Duel.GetCurrentChain(true)==0 and eg:IsExists(Card.IsSummonPlayer,1,nil,1-tp)
+		and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x44af),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return eg:IsExists(s.filter,1,nil,1-tp) end
-	local g=eg:Filter(s.filter,nil,1-tp)
-	Duel.SetOperationInfo(0,CATEGORY_DISABLE_SUMMON,eg,eg:GetCount(),0,0)
-	Duel.SetOperationInfo(0,CATEGORY_REMOVE,eg,eg:GetCount(),0,0)
+	if chk==0 then return true end
+	Duel.SetOperationInfo(0,CATEGORY_DISABLE_SUMMON,eg,#eg,0,0)
+	Duel.SetOperationInfo(0,CATEGORY_REMOVE,eg,#eg,0,0)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	Duel.NegateSummon(eg)
-	Duel.Remove(eg,POS_FACEDOWN,REASON_EFFECT)
+	local g=eg:Filter(Card.IsSummonPlayer,nil,1-tp)
+	Duel.NegateSummon(g)
+	Duel.Remove(g,POS_FACEDOWN,REASON_EFFECT)
 end
 
 --handtrap cond

@@ -49,8 +49,10 @@ function s.disfilter(c)
 	return c:IsSetCard(0x640) and c:IsType(TYPE_MONSTER) and (c:IsDiscardable() or c:IsAbleToGrave())
 end
 function s.discost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.disfilter,tp,LOCATION_HAND+LOCATION_MZONE,0,1,nil) end
-	Duel.DiscardHand(tp,s.disfilter,1,1,REASON_COST+REASON_DISCARD+REASON_RELEASE,nil)
+	if chk==0 then return Duel.IsExistingMatchingCard(s.dfilter,tp,LOCATION_HAND+LOCATION_MZONE,0,1,nil) end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
+	local g=Duel.SelectMatchingCard(tp,s.dfilter,tp,LOCATION_HAND+LOCATION_MZONE,0,1,1,nil)
+	Duel.SendtoGrave(g,REASON_COST)
 end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

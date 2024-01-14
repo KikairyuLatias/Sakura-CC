@@ -53,7 +53,7 @@ function s.ctcon(e,tp,eg,ep,ev,re,r,rp)
 	return c:IsLocation(LOCATION_MZONE) and c:IsPreviousLocation(LOCATION_MZONE)
 end
 function s.ctfilter(c)
-	return c:IsFaceup() and c:IsInMainMZone() and c:IsControlerCanBeChanged()
+	return c:IsFaceup() and c:IsControlerCanBeChanged()
 end
 function s.cttg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(1-tp) and s.ctfilter(chkc) end

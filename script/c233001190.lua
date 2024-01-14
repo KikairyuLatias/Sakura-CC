@@ -95,7 +95,7 @@ end
 
 --return
 function s.filter1(c)
-	return c:IsSetCard(0xa34) and c:IsAbleToDeck()
+	return c:IsSetCard(0x7e7) and c:IsAbleToDeck()
 end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_GRAVE+LOCATION_REMOVED) and chkc:IsControler(tp) and s.filter1(chkc) end

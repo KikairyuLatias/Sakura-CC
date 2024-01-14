@@ -67,6 +67,11 @@ end
 function s.indval(e,re,tp)
 	return e:GetHandler():GetControler()~=tp
 end
+function s.limop(e,tp,eg,ep,ev,re,r,rp)
+	if eg:IsExists(Card.IsSummonPlayer,1,nil,tp) then
+		Duel.SetChainLimitTillChainEnd(function(_,rp,tp) return rp==tp end)
+	end
+end
 
 --do not even try
 function s.limfilter(c,tp)
@@ -76,20 +81,9 @@ function s.limcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.limfilter,1,nil,tp)
 end
 function s.limop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetCurrentChain()==0 then
-		Duel.SetChainLimitTillChainEnd(s.chainlm)
-	elseif Duel.GetCurrentChain()==1 then
-		e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
+	if eg:IsExists(Card.IsSummonPlayer,1,nil,tp) then
+		Duel.SetChainLimitTillChainEnd(function(_,rp,tp) return rp==tp end)
 	end
-end
-function s.limop2(e,tp,eg,ep,ev,re,r,rp)
-	if e:GetHandler():GetOverlayCount()>0 and e:GetHandler():GetFlagEffect(id)~=0 then
-		Duel.SetChainLimitTillChainEnd(s.chainlm)
-	end
-	e:GetHandler():ResetFlagEffect(id)
-end
-function s.chainlm(e,rp,tp)
-	return tp==rp
 end
 
 --retrieve majespecter stuff

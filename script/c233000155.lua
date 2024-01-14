@@ -32,12 +32,6 @@ function s.initial_effect(c)
 	local e5=e3:Clone()
 	e5:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
 	c:RegisterEffect(e5)
-	local e6=Effect.CreateEffect(c)
-	e6:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e6:SetRange(LOCATION_GRAVE)
-	e6:SetCode(EVENT_CHAIN_END)
-	e6:SetOperation(s.limop2)
-	c:RegisterEffect(e6)
 	--Change pendulum scales
 	local e7=Effect.CreateEffect(c)
 	e7:SetDescription(aux.Stringid(id,0))
@@ -71,20 +65,9 @@ function s.limcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.limfilter,1,nil,tp)
 end
 function s.limop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetCurrentChain()==0 then
-		Duel.SetChainLimitTillChainEnd(s.chainlm)
-	elseif Duel.GetCurrentChain()==1 then
-		e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
+	if eg:IsExists(Card.IsSummonPlayer,1,nil,tp) then
+		Duel.SetChainLimitTillChainEnd(function(_,rp,tp) return rp==tp end)
 	end
-end
-function s.limop2(e,tp,eg,ep,ev,re,r,rp)
-	if e:GetHandler():GetOverlayCount()>0 and e:GetHandler():GetFlagEffect(id)~=0 then
-		Duel.SetChainLimitTillChainEnd(s.chainlm)
-	end
-	e:GetHandler():ResetFlagEffect(id)
-end
-function s.chainlm(e,rp,tp)
-	return tp==rp
 end
 
 --pendulum up

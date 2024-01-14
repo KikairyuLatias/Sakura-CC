@@ -46,16 +46,16 @@ s.listed_series={0x14af}
 
 --summon conditions
 function s.sprfilter(c)
-	return c:IsFaceup() and c:IsAbleToGraveAsCost() and c:HasLevel()
+	return c:IsFaceup() and c:IsAbleToGraveAsCost() and c:HasLevel() and c:IsSetCard(0x14af)
 end
 function s.sprfilter1(c,tp,g,sc)
 	local lv=c:GetLevel()
 	local g=Duel.GetMatchingGroup(s.sprfilter,tp,LOCATION_MZONE,0,nil)
-	return c:IsType(TYPE_TUNER) and c:IsLevelAbove(8) and c:IsSetCard(0x14af) and g:IsExists(s.sprfilter2,1,c,tp,c,sc)
+	return c:IsType(TYPE_TUNER) and c:IsLevelAbove(8) and g:IsExists(s.sprfilter2,1,c,tp,c,sc)
 end
 function s.sprfilter2(c,tp,mc,sc)
 	local sg=Group.FromCards(c,mc)
-	return (math.abs((c:GetLevel()-mc:GetLevel()))==7) and c:IsSetCard(0x14af) and not c:IsType(TYPE_TUNER) and Duel.GetLocationCountFromEx(tp,tp,sg,sc)>0
+	return (math.abs((c:GetLevel()-mc:GetLevel()))==7) and not c:IsType(TYPE_TUNER) and Duel.GetLocationCountFromEx(tp,tp,sg,sc)>0
 end
 function s.sprcon(e,c)
 	if c==nil then return true end

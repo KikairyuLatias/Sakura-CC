@@ -3,12 +3,20 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--pendulum summon
 	Pendulum.AddProcedure(c)
-	--monster prevent chaining (fix this)
+	--protection
 	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_FIELD)
-	e1:SetRange(LOCATION_PZONE)
-	e1:SetOperation(s.crop)
+	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e1:SetCode(EVENT_SUMMON_SUCCESS)
+	e1:SetRange(LOCATION_GRAVE)
+	e1:SetCondition(s.limcon)
+	e1:SetOperation(s.limop)
 	c:RegisterEffect(e1)
+	local e1a=e1:Clone()
+	e1a:SetCode(EVENT_SPSUMMON_SUCCESS)
+	c:RegisterEffect(e1a)
+	local e1b=e1:Clone()
+	e1b:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
+	c:RegisterEffect(e1b)
 	--promotion thing
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,0))
@@ -47,42 +55,16 @@ function s.initial_effect(c)
 end
 
 --stuff
-function s.crop(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	--activate limit
-	local e1=Effect.CreateEffect(c)
-	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e1:SetCode(EVENT_SUMMON_SUCCESS)
-	e1:SetOperation(s.cedop)
-	Duel.RegisterEffect(e1,tp)
-	local e2=e1:Clone()
-	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
-	Duel.RegisterEffect(e2,tp)
-	local e3=e1:Clone()
-	e3:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
-	Duel.RegisterEffect(e3,tp)
-	local e4=Effect.CreateEffect(c)
-	e4:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e4:SetCode(EVENT_CHAIN_END)
-	e4:SetOperation(s.cedop2)
-	e4:SetReset(RESET_PHASE+PHASE_END)
-	Duel.RegisterEffect(e4,tp)
+function s.limfilter(c,tp)
+	return c:GetSummonPlayer()==tp and c:IsSetCard(0x5f4)
 end
-
-s.cfilter=aux.FaceupFilter(Card.IsSetCard,0x5f4)
-
-function s.cedop(e,tp,eg,ep,ev,re,r,rp)
-	if eg:IsExists(s.cfilter,1,nil) then
-		Duel.SetChainLimitTillChainEnd(s.chlimit)
+function s.limcon(e,tp,eg,ep,ev,re,r,rp)
+	return eg:IsExists(s.limfilter,1,nil,tp)
+end
+function s.limop(e,tp,eg,ep,ev,re,r,rp)
+	if eg:IsExists(Card.IsSummonPlayer,1,nil,tp) then
+		Duel.SetChainLimitTillChainEnd(function(_,rp,tp) return rp==tp end)
 	end
-end
-function s.cedop2(e,tp,eg,ep,ev,re,r,rp)
-	if eg:IsExists(s.cfilter,1,nil) and Duel.CheckEvent(EVENT_FLIP_SUMMON_SUCCESS) or Duel.CheckEvent(EVENT_SPSUMMON_SUCCESS) then
-		Duel.SetChainLimitTillChainEnd(s.chlimit)
-	end
-end
-function s.chlimit(re,rp,tp)
-	return rp==tp
 end
 
 --promote up

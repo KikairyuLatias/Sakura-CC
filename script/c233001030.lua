@@ -42,7 +42,7 @@ end
 
 --negate
 function s.cfilter(c)
-	return c:IsFaceup() and c:IsLevelAbove(7) and c:IsSetCard(0x5f7) or c:IsSetCard(0x5f8)
+	return c:IsFaceup() and c:IsLevelAbove(7) and (c:IsSetCard(0x5f7) or c:IsSetCard(0x5f8))
 end
 function s.condition1(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)

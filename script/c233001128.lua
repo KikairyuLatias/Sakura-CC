@@ -6,9 +6,9 @@ function s.initial_effect(c)
 	e1:SetCategory(CATEGORY_DISABLE_SUMMON+CATEGORY_DESTROY)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_SUMMON)
-	e1:SetCondition(s.condition1)
-	e1:SetTarget(s.target1)
-	e1:SetOperation(s.activate1)
+	e1:SetCondition(s.condition)
+	e1:SetTarget(s.target)
+	e1:SetOperation(s.activate)
 	c:RegisterEffect(e1)
 	local e2=e1:Clone()
 	e2:SetCode(EVENT_FLIP_SUMMON)
@@ -25,27 +25,19 @@ function s.initial_effect(c)
 end
 
 --no summon for you
-function s.filter(c)
-	return c:IsFaceup() and c:IsSetCard(0x7d0)
+function s.condition(e,tp,eg,ep,ev,re,r,rp)
+	return Duel.GetCurrentChain(true)==0 and eg:IsExists(Card.IsSummonPlayer,1,nil,1-tp)
+		and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x7d0),tp,LOCATION_MZONE,0,1,nil)
 end
-
-function s.condition1(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.GetCurrentChain()==0 and eg:IsExists(Card.IsSummonPlayer,1,nil,1-tp)
-		and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,0,1,nil)
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetOperationInfo(0,CATEGORY_DISABLE_SUMMON,eg,eg:GetCount(),0,0)
+	Duel.SetOperationInfo(0,CATEGORY_REMOVE,eg,eg:GetCount(),0,0)
 end
-function s.target1(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return eg:IsExists(s.filter,1,nil,1-tp) end
-	local g=eg:Filter(s.filter,nil,1-tp)
-	Duel.SetTargetCard(g)
-	Duel.SetOperationInfo(0,CATEGORY_DISABLE_SUMMON,eg,#eg,0,0)
-	Duel.SetOperationInfo(0,CATEGORY_REMOVE,eg,#eg,0,0)
-end
-function s.activate1(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetTargetCards(e):Filter(Card.IsRelateToEffect,nil,e)
-	if #g>0 then
-		Duel.NegateSummon(eg)
-		Duel.Remove(eg,POS_FACEUP,REASON_EFFECT)
-	end
+function s.activate(e,tp,eg,ep,ev,re,r,rp)
+	local g=eg:Filter(Card.IsSummonPlayer,nil,1-tp)
+	Duel.NegateSummon(g)
+	Duel.Remove(g,POS_FACEDOWN,REASON_EFFECT)
 end
 
 --handtrap cond

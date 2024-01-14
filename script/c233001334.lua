@@ -28,12 +28,6 @@ function s.initial_effect(c)
 	local e4=e3:Clone()
 	e4:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e4)
-	local e5=Effect.CreateEffect(c)
-	e5:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e5:SetRange(LOCATION_PZONE)
-	e5:SetCode(EVENT_CHAIN_END)
-	e5:SetOperation(s.limop2)
-	c:RegisterEffect(e5)
 	--damage
 	local e6=Effect.CreateEffect(c)
 	e6:SetCategory(CATEGORY_DAMAGE)
@@ -73,20 +67,9 @@ function s.limcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.limfilter,1,nil,tp)
 end
 function s.limop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetCurrentChain()==0 then
-		Duel.SetChainLimitTillChainEnd(s.chainlm)
-	elseif Duel.GetCurrentChain()==1 then
-		e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
+	if eg:IsExists(Card.IsSummonPlayer,1,nil,tp) then
+		Duel.SetChainLimitTillChainEnd(function(_,rp,tp) return rp==tp end)
 	end
-end
-function s.limop2(e,tp,eg,ep,ev,re,r,rp)
-	if e:GetHandler():GetOverlayCount()>0 and e:GetHandler():GetFlagEffect(id)~=0 then
-		Duel.SetChainLimitTillChainEnd(s.chainlm)
-	end
-	e:GetHandler():ResetFlagEffect(id)
-end
-function s.chainlm(e,rp,tp)
-	return tp==rp
 end
 
 --damage

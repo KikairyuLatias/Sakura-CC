@@ -45,7 +45,7 @@ end
 
 --stat drop
 function s.filter2(c)
-	return c:IsFaceup() and c:IsSetCard(0x7c7)
+	return c:IsFaceup() and c:IsSetCard(0x7e7)
 end
 function s.val(e,c)
 	return Duel.GetMatchingGroupCount(s.filter2,c:GetControler(),0,LOCATION_MZONE,nil)*-200
@@ -53,7 +53,7 @@ end
 
 --don`t bother chaining
 function s.chainop(e,tp,eg,ep,ev,re,r,rp)
-	if re:GetHandler():IsSetCard(0x7c7) then
+	if re:GetHandler():IsSetCard(0x7e7) then
 		Duel.SetChainLimit(s.chainlm)
 	end
 end

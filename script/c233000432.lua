@@ -43,6 +43,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,eg,eg:GetCount(),0,0)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	Duel.NegateSummon(eg)
-	Duel.Remove(eg,POS_FACEUP,REASON_EFFECT)
+	local g=eg:Filter(Card.IsSummonPlayer,nil,1-tp)
+	Duel.NegateSummon(g)
+	Duel.Remove(g,POS_FACEUP,REASON_EFFECT)
 end

@@ -27,7 +27,7 @@ end
 
 --no summon for you
 function s.filter(c)
-	return c:IsFaceup() and c:IsSetCard(0xa34)
+	return c:IsFaceup() and c:IsSetCard(0xa34) and not c:IsType(TYPE_TOKEN)
 end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,0,1,nil) and ep~=tp
@@ -39,6 +39,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_REMOVE,eg,eg:GetCount(),0,0)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
+	local g=eg:Filter(Card.IsSummonPlayer,nil,1-tp)
 	Duel.NegateSummon(eg)
 	Duel.Remove(eg,POS_FACEUP,REASON_EFFECT)
 end

@@ -14,31 +14,26 @@ function s.initial_effect(c)
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetCategory(CATEGORY_TODECK)
+	e2:SetRange(LOCATION_MZONE)
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetCountLimit(1,id)
 	e2:SetTarget(s.thtg)
 	e2:SetOperation(s.thop)
 	c:RegisterEffect(e2)
 	--protection
-	local e3a=Effect.CreateEffect(c)
-	e3a:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e3a:SetCode(EVENT_SUMMON_SUCCESS)
-	e3a:SetRange(LOCATION_MZONE)
-	e3a:SetCondition(s.limcon)
-	e3a:SetOperation(s.limop)
+	local e3=Effect.CreateEffect(c)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e3:SetCode(EVENT_SUMMON_SUCCESS)
+	e3:SetRange(LOCATION_MZONE)
+	e3:SetCondition(s.limcon)
+	e3:SetOperation(s.limop)
 	c:RegisterEffect(e1)
-	local e3b=e3a:Clone()
-	e3b:SetCode(EVENT_SPSUMMON_SUCCESS)
-	c:RegisterEffect(e3b)
-	local e3c=e3a:Clone()
-	e3c:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
-	c:RegisterEffect(e3c)
-	local e3d=Effect.CreateEffect(c)
-	e3d:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e3d:SetRange(LOCATION_FZONE)
-	e3d:SetCode(EVENT_CHAIN_END)
-	e3d:SetOperation(s.limop2)
-	c:RegisterEffect(e3d)
+	local e4=e3:Clone()
+	e4:SetCode(EVENT_SPSUMMON_SUCCESS)
+	c:RegisterEffect(e4)
+	local e5=e3:Clone()
+	e5:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
+	c:RegisterEffect(e5)
 end
 
 --ss
@@ -78,18 +73,7 @@ function s.limcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.limfilter,1,nil,tp)
 end
 function s.limop(e,tp,eg,ep,ev,re,r,rp)
-	if Duel.GetCurrentChain()==0 then
-		Duel.SetChainLimitTillChainEnd(s.chainlm)
-	elseif Duel.GetCurrentChain()==1 then
-		e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END,0,1)
+	if eg:IsExists(Card.IsSummonPlayer,1,nil,tp) then
+		Duel.SetChainLimitTillChainEnd(function(_,rp,tp) return rp==tp end)
 	end
-end
-function s.limop2(e,tp,eg,ep,ev,re,r,rp)
-	if e:GetHandler():GetOverlayCount()>0 and e:GetHandler():GetFlagEffect(id)~=0 then
-		Duel.SetChainLimitTillChainEnd(s.chainlm)
-	end
-	e:GetHandler():ResetFlagEffect(id)
-end
-function s.chainlm(e,rp,tp)
-	return tp==rp
 end

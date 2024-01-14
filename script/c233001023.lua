@@ -74,15 +74,14 @@ end
 
 --put counter on monster
 s.counter_list={0x5f7}
-
-function s.ctfilter(c)
-	return c:IsFaceup()
+function s.filter(c)
+	return c:IsFaceup() --and c:IsCanAddCounter(0x5f7,1)
 end
 function s.addct(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsOnField() and s.ctfilter(chkc) end
+	if chkc then return chkc:IsOnField() and s.filter(chkc) end
 	if chk==0 then return true end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
-	Duel.SelectTarget(tp,s.ctfilter,tp,LOCATION_MZONE,0,1,1,nil)
+	Duel.SelectTarget(tp,s.filter,tp,LOCATION_MZONE,0,1,1,nil)
 	Duel.SetOperationInfo(0,CATEGORY_COUNTER,nil,1,0,0x5f7)
 end
 function s.addc(e,tp,eg,ep,ev,re,r,rp)

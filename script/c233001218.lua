@@ -17,6 +17,7 @@ function s.initial_effect(c)
 	e3:SetCode(EVENT_SPSUMMON)
 	c:RegisterEffect(e3)
 end
+
 function s.filter(c)
 	return c:IsFaceup() and c:IsSetCard(0x4c9) and c:IsAttribute(ATTRIBUTE_LIGHT)
 end
@@ -30,6 +31,7 @@ function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.SetOperationInfo(0,CATEGORY_DESTROY,eg,eg:GetCount(),0,0)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	Duel.NegateSummon(eg)
-	Duel.Destroy(eg,REASON_EFFECT)
+	local g=eg:Filter(Card.IsSummonPlayer,nil,1-tp)
+	Duel.NegateSummon(g)
+	Duel.Remove(g,nil,POS_FACEUP,REASON_EFFECT)
 end

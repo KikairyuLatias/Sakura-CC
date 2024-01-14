@@ -33,7 +33,7 @@ function s.extrafil(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 end
 function s.extraop(mg,e,tp,eg,ep,ev,re,r,rp)
-	local mat2=mg:Filter(Card.IsLocation,1,LOCATION_MZONE)
+	local mat2=mg:Filter(Card.IsLocation,0,LOCATION_MZONE)
 	mg:Sub(mat2)
 	Duel.ReleaseRitualMaterial(mg)
 	Duel.SendtoGrave(mat2,REASON_EFFECT+REASON_MATERIAL+REASON_RITUAL)

@@ -3,7 +3,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_DISABLE_SUMMON+CATEGORY_REMOVE)
+	e1:SetCategory(CATEGORY_DISABLE_SUMMON+CATEGORY_TODECK)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_SUMMON)
 	e1:SetCondition(s.condition)
@@ -18,24 +18,24 @@ function s.initial_effect(c)
 	e3:SetCode(EVENT_SPSUMMON)
 	c:RegisterEffect(e3)
 end
-function s.filter(c)
-	return c:IsFaceup() and c:IsSetCard(0x7d7)
-end
+
+--negation
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-	 return Duel.GetCurrentChain()==0 and eg:IsExists(Card.IsSummonPlayer,1,nil,1-tp)
-		and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_MZONE,0,1,nil)
+	return Duel.GetCurrentChain(true)==0 and eg:IsExists(Card.IsSummonPlayer,1,nil,1-tp)
+		and Duel.IsExistingMatchingCard(aux.FaceupFilter(Card.IsSetCard,0x7d7),tp,LOCATION_MZONE,0,1,nil)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return eg:IsExists(s.filter,1,nil,1-tp) end
-	local g=eg:Filter(s.filter,nil,1-tp)
-	Duel.SetTargetCard(g)
-	Duel.SetOperationInfo(0,CATEGORY_DISABLE_SUMMON,eg,eg:GetCount(),0,0)
+	if chk==0 then return true end
+	local g=eg:Filter(Card.IsControler,nil,1-tp)
+	Duel.SetOperationInfo(0,CATEGORY_DISABLE_SUMMON,g,#g,0,0)
+	local g2=g:Filter(Card.IsPreviousLocation,nil,LOCATION_EXTRA)
+	if #g2>0 then
+		Duel.SetOperationInfo(0,CATEGORY_TOEXTRA,g2,#g2,0,0)
+	end
 	Duel.SetOperationInfo(0,CATEGORY_TODECK,g,#g,0,0)
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-local g=Duel.GetTargetCards(e):Filter(Card.IsRelateToEffect,nil,e)
-	if #g>0 then
-		Duel.NegateSummon(eg)
-		Duel.SendtoDeck(g,nil,SEQ_DECKSHUFFLE,REASON_EFFECT)
-	end
+	local g=eg:Filter(Card.IsSummonPlayer,nil,1-tp)
+	Duel.NegateSummon(g)
+	Duel.SendtoDeck(g,nil,2,REASON_EFFECT)
 end

@@ -3,7 +3,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	--Activate
 	local e1=Effect.CreateEffect(c)
-	e1:SetCategory(CATEGORY_DISABLE_SUMMON+CATEGORY_REMOVE)
+	e1:SetCategory(CATEGORY_DISABLE_SUMMON+CATEGORY_DESTROY)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_SUMMON)
 	e1:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
@@ -32,26 +32,29 @@ end
 function s.cfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x24af)
 end
+function s.cfilter2(c)
+	return c:IsFaceup() and c:IsSetCard(0x24af) and c:IsLevelAbove(10)
+end
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil) and ep~=tp
+	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,3,nil) and ep~=tp
 		and Duel.GetCurrentChain()==0
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return eg:IsExists(s.cfilter,1,nil,1-tp) end
 	local g=eg:Filter(s.cfilter,nil,1-tp)
 	Duel.SetOperationInfo(0,CATEGORY_DISABLE_SUMMON,eg,eg:GetCount(),0,0)
-	Duel.SetOperationInfo(0,CATEGORY_TODECK,eg,eg:GetCount(),0,0)
-	if Duel.IsExistingMatchingCard(aux.FaceupFilter(s.cfilter),tp,LOCATION_MZONE,0,3,nil) then
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,eg,eg:GetCount(),0,0)
+	if Duel.IsExistingMatchingCard(aux.FaceupFilter(s.cfilter2),tp,LOCATION_MZONE,0,1,nil) then
 		Duel.SetChainLimit(s.chlimit)
 	end
 end
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateSummon(eg)
-	Duel.SendtoDeck(eg,nil,2,REASON_EFFECT)
+	Duel.Destroy(eg,REASON_EFFECT)
 	Duel.Damage(1-tp,700,REASON_EFFECT)
 end
 function s.condition2(e,tp,eg,ep,ev,re,r,rp)
-	return (re:IsActiveType(TYPE_MONSTER) or re:IsHasType(EFFECT_TYPE_ACTIVATE)) and Duel.IsChainNegatable(ev) and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil) and ep~=tp
+	return (re:IsActiveType(TYPE_MONSTER) or re:IsHasType(EFFECT_TYPE_ACTIVATE)) and Duel.IsChainNegatable(ev) and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,3,nil) and ep~=tp
 end
 function s.target2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end
@@ -59,7 +62,7 @@ function s.target2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if re:GetHandler():IsDestructable() and re:GetHandler():IsRelateToEffect(re) then
 		Duel.SetOperationInfo(0,CATEGORY_DESTROY,eg,1,0,0)
 	end
-	if Duel.IsExistingMatchingCard(aux.FaceupFilter(s.cfilter),tp,LOCATION_MZONE,0,3,nil) then
+	if Duel.IsExistingMatchingCard(aux.FaceupFilter(s.cfilter2),tp,LOCATION_MZONE,0,1,nil) then
 		Duel.SetChainLimit(s.chlimit)
 	end
 end

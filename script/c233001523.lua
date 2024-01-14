@@ -33,7 +33,7 @@ function s.initial_effect(c)
 	e3:SetTarget(s.tgtg)
 	e3:SetValue(aux.indoval)
 	c:RegisterEffect(e3)
-	--spsummon
+	--search
 	local e4=Effect.CreateEffect(c)
 	e4:SetDescription(aux.Stringid(id,1))
 	e4:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
@@ -76,7 +76,7 @@ function s.tgtg(e,c)
 	return c:IsFaceup() and c:IsType(TYPE_MONSTER) and c:IsSetCard(0xa34)
 end
 
---spsummon
+--search
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>5 end
 end

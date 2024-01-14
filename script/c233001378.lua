@@ -111,7 +111,7 @@ end
 
 --special summon
 function s.filter(c)
-	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x7e0) 
+	return c:IsType(TYPE_MONSTER) and c:IsSetCard(0x7e0) and not c:IsCode(id)
 end
 function s.sstg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

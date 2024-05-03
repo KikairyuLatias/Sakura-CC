@@ -44,7 +44,7 @@ function s.destg(e,tp,eg,ep,ev,re,r,rp,chk)
 	end
 end
 function s.lmfilter(c)
-	return c:IsFaceup() and c:IsSetCard(0xa34) and c:IsType(TYPE_SYNCHRO+TYPE_MONSTER)
+	return c:IsFaceup() and c:IsSetCard(0xa34) and c:IsType(TYPE_SYNCHRO)
 end
 function s.chainlm(e,rp,tp)
 	return tp==rp

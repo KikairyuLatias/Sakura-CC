@@ -73,7 +73,7 @@ end
 
 --cannot target/destroy
 function s.tgtg(e,c)
-	return c:IsFaceup() and c:IsType(TYPE_MONSTER) and c:IsSetCard(0xa34)
+	return c:IsFaceup() and c:IsType(TYPE_MONSTER) and c:IsSetCard(0xa34) and not c:GetControler()
 end
 
 --search

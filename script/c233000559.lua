@@ -31,7 +31,8 @@ function s.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_TRIGGER_O+EFFECT_TYPE_FIELD)
 	e3:SetCode(EVENT_ATTACK_ANNOUNCE)
 	e3:SetRange(LOCATION_MZONE)
-	e3:SetCountLimit(1,id+99999)
+	e3:SetCondition(function(_,tp) return Duel.GetAttacker():IsControler(1-tp) end)
+	e3:SetCountLimit(1,{id,1})
 	e3:SetOperation(s.daop)
 	c:RegisterEffect(e3)
 	--pendulum
@@ -45,6 +46,7 @@ function s.initial_effect(c)
 	e4:SetOperation(s.penop)
 	c:RegisterEffect(e4)
 end
+
 --get out of the P-Zone
 function s.cfilter(c)
 	return c:IsSetCard(0x24af) and c:IsType(TYPE_MONSTER) and c:IsReleasable() and aux.SpElimFilter(c,true)
@@ -102,10 +104,12 @@ function s.activate(e,tp,eg,ep,ev,re,r,rp)
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
 end
+
 --negating attacks since 2019
 function s.daop(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateAttack()
 end
+
 --to pendulumZ
 function s.pencon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()

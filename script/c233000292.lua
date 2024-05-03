@@ -46,14 +46,14 @@ function s.ctop(e,tp,eg,ep,ev,re,r,rp)
 	if tc:IsFaceup() and  tc:IsRelateToEffect(e) and not tc:IsImmuneToEffect(e)
 		and tc:IsControler(1-tp) and tc:IsControlerCanBeChanged() and Duel.GetControl(tc,tp) then
 		local c=e:GetHandler()
-		-- Treated as an "AGM" monster
+		-- Treated as an "Vee Vee" monster
 		local e3=Effect.CreateEffect(c)
 		e3:SetDescription(aux.Stringid(id,1))
 		e3:SetProperty(EFFECT_FLAG_CLIENT_HINT)
 		e3:SetType(EFFECT_TYPE_SINGLE)
 		e3:SetCode(EFFECT_ADD_SETCODE)
 		e3:SetValue(0x7d2)
-		e3:SetReset(RESET_EVENT+RESETS_STANDARD)
+		e3:SetReset(RESET_EVENT+RESETS_STANDARD_DISABLE+RESET_PHASE+PHASE_END)
 		tc:RegisterEffect(e3)
 	end
 end

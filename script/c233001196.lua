@@ -6,7 +6,6 @@ function s.initial_effect(c)
 	c:EnableReviveLimit()
 	--to hand or activate
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,1))
 	e1:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
@@ -60,7 +59,7 @@ function s.thop(e,tp,eg,ep,ev,re,r,rp)
 							then cost(te,tep,eg,ep,ev,re,r,rp,1)
 						end
 					end,
-					aux.Stringid(id,1))
+					aux.Stringid(id,2))
 end
 
 --protection value

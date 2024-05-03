@@ -24,7 +24,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 	--destroy
 	local e6=Effect.CreateEffect(c)
-	e6:SetCategory(CATEGORY_DESTROY)
+	e6:SetCategory(CATEGORY_DESTROY+CATEGORY_DAMAGE)
 	e6:SetType(EFFECT_TYPE_IGNITION)
 	e6:SetRange(LOCATION_MZONE)
 	e6:SetProperty(EFFECT_FLAG_CARD_TARGET)

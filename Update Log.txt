@@ -263,3 +263,8 @@ Other misc fixes
 
 Scripting changes for a variety of cards (mostly the multiple Synchro Level things and whatever else, now that there is precedent for it in existing cards)
 Still need to script Prongstorm (pics are here, but file is removed; I have opted not to include Prongstorm's CDB in this update until cards have been scripted)
+
+5/2/2024
+
+Added Prongstorm stuff
+Variety of other changes.

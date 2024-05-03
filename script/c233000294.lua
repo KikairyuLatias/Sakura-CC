@@ -6,7 +6,7 @@ function s.initial_effect(c)
 	e1:SetCategory(CATEGORY_NEGATE+CATEGORY_REMOVE)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)
 	e1:SetCode(EVENT_CHAINING)
-	e1:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
+	e1:SetCountLimit(1,id)
 	e1:SetCost(s.cost)
 	e1:SetCondition(s.condition2)
 	e1:SetTarget(s.target2)
@@ -31,7 +31,7 @@ end
 function s.cfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x7d2)
 end
-	--this is supposed to also tribute from the hand too, but I can just errata it to just be from field if edopro is too dumb to	   make it work as intended
+	--this is supposed to also tribute from the hand too, but I can just errata it to just be from field if edopro is too dumb to	  make it work as intended
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckReleaseGroup(tp,Card.IsSetCard,1,nil,0x7d2) end
 	local g=Duel.SelectReleaseGroup(tp,Card.IsSetCard,1,1,nil,0x7d2)
@@ -59,6 +59,7 @@ function s.spfilter(c,e,tp)
 		and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
+	if chkc then return chkc:IsControler(tp) and chkc:IsLocation(LOCATION_HAND+LOCATION_GRAVE) and s.spfilter(chkc,e,tp) end
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
 		and Duel.IsExistingTarget(s.spfilter,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,nil,e,tp) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)

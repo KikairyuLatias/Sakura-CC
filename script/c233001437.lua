@@ -8,7 +8,7 @@ function s.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD)
 	e1:SetRange(LOCATION_MZONE)
-	e1:SetTargetRange(0,LOCATION_MZONE+LOCATION_HAND)
+	e1:SetTargetRange(0,LOCATION_MZONE)
 	e1:SetTarget(s.locktg)
 	e1:SetCode(EFFECT_DISABLE)
 	c:RegisterEffect(e1)
@@ -33,11 +33,16 @@ function s.initial_effect(c)
 	e4:SetCondition(s.mtcon)
 	e4:SetOperation(s.mtop)
 	c:RegisterEffect(e4)
+	local e5=Effect.CreateEffect(c)
+	e5:SetType(EFFECT_TYPE_SINGLE)
+	e5:SetCode(EFFECT_MATERIAL_CHECK)
+	e5:SetValue(s.valcheck)
+	c:RegisterEffect(e5)
 end
 
 --lockdown
 function s.locktg(e,c)
-	return c:IsType(TYPE_EFFECT) or (c:GetOriginalType()&TYPE_EFFECT)==TYPE_EFFECT
+	return c:IsNegatableMonster()
 end
 
 --hi i'm banishing your things
@@ -57,7 +62,7 @@ end
 
 --multi-attack
 function s.mtfilter(c)
-	return not c:IsSetCard(0x7de)
+	return c:IsSetCard(0x7de)
 end
 function s.mtcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsAbleToEnterBP() and Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>=5
@@ -66,7 +71,7 @@ function s.mtop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	Duel.ConfirmDecktop(tp,5)
 	local g=Duel.GetDecktopGroup(tp,5)
-	local ct=g:FilterCount(Card.IsType,s.mtfilter,TYPE_MONSTER)
+	local ct=g:FilterCount(Card.IsType,nil,TYPE_MONSTER)
 	Duel.ShuffleDeck(tp)
 	if ct>0 then
 		local e1=Effect.CreateEffect(c)
@@ -75,6 +80,16 @@ function s.mtop(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		e1:SetValue(ct)
+		c:RegisterEffect(e1)
+	end
+end
+function s.valcheck(e,c)
+	local g=c:GetMaterial()
+	if g:IsExists(Card.IsSetCard,1,nil,0x7de) then
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+		e1:SetReset(RESET_EVENT|RESETS_STANDARD&~(RESET_TOFIELD)|RESET_PHASE|PHASE_END)
 		c:RegisterEffect(e1)
 	end
 end

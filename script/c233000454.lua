@@ -74,7 +74,7 @@ function s.cfilter8(c)
 end
 
 function s.procon(e)
-	return Duel.IsExistingMatchingCard(aux.FilterFaceupFunction(s.cfilter8),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
+	return Duel.IsExistingMatchingCard(aux.FaceupFilter(s.cfilter8),e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)
 end
 
 --protection

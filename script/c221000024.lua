@@ -7,6 +7,7 @@ function s.initial_effect(c)
 	e3:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
 	e3:SetCode(EVENT_FREE_CHAIN)
 	e3:SetType(EFFECT_TYPE_ACTIVATE)
+	e3:SetCountLimit(1,id,EFFECT_COUNT_CODE_OATH)
 	e3:SetCost(s.cost)
 	e3:SetTarget(s.target)
 	e3:SetOperation(s.operation)
@@ -17,7 +18,7 @@ function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	Duel.PayLPCost(tp,800)
 end
 function s.filter(c)
-	return c:IsAttribute(ATTRIBUTE_WATER) and c:IsAbleToHand()
+	return c:IsAttribute(ATTRIBUTE_WATER) and (c:IsRace(RACE_BEAST) or c:IsRace(RACE_BEASTWARRIOR)) and c:IsAbleToHand()
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_DECK,0,1,nil) end

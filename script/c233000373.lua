@@ -24,7 +24,7 @@ function s.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2:SetCode(EVENT_SUMMON_SUCCESS)
 	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
-	e2:SetCountLimit(1,id+100)
+	e2:SetCountLimit(1,{id,1})
 	e2:SetTarget(s.sptg)
 	e2:SetOperation(s.spop2)
 	c:RegisterEffect(e2)
@@ -79,7 +79,7 @@ end
 
 --on summon
 function s.filter2(c,e,tp)
-	 return c:IsSetCard(0x7da) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsHasEffect(EFFECT_NECRO_VALLEY) and not c:IsCode(id)
+	 return c:IsSetCard(0x7da) and c:IsCanBeSpecialSummoned(e,0,tp,false,false) and not c:IsHasEffect(EFFECT_NECRO_VALLEY)
 end
 function s.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0

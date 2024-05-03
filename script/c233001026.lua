@@ -13,6 +13,11 @@ function s.initial_effect(c)
 	e2:SetCondition(s.mtcon)
 	e2:SetOperation(s.mtop)
 	c:RegisterEffect(e2)
+	local e2a=Effect.CreateEffect(c)
+	e2a:SetType(EFFECT_TYPE_SINGLE)
+	e2a:SetCode(EFFECT_MATERIAL_CHECK)
+	e2a:SetValue(s.valcheck)
+	c:RegisterEffect(e2a)
 	--negate
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,1))
@@ -41,6 +46,9 @@ function s.initial_effect(c)
 end
 
 --multi-attack
+function s.mtfilter(c)
+	return c:IsSetCard(0x5f7)
+end
 function s.mtcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsAbleToEnterBP() and Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>=4
 end
@@ -48,15 +56,25 @@ function s.mtop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	Duel.ConfirmDecktop(tp,4)
 	local g=Duel.GetDecktopGroup(tp,4)
-	local ct=g:FilterCount(Card.IsSetCard,nil,0x5f7)
+	local ct=g:FilterCount(Card.IsType,nil,TYPE_MONSTER)
 	Duel.ShuffleDeck(tp)
-	if ct>1 then
+	if ct>0 then
 		local e1=Effect.CreateEffect(c)
 		e1:SetType(EFFECT_TYPE_SINGLE)
 		e1:SetCode(EFFECT_EXTRA_ATTACK)
 		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 		e1:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
 		e1:SetValue(ct)
+		c:RegisterEffect(e1)
+	end
+end
+function s.valcheck(e,c)
+	local g=c:GetMaterial()
+	if g:IsExists(Card.IsSetCard,1,nil,0x5f7) then
+		local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetProperty(EFFECT_FLAG_CANNOT_DISABLE+EFFECT_FLAG_UNCOPYABLE)
+		e1:SetReset(RESET_EVENT|RESETS_STANDARD&~(RESET_TOFIELD)|RESET_PHASE|PHASE_END)
 		c:RegisterEffect(e1)
 	end
 end

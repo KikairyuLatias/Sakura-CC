@@ -55,7 +55,7 @@ end
 function s.mtop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	Duel.ConfirmDecktop(tp,4)
-	local g=Duel.GetDecktopGroup(tp,4)
+	local g=Duel.GetDecktopGroup(tp,4):Filter(s.mtfilter,nil,e,tp)
 	local ct=g:FilterCount(Card.IsType,nil,TYPE_MONSTER)
 	Duel.ShuffleDeck(tp)
 	if ct>0 then

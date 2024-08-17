@@ -44,7 +44,7 @@ end
 function s.ctop(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.GetFirstTarget()
 	if tc:IsFaceup() and  tc:IsRelateToEffect(e) and not tc:IsImmuneToEffect(e)
-		and tc:IsControler(1-tp) and tc:IsControlerCanBeChanged() and Duel.GetControl(tc,tp) then
+		and tc:IsControler(1-tp) and tc:IsControlerCanBeChanged() and Duel.GetControl(tc,tp,PHASE_END,1) then
 		local c=e:GetHandler()
 		-- Treated as an "Vee Vee" monster
 		local e3=Effect.CreateEffect(c)

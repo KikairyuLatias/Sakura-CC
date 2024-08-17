@@ -73,18 +73,31 @@ function s.thfilter(c)
 	return c:IsSetCard(0x7d2) and c:IsAbleToHand()
 end
 function s.thtg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(s.thfilter,tp,LOCATION_DECK,0,3,nil) end
+	if chk==0 then
+		local dg=Duel.GetMatchingGroup(s.thfilter,tp,LOCATION_DECK,0,nil)
+		return dg:GetClassCount(Card.GetCode)>=3
+	end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
 function s.thop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.GetMatchingGroup(s.thfilter,tp,LOCATION_DECK,0,nil)
-	if #g>=3 then
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-		local sg=g:Select(tp,3,3,nil)
-		Duel.ConfirmCards(1-tp,sg)
+	if g:GetClassCount(Card.GetCode)>=3 then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
+		local sg1=g:Select(tp,1,1,nil)
+		g:Remove(Card.IsCode,nil,sg1:GetFirst():GetCode())
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
+		local sg2=g:Select(tp,1,1,nil)
+		g:Remove(Card.IsCode,nil,sg2:GetFirst():GetCode())
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_CONFIRM)
+		local sg3=g:Select(tp,1,1,nil)
+		sg1:Merge(sg2)
+		sg1:Merge(sg3)
+		Duel.ConfirmCards(1-tp,sg1)
 		Duel.ShuffleDeck(tp)
-		local tg=sg:RandomSelect(1-tp,1)
-		Duel.SendtoHand(tg,nil,REASON_EFFECT)
+		Duel.Hint(HINT_SELECTMSG,1-tp,HINTMSG_ATOHAND)
+		local cg=sg1:Select(1-tp,1,1,nil)
+		local tc=cg:GetFirst()
+		Duel.SendtoHand(tc,nil,REASON_EFFECT)
 	end
 end
 

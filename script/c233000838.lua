@@ -53,7 +53,7 @@ function s.tdfilter(c)
 end
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsPlayerCanDraw(tp,2)
-		and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_GRAVE+LOCATION_REMOVED+LOCATION_EXTRA,0,7,nil) end
+		and Duel.IsExistingMatchingCard(s.tdfilter,tp,LOCATION_GRAVE+LOCATION_REMOVED+LOCATION_EXTRA,0,7,nil) end
 	Duel.SetOperationInfo(0,CATEGORY_TODECK,nil,7,0,0)
 	Duel.SetOperationInfo(0,CATEGORY_DRAW,nil,0,tp,2)
 end

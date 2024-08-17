@@ -29,9 +29,9 @@ end
 
 --ichigo sacrificing herself for aoyama-kun and her friends
 function s.cfilter(c)
-	return c:IsFaceup() and c:IsSetCard(0x7d2)
+	return c:IsFaceup() and c:IsSetCard(0x7d2) and c:IsRace(RACE_BEASTWARRIOR)
 end
-	--this is supposed to also tribute from the hand too, but I can just errata it to just be from field if edopro is too dumb to	  make it work as intended
+	--this is supposed to also tribute from the hand too, but I can just errata it to just be from field if edopro is too dumb to	 make it work as intended
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckReleaseGroup(tp,Card.IsSetCard,1,nil,0x7d2) end
 	local g=Duel.SelectReleaseGroup(tp,Card.IsSetCard,1,1,nil,0x7d2)

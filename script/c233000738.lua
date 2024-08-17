@@ -1,7 +1,9 @@
 --Sunbeast Heiau
 local s,id=GetID()
 function s.initial_effect(c)
+	--ritual summon
 	local e1=Ritual.CreateProc({handler=c,lvtype=RITPROC_GREATER,filter=s.ritualfil,extrafil=s.extrafil,extraop=s.extraop})
+	local e1=Ritual.AddProcGreater{handler=c,filter=s.ritualfil,extrafil=s.extrafil,extraop=s.extraop,extratg=s.extratg}
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCountLimit(1,id)
 	c:RegisterEffect(e1)
@@ -20,23 +22,29 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 
---ritual
+--new ritual
 function s.ritualfil(c)
 	return c:IsCode(233000737)
 end
-function s.exfilter0(c)
-	return c:IsReleasable()
+function s.mfilter(c)
+	return c:HasLevel() and c:IsReleasable() and c:IsFaceup()
 end
 function s.extrafil(e,tp,eg,ep,ev,re,r,rp,chk)
 	if Duel.IsExistingMatchingCard(Card.IsSummonLocation,tp,0,LOCATION_MZONE,1,1,LOCATION_EXTRA) then
-		return Duel.GetMatchingGroup(s.exfilter0,tp,0,LOCATION_MZONE,1,c)
+		return Duel.GetMatchingGroup(s.mfilter,tp,0,LOCATION_MZONE,nil)
 	end
+	return Group.CreateGroup()
 end
 function s.extraop(mg,e,tp,eg,ep,ev,re,r,rp)
-	local mat2=mg:Filter(Card.IsLocation,0,LOCATION_MZONE)
+	local mat2=mg:Filter(Card.IsLocation,nil,LOCATION_GRAVE):Filter(s.mfilter,nil)
 	mg:Sub(mat2)
 	Duel.ReleaseRitualMaterial(mg)
-	Duel.SendtoGrave(mat2,REASON_EFFECT+REASON_MATERIAL+REASON_RITUAL)
+	Duel.SendtoDeck(mat2,nil,2,REASON_EFFECT+REASON_MATERIAL+REASON_RITUAL)
+end
+
+function s.extratg(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+	Duel.SetPossibleOperationInfo(0,CATEGORY_TODECK,nil,1,tp,LOCATION_GRAVE)
 end
 
 --negate

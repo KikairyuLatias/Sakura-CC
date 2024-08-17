@@ -71,7 +71,7 @@ end
 
 --multi-attack
 function s.mtfilter(c)
-	return not c:IsSetCard(0x5f9)
+	return c:IsSetCard(0x5f9)
 end
 function s.mtcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsAbleToEnterBP() and Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>=2
@@ -79,8 +79,8 @@ end
 function s.mtop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	Duel.ConfirmDecktop(tp,2)
-	local g=Duel.GetDecktopGroup(tp,2)
-	local ct=g:FilterCount(Card.IsType,s.mtfilter,TYPE_MONSTER)
+	local g=Duel.GetDecktopGroup(tp,2):Filter(s.mtfilter,nil,e,tp)
+	local ct=g:FilterCount(Card.IsType,nil,TYPE_MONSTER)
 	Duel.ShuffleDeck(tp)
 	if ct>0 then
 		local e1=Effect.CreateEffect(c)

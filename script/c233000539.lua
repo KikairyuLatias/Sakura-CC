@@ -33,7 +33,8 @@ function s.initial_effect(c)
 	e3:SetValue(s.repval)
 	c:RegisterEffect(e3)
 end
---alt summon condition (not like you can summon this normally anyway...)
+
+--alt summon condition (not like you can summon this normally in its own archetype anyway...)
 function s.ovfilter(c)
 	return c:IsFaceup() and c:IsType(TYPE_LINK) and c:IsSetCard(0x14af)
 end

@@ -17,7 +17,6 @@ function s.initial_effect(c)
 	e4:SetRange(LOCATION_MZONE)
 	e4:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e4:SetTargetRange(0,1)
-	e4:SetCondition(s.scon)
 	e4:SetValue(1)
 	c:RegisterEffect(e4)
 end
@@ -30,8 +29,4 @@ function s.spcon(e,c)
 	if c==nil then return true end
 	return Duel.GetLocationCount(c:GetControler(),LOCATION_MZONE)>0 and
 		Duel.IsExistingMatchingCard(s.filter,c:GetControler(),LOCATION_MZONE,0,1,nil)
-end
-
-function s.scon(e)
-	return e:GetHandler():GetFlagEffect(id)~=0
 end

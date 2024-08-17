@@ -74,13 +74,16 @@ function s.initial_effect(c)
 end
 
 --attack condition
+function s.mtfilter(c)
+	return c:IsSetCard(0x7d0)
+end
 function s.mtcon(e,tp,eg,ep,ev,re,r,rp)
 	return Duel.IsAbleToEnterBP() and Duel.GetFieldGroupCount(tp,LOCATION_DECK,0)>=2
 end
 function s.mtop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	Duel.ConfirmDecktop(tp,2)
-	local g=Duel.GetDecktopGroup(tp,2)
+	local g=Duel.GetDecktopGroup(tp,2):Filter(s.mtfilter,nil,e,tp)
 	local ct=g:FilterCount(Card.IsType,nil,TYPE_MONSTER)
 	Duel.ShuffleDeck(tp)
 	if ct>0 then

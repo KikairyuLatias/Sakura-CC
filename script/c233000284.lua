@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	--atk up
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
-	e2:SetCategory(CATEGORY_ATKCHANGE)
+	e2:SetCategory(CATEGORY_ATKCHANGE+CATEGORY_DEFCHANGE)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2:SetProperty(EFFECT_FLAG_DELAY)
 	e2:SetCode(EVENT_SUMMON_SUCCESS)
@@ -59,13 +59,9 @@ end
 function s.atktg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.atkfilter,tp,LOCATION_MZONE,0,1,nil) end
 end
-function s.pfilter(c)
-	return c:IsSetCard(0x7d2) and c:IsFaceup()
-end
 function s.atkval(e,c)
-	local g=Duel.GetMatchingGroup(s.pfilter,c:GetControler(),LOCATION_MZONE,0,nil)
-	local ct=g:GetClassCount(Card.GetCode)
-	return ct*200
+	local g=Duel.GetMatchingGroup(aux.FaceupFilter(Card.IsSetCard,0x7d2),e:GetHandlerPlayer(),LOCATION_MZONE,0,nil)
+	return g:GetClassCount(Card.GetCode)*200
 end
 function s.atkop(e,tp,eg,ep,ev,re,r,rp)
 	local tg=Duel.GetMatchingGroup(s.atkfilter,tp,LOCATION_MZONE,0,nil)

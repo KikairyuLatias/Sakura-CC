@@ -60,10 +60,8 @@ end
 
 --forget about triggering
 function s.chainop(e,tp,eg,ep,ev,re,r,rp)
-	if re:GetHandler():IsSetCard(0x7dc) and re:IsActiveType(TYPE_MONSTER) and ep==tp then
-		Duel.SetChainLimit(s.chainlm)
+	local rc=re:GetHandler()
+	if ep==tp and re:IsMonsterEffect() and rc:IsSetCard(0x7dc) then
+		Duel.SetChainLimit(function(_e,_rp,_tp) return _tp==_rp end)
 	end
-end
-function s.chainlm(e,rp,tp)
-	return tp==rp
 end

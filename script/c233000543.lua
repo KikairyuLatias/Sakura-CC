@@ -38,6 +38,7 @@ function s.initial_effect(c)
 	e4:SetOperation(s.operation2)
 	c:RegisterEffect(e4)
 end
+
 --fusion materials
 s.material_setcode=0x14af
 function s.ffilter(c,fc,sumtype,tp,sub,mg,sg)

@@ -1,7 +1,7 @@
 --Starry Snow Blossom Reindeer Deployment
 local s,id=GetID()
 function s.initial_effect(c)
-	--Special Summon 1 "Starry Snow Blosom Reindeer" monster
+	--Special Summon 1 "Starry Snow Blossom Reindeer" monster
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
@@ -11,7 +11,7 @@ function s.initial_effect(c)
 	e1:SetTarget(s.sptg)
 	e1:SetOperation(s.spop)
 	c:RegisterEffect(e1)
-	--Special Summon 2 "Starry Snow Blosom Reindeer" monsters with different names
+	--Special Summon 2 "Starry Snow Blossom Reindeer" monsters with different names
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON)

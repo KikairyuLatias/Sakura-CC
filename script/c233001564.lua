@@ -43,6 +43,12 @@ function s.initial_effect(c)
 	local e7=e5:Clone()
 	e7:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
 	c:RegisterEffect(e7)
+	local e7d=Effect.CreateEffect(c)
+	e7d:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e7d:SetRange(LOCATION_FZONE)
+	e7d:SetCode(EVENT_CHAIN_END)
+	e7d:SetOperation(s.limop2)
+	c:RegisterEffect(e7d)
 end
 
 --searching
@@ -73,10 +79,9 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
-
 --protection
 function s.limfilter(c,tp)
-	return c:GetSummonPlayer()==tp and c:IsRace(RACE_BEASTWARRIOR) and c:IsAttribute(ATTRIBUTE_FIRE)
+	return c:GetSummonPlayer()==tp and c:IsSetCard(0x4cb)
 end
 function s.limcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.limfilter,1,nil,tp)
@@ -84,5 +89,12 @@ end
 function s.limop(e,tp,eg,ep,ev,re,r,rp)
 	if eg:IsExists(Card.IsSummonPlayer,1,nil,tp) then
 		Duel.SetChainLimitTillChainEnd(function(_,rp,tp) return rp==tp end)
+	end
+end
+
+function s.limop2(e,tp,eg,ep,ev,re,r,rp)
+	local rc=re:GetHandler()
+	if ep==tp and re:IsMonsterEffect() and rc:IsSetCard(0x4cb) then
+		Duel.SetChainLimit(function(_e,_rp,_tp) return _tp==_rp end)
 	end
 end

@@ -93,9 +93,9 @@ end
 
 --diver vulpine effect
 function s.rmop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetDecktopGroup(1-tp,5)
-		if Duel.GetFieldGroupCount(1-tp,LOCATION_DECK,0)<5 then end
-		if g:GetCount()>4 then
+	local g=Duel.GetDecktopGroup(1-tp,3)
+		if Duel.GetFieldGroupCount(1-tp,LOCATION_DECK,0)<3 then end
+		if g:GetCount()>2 then
 			Duel.DisableShuffleCheck()
 			Duel.Remove(g,POS_FACEDOWN,REASON_EFFECT)
 		end

@@ -49,9 +49,9 @@ end
 
 --transform on own
 function s.spcost(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.CheckLPCost(tp,600) and e:GetHandler():IsAbleToGraveAsCost() 
+	if chk==0 then return Duel.CheckLPCost(tp,800) and e:GetHandler():IsAbleToGraveAsCost() 
 end
-	Duel.PayLPCost(tp,600)
+	Duel.PayLPCost(tp,800)
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
 end
 function s.filter2(c,e,tp)

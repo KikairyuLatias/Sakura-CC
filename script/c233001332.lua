@@ -61,8 +61,9 @@ end
 
 --recycle draw
 function s.tdfilter(c)
-	return c:IsSetCard(0x4c8) and (c:IsLocation(LOCATION_GRAVE+LOCATION_EXTRA) or c:IsFaceup()) and c:IsAbleToDeck() or c:IsAbleToExtra()
+	return c:IsSetCard(0x24af) and (c:IsLocation(LOCATION_GRAVE+LOCATION_EXTRA) or c:IsFaceup()) and c:IsAbleToDeck() 
 end
+
 function s.drtg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chk==0 then return Duel.IsPlayerCanDraw(tp,2)
 		and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_GRAVE+LOCATION_EXTRA,0,5,nil) end

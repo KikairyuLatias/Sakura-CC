@@ -83,11 +83,12 @@ end
 
 --transform on own
 function s.spcost2(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.CheckLPCost(tp,1000) and e:GetHandler():IsAbleToGraveAsCost() 
+	if chk==0 then return Duel.CheckLPCost(tp,1200) and e:GetHandler():IsAbleToRemoveAsCost() 
 end
-	Duel.PayLPCost(tp,1000)
-	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
+	Duel.PayLPCost(tp,1200)
+	Duel.Remove(e:GetHandler(),POS_FACEDOWN,REASON_COST)
 end
+
 function s.filter2(c,e,tp)
 	return c:IsCode(233000177) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
 end

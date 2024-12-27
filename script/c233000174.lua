@@ -38,9 +38,9 @@ function s.initial_effect(c)
 end
 --transform on own
 function s.spcost2(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.CheckLPCost(tp,1000) and e:GetHandler():IsAbleToGraveAsCost() 
+	if chk==0 then return Duel.CheckLPCost(tp,1500) and e:GetHandler():IsAbleToGraveAsCost() 
 end
-	Duel.PayLPCost(tp,1000)
+	Duel.PayLPCost(tp,1500)
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
 end
 function s.filter2(c,e,tp)

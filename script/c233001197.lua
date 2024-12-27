@@ -100,7 +100,6 @@ function s.operation2(e,tp,eg,ep,ev,re,r,rp)
 	local tc=Duel.SelectMatchingCard(tp,Card.IsAbleToRemove,tp,0,LOCATION_ONFIELD+LOCATION_HAND+LOCATION_GRAVE,1,1,nil)
 	e:GetHandler():RegisterFlagEffect(id,RESET_EVENT+0x1fe0000,0,1)
 	if Duel.Remove(tc,POS_FACEDOWN,REASON_EFFECT)>0 then
-	local ct=Duel.GetMatchingGroupCount(s.filter,tp,LOCATION_ONFIELD,0,nil)
 	Duel.Damage(1-tp,800,REASON_EFFECT)
 	end
 end

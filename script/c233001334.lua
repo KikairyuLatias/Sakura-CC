@@ -22,12 +22,14 @@ function s.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e3:SetCode(EVENT_SUMMON_SUCCESS)
 	e3:SetRange(LOCATION_PZONE)
-	e3:SetCondition(s.limcon)
 	e3:SetOperation(s.limop)
 	c:RegisterEffect(e1)
 	local e4=e3:Clone()
 	e4:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e4)
+	local e5=e3:Clone()
+	e5:SetCode(EVENT_FLIP_SUMMON_SUCCESS)
+	c:RegisterEffect(e5)
 	--damage
 	local e6=Effect.CreateEffect(c)
 	e6:SetCategory(CATEGORY_DAMAGE)
@@ -59,16 +61,13 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 
---protect
-function s.limfilter(c,tp)
-	return c:GetSummonPlayer()==tp and c:IsSetCard(0x4c8)
-end
-function s.limcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.limfilter,1,nil,tp)
+--protection
+function s.limfilter(c,sp)
+	return c:IsSetCard(0x4c8) and c:IsFaceup() and c:IsSummonPlayer(sp)
 end
 function s.limop(e,tp,eg,ep,ev,re,r,rp)
-	if eg:IsExists(Card.IsSummonPlayer,1,nil,tp) then
-		Duel.SetChainLimitTillChainEnd(function(_,rp,tp) return rp==tp end)
+	if eg:IsExists(s.limfilter,1,nil,tp) then
+		Duel.SetChainLimitTillChainEnd(function(e,_rp,_tp) return _tp==_rp end)
 	end
 end
 

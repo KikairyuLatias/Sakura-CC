@@ -43,15 +43,15 @@ function s.initial_effect(c)
 	c:RegisterEffect(e6)
 end
 --limiter
-function s.limfilter(c,tp)
-	return c:GetSummonPlayer()==tp
-end
 function s.limcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetOverlayCount()>0 and eg:IsExists(s.limfilter,1,nil,tp)
 end
+function s.limfilter(c,sp)
+	return c:IsFaceup() and c:IsSummonPlayer(sp)
+end
 function s.limop(e,tp,eg,ep,ev,re,r,rp)
-	if eg:IsExists(Card.IsSummonPlayer,1,nil,tp) then
-		Duel.SetChainLimitTillChainEnd(function(_,rp,tp) return rp==tp end)
+	if eg:IsExists(s.limfilter,1,nil,tp) then
+		Duel.SetChainLimitTillChainEnd(function(e,_rp,_tp) return _tp==_rp end)
 	end
 end
 

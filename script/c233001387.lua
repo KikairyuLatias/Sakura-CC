@@ -78,17 +78,14 @@ function s.disop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 --protection
-function s.limfilter(c,tp)
-	return c:GetSummonPlayer()==tp and c:IsSetCard(0x7d9)
-end
 function s.limcon(e,tp,eg,ep,ev,re,r,rp)
 	return eg:IsExists(s.limfilter,1,nil,tp) and e:GetHandler():GetOverlayCount()~=0
 end
-function s.limop(e,tp,eg,ep,ev,re,r,rp)
-	if eg:IsExists(Card.IsSummonPlayer,1,nil,tp) then
-		Duel.SetChainLimitTillChainEnd(function(_,rp,tp) return rp==tp end)
-	end
+function s.limfilter(c,sp)
+	return c:IsSetCard(0x7d9) and c:IsFaceup() and c:IsSummonPlayer(sp)
 end
-function s.chainlm(e,rp,tp)
-	return tp==rp
+function s.limop(e,tp,eg,ep,ev,re,r,rp)
+	if eg:IsExists(s.limfilter,1,nil,tp) then
+		Duel.SetChainLimitTillChainEnd(function(e,_rp,_tp) return _tp==_rp end)
+	end
 end

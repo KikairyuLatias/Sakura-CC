@@ -16,7 +16,6 @@ function s.initial_effect(c)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e1:SetCode(EVENT_SUMMON_SUCCESS)
 	e1:SetRange(LOCATION_PZONE)
-	e1:SetCondition(s.limcon)
 	e1:SetOperation(s.limop)
 	c:RegisterEffect(e1)
 	local e1a=e1:Clone()
@@ -85,17 +84,15 @@ function s.splimit(e,se,sp,st)
 end
 
 --don't even bother chaining to my summons or activations
-function s.limfilter(c,tp)
-	return c:GetSummonPlayer()==tp and c:IsSetCard(0x4c9) or c:IsCode(233001215)
-end
-function s.limcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.limfilter,1,nil,tp)
+function s.limfilter(c,sp)
+	return (c:IsSetCard(0x4c9) or c:IsCode(233001215)) and c:IsFaceup() and c:IsSummonPlayer(sp)
 end
 function s.limop(e,tp,eg,ep,ev,re,r,rp)
-	if eg:IsExists(Card.IsSummonPlayer,1,nil,tp) then
-		Duel.SetChainLimitTillChainEnd(function(_,rp,tp) return rp==tp end)
+	if eg:IsExists(s.limfilter,1,nil,tp) then
+		Duel.SetChainLimitTillChainEnd(function(e,_rp,_tp) return _tp==_rp end)
 	end
 end
+
 function s.chainop(e,tp,eg,ep,ev,re,r,rp)
 	if re:GetHandler():IsSetCard(0x4c9) or re:GetHandler():IsCode(233001215) then
 		Duel.SetChainLimit(s.chainlm)

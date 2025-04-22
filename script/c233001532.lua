@@ -31,7 +31,6 @@ function s.initial_effect(c)
 	e3a:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e3a:SetCode(EVENT_SUMMON_SUCCESS)
 	e3a:SetRange(LOCATION_FZONE)
-	e3a:SetCondition(s.limcon)
 	e3a:SetOperation(s.limop)
 	c:RegisterEffect(e1)
 	local e3b=e3a:Clone()
@@ -77,15 +76,12 @@ function s.chainop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 --protection
-function s.limfilter(c,tp)
-	return c:GetSummonPlayer()==tp and c:IsSetCard(0xa34)
-end
-function s.limcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.limfilter,1,nil,tp)
+function s.limfilter(c,sp)
+	return c:IsSetCard(0xa34) and c:IsFaceup() and c:IsSummonPlayer(sp)
 end
 function s.limop(e,tp,eg,ep,ev,re,r,rp)
-	if eg:IsExists(Card.IsSummonPlayer,1,nil,tp) then
-		Duel.SetChainLimitTillChainEnd(function(_,rp,tp) return rp==tp end)
+	if eg:IsExists(s.limfilter,1,nil,tp) then
+		Duel.SetChainLimitTillChainEnd(function(e,_rp,_tp) return _tp==_rp end)
 	end
 end
 

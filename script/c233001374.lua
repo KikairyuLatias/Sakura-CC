@@ -69,11 +69,11 @@ function s.spop(e,tp,eg,ep,ev,re,r,rp)
 end
 
 --activation requirement
-function s.cfilter(c)
+function s.cfilter2(c)
 	return c:IsFaceup() and c:IsSetCard(0x7e0)
 end
 function s.actcon(e,tp,eg,ep,ev,re,r,rp)
-	return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,e:GetHandler())
+	return Duel.IsExistingMatchingCard(s.cfilter2,tp,LOCATION_MZONE,0,1,e:GetHandler())
 end
 
 --shuffle opponent card into Deck

@@ -7,8 +7,7 @@ function s.initial_effect(c)
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e1:SetCode(EVENT_SUMMON_SUCCESS)
-	e1:SetRange(LOCATION_MZONE)
-	e1:SetCondition(s.limcon)
+	e1:SetRange(LOCATION_PZONE)
 	e1:SetOperation(s.limop)
 	c:RegisterEffect(e1)
 	local e2=e1:Clone()
@@ -60,16 +59,13 @@ function s.forced(e,tp,g,sc)
 	return not g:IsContains(c),g:IsContains(c)
 end
 
---don`t bother chaining
-function s.limfilter(c,tp)
-	return c:GetSummonPlayer()==tp and c:IsSetCard(0x7d1)
-end
-function s.limcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.limfilter,1,nil,tp)
+--protection
+function s.limfilter(c,sp)
+	return c:IsSetCard(0x7d1) and c:IsFaceup() and c:IsSummonPlayer(sp)
 end
 function s.limop(e,tp,eg,ep,ev,re,r,rp)
-	if eg:IsExists(Card.IsSummonPlayer,1,nil,tp) then
-		Duel.SetChainLimitTillChainEnd(function(_,rp,tp) return rp==tp end)
+	if eg:IsExists(s.limfilter,1,nil,tp) then
+		Duel.SetChainLimitTillChainEnd(function(e,_rp,_tp) return _tp==_rp end)
 	end
 end
 function s.chainop(e,tp,eg,ep,ev,re,r,rp)

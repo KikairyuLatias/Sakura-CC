@@ -20,7 +20,6 @@ function s.initial_effect(c)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e3:SetCode(EVENT_SUMMON_SUCCESS)
 	e3:SetRange(LOCATION_GRAVE)
-	e3:SetCondition(s.limcon)
 	e3:SetOperation(s.limop)
 	c:RegisterEffect(e1)
 	local e4=e3:Clone()
@@ -33,7 +32,7 @@ function s.initial_effect(c)
 	local e6=Effect.CreateEffect(c)
 	e6:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
 	e6:SetCode(EVENT_CHAINING)
-	e6:SetRange(LOCATION_MZONE)
+	e6:SetRange(LOCATION_GRAVE)
 	e6:SetOperation(s.chainop)
 	c:RegisterEffect(e6)
 end
@@ -56,15 +55,12 @@ function s.operation(e,tp,eg,ep,ev,re,r,rp)
 end
 
 --protection
-function s.limfilter(c,tp)
-	return c:GetSummonPlayer()==tp and c:IsRace(RACE_BEASTWARRIOR) and c:IsSetCard(0x4cb)
-end
-function s.limcon(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(s.limfilter,1,nil,tp)
+function s.limfilter(c,sp)
+	return c:IsRace(RACE_BEASTWARRIOR) and c:IsSetCard(0x4cb) and c:IsFaceup() and c:IsSummonPlayer(sp)
 end
 function s.limop(e,tp,eg,ep,ev,re,r,rp)
-	if eg:IsExists(Card.IsSummonPlayer,1,nil,tp) then
-		Duel.SetChainLimitTillChainEnd(function(_,rp,tp) return rp==tp end)
+	if eg:IsExists(s.limfilter,1,nil,tp) then
+		Duel.SetChainLimitTillChainEnd(function(e,_rp,_tp) return _tp==_rp end)
 	end
 end
 

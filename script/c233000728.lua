@@ -46,7 +46,7 @@ function s.discon(e,tp,eg,ep,ev,re,r,rp)
 	return not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) and Duel.IsChainNegatable(ev)
 end
 function s.disfilter(c)
-	return c:IsSetCard(0x640) and c:IsType(TYPE_MONSTER) and (c:IsDiscardable() or c:IsAbleToGrave())
+	return (c:IsSetCard(0x640) and c:IsMonster()) and (c:IsDiscardable() or c:IsAbleToGrave())
 end
 function s.discost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.dfilter,tp,LOCATION_HAND+LOCATION_MZONE,0,1,nil) end

@@ -268,3 +268,25 @@ Still need to script Prongstorm (pics are here, but file is removed; I have opte
 
 Added Prongstorm stuff
 Variety of other changes.
+
+8/16/24
+
+- Addition of Starblossom Reindeer
+- Legacy for ZP Delta
+- "Pony" is now "PONY" in all caps (stuff is still same otherwise; I am not fixing the images mind you)
+- Some old code fixes so stuff works like they're supposed to (mostly with the multi attackers who technically have been using incorrect coding)
+- Psychic Dragon updates/coding.
+- Adding my own version of archetype_setcode_constants and card_counter_constants (so I don't have to type hex anymore, especially if I end up having to change the number later; eventually will go retrofit all of the existing archetype related stuff to do this and check if works)
+
+12/26/24
+
+Minor changes to a lot of code
+Addition of Starry Skystorm Blossom Rabbit
+Other misc fixes.
+Reversion of the setcode_constants and other stuff because they are tied to the actual game cards / doing so will cause weird stuff to happen.
+
+04/21/25
+
+- Updated Bunny/Flyer with some card moving (for alt. arts)
+- Addition of Olympidragon archetype
+- Misc. script updates

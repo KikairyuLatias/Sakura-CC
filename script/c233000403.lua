@@ -19,20 +19,22 @@ function s.initial_effect(c)
 	e1:SetValue(s.val)
 	e1:SetTarget(s.tg)
 	c:RegisterEffect(e1)
-	--burn damage (needs fixing)
+	--burn damage
 	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetCategory(CATEGORY_DAMAGE)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetProperty(EFFECT_FLAG_PLAYER_TARGET)
 	e2:SetCode(EVENT_BATTLE_DESTROYING)
 	e2:SetRange(LOCATION_MZONE)
+	e2:SetCountLimit(1)
 	e2:SetCondition(s.condition)
 	e2:SetTarget(s.target)
 	e2:SetOperation(s.activate)
 	c:RegisterEffect(e2)
 end
 
---boost
+--boost functions
 function s.tg(e,c)
 	return c:IsType(TYPE_MONSTER) and c~=e:GetHandler()
 end
@@ -43,22 +45,25 @@ function s.val(e,c)
 	return Duel.GetMatchingGroupCount(s.filter,c:GetControler(),LOCATION_MZONE,0,nil)*200
 end
 
---burn
+--burn functions
 function s.condition(e,tp,eg,ep,ev,re,r,rp)
-	local tc=eg:GetFirst()
-	local bc=tc:GetBattleTarget()
-	return eg:GetCount()==1 and tc:IsControler(tp) and tc:IsSetCard(0x7c7)
-		and bc:IsReason(REASON_BATTLE)
+	local dm = Duel.GetAttacker() -- The monster that destroyed by battle (your monster)
+	local dt = Duel.GetAttackTarget() -- The monster that was destroyed by battle (opponent's monster)
+	-- Check if your monster is WIND and Machine, it destroyed an opponent's monster by battle
+	return dm and dt and dm:IsControler(tp) and dm:IsRace(RACE_MACHINE) and dm:IsAttribute(ATTRIBUTE_WIND)
+		and dt:IsControler(1-tp) and dt:IsStatus(STATUS_BATTLE_DESTROYED)
 end
+
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return true end
+	local dt = Duel.GetAttackTarget() -- The monster that was destroyed by battle (opponent's monster)
+	if chk==0 then return dt and dt:GetAttack() > 0 end -- Ensure destroyed monster has ATK > 0
 	Duel.SetTargetPlayer(1-tp)
-	local atk=eg:GetFirst():GetBattleTarget():GetAttack()
-	if atk<0 then atk=0 end
-	Duel.SetTargetParam(atk)
-	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,atk)
+	Duel.SetTargetParam(dt:GetAttack()) -- Inflict damage equal to the destroyed monster's ATK
+	Duel.SetOperationInfo(0,CATEGORY_DAMAGE,nil,0,1-tp,dt:GetAttack())
 end
+
 function s.activate(e,tp,eg,ep,ev,re,r,rp)
-	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
+	local p=Duel.GetTargetPlayer()
+	local d=Duel.GetChainInfo(0,CHAININFO_TARGET_PARAM)
 	Duel.Damage(p,d,REASON_EFFECT)
 end

@@ -2,7 +2,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	--xyz summon
-	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_REPTILE),4,2,nil,nil,7)
+	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_REPTILE),4,2,nil,nil,Xyz.InfiniteMaterial)
 	c:EnableReviveLimit()
 	--pendulum summon
 	Pendulum.AddProcedure(c,false)

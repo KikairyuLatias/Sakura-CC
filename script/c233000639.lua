@@ -34,6 +34,7 @@ function s.initial_effect(c)
 	e4:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e4:SetRange(LOCATION_MZONE)
 	e4:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
+	e4:SetValue(1)
 	c:RegisterEffect(e4)
 	--burn damage
 	local e5=Effect.CreateEffect(c)

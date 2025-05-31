@@ -2,7 +2,7 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	--xyz summon
-	Xyz.AddProcedure(c,s.mfilter,10,3,nil,nil,99)
+	Xyz.AddProcedure(c,s.mfilter,10,3,nil,nil,Xyz.InfiniteMaterial)
 	c:EnableReviveLimit()
 	--spsummon limit
 	local e0=Effect.CreateEffect(c)

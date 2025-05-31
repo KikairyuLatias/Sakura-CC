@@ -1,4 +1,5 @@
 --Serena the Performer Trainer
+--Scripted with Google Gemini assistance
 local s,id=GetID()
 function s.initial_effect(c)
 	--link summon
@@ -8,7 +9,7 @@ function s.initial_effect(c)
 	local e0=Effect.CreateEffect(c)
 	e0:SetProperty(EFFECT_FLAG_SET_AVAILABLE)
 	e0:SetType(EFFECT_TYPE_FIELD)
-	e0:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET
+	e0:SetCode(EFFECT_CANNOT_BE_EFFECT_TARGET)
 	e0:SetRange(LOCATION_MZONE)
 	e0:SetTargetRange(LOCATION_MZONE,LOCATION_MZONE)
 	e0:SetTarget(s.indtg)
@@ -37,14 +38,15 @@ function s.initial_effect(c)
 	e2:SetCountLimit(1)
 	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
 	e2:SetCondition(s.atkcon)
-	e2:SetCondition(s.condition2)
 	e2:SetOperation(s.operation2)
 	c:RegisterEffect(e2)
 end
+
 --protection
 function s.indtg(e,c)
 	return e:GetHandler():GetLinkedGroup():IsContains(c)
 end
+
 --lp bonus
 function s.reccon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():GetLinkedGroupCount()>=1
@@ -65,36 +67,57 @@ function s.recop(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Recover(tp,tc:GetAttack(),REASON_EFFECT)
 	end
 end
+
 --stat boost
-function s.cfilter(c,g)
-	return g:IsContains(c)
-end
 function s.atkcon(e,tp,eg,ep,ev,re,r,rp)
-	local lg1=Duel.GetLinkedGroup(tp,1,1)
-	return lg1 and eg:IsExists(s.cfilter,1,nil,lg1) and e:GetHandler():GetLinkedGroupCount()=2
+	local c = e:GetHandler()
+	-- Serena must point to 2 monsters
+	if c:GetLinkedGroupCount() ~= 2 then return false end
+
+	-- Must be in Damage Step, before damage calculation
+	local phase = Duel.GetCurrentPhase()
+	if phase ~= PHASE_DAMAGE or Duel.IsDamageCalculated() then return false end
+
+	local a = Duel.GetAttacker()
+	local d = Duel.GetAttackTarget()
+
+	-- Ensure valid battling monsters are present and related to battle
+	if not a or not d or not a:IsRelateToBattle() or not d:IsRelateToBattle() then return false end
+
+	local serena_linked_group = c:GetLinkedGroup()
+
+	-- Check if your monster that Serena points to is battling an opponent's monster
+	local your_monster_is_attacker = (a:GetControler() == tp and serena_linked_group:IsContains(a) and d:GetControler() ~= tp)
+	local your_monster_is_defender = (d:GetControler() == tp and serena_linked_group:IsContains(d) and a:GetControler() ~= tp)
+
+	return your_monster_is_attacker or your_monster_is_defender
 end
-function s.condition2(e,tp,eg,ep,ev,re,r,rp)
-	local phase=Duel.GetCurrentPhase()
-	if phase~=PHASE_DAMAGE or Duel.IsDamageCalculated() then return false end
-	local a=Duel.GetAttacker()
-	local d=Duel.GetAttackTarget()
-	return (d~=nil and a:GetControler()==tp and a:IsRelateToBattle())
-		or (d~=nil and d:GetControler()==tp and d:IsFaceup() and d:IsRelateToBattle())
-end
-function s.operation2(e,tp,eg,ep,ev,re,r,rp,chk)
-	local a=Duel.GetAttacker()
-	local d=Duel.GetAttackTarget()
-	if not a:IsRelateToBattle() or not d:IsRelateToBattle() then return end
-	local e2=Effect.CreateEffect(e:GetHandler())
-	e2:SetOwnerPlayer(tp)
-	e2:SetType(EFFECT_TYPE_SINGLE)
-	e2:SetCode(EFFECT_UPDATE_ATTACK)
-	e2:SetReset(RESET_EVENT+0x1fe0000+RESET_PHASE+PHASE_END)
-	if a:GetControler()==tp then
-		e2:SetValue(d:GetAttack())
-		a:RegisterEffect(e2)
-	else
-		e2:SetValue(a:GetAttack())
-		d:RegisterEffect(e2)
+
+function s.operation2(e,tp,eg,ep,ev,re,r,rp) -- Removed 'chk' parameter as it's not used here
+	local a = Duel.GetAttacker()
+	local d = Duel.GetAttackTarget()
+	local c = e:GetHandler() -- Serena, the effect's handler
+
+	local serena_linked_group = c:GetLinkedGroup()
+
+	local your_monster = nil
+	local opp_monster = nil
+
+	-- Determine which is your monster (pointed to by Serena) and which is the opponent's monster
+	if a and a:GetControler() == tp and serena_linked_group:IsContains(a) and d and d:GetControler() ~= tp then
+		your_monster = a
+		opp_monster = d
+	elseif d and d:GetControler() == tp and serena_linked_group:IsContains(d) and a and a:GetControler() ~= tp then
+		your_monster = d
+		opp_monster = a
+	end
+
+	if your_monster and opp_monster then
+		local e_atk = Effect.CreateEffect(c) -- Serena owns this effect
+		e_atk:SetType(EFFECT_TYPE_SINGLE)
+		e_atk:SetCode(EFFECT_UPDATE_ATTACK)
+		e_atk:SetValue(opp_monster:GetAttack()) -- Gain ATK equal to opponent's monster's ATK
+		e_atk:SetReset(RESET_PHASE+PHASE_DAMAGE) -- Reset until the end of the Damage Step
+		your_monster:RegisterEffect(e_atk)
 	end
 end

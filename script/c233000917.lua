@@ -1,4 +1,5 @@
 --Dawn the Coordinator Trainer
+--Scripted with Google Gemini assistance
 local s,id=GetID()
 function s.initial_effect(c)
 	--link summon
@@ -14,10 +15,10 @@ function s.initial_effect(c)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)   
-	--stat drop and send to the GY [iffy]
+	--stat drop and send to the GY
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,1))
-	e3:SetCategory(CATEGORY_ATKCHANGE)
+	e3:SetCategory(CATEGORY_ATKCHANGE+CATEGORY_DEFCHANGE+CATEGORY_TOGRAVE)
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e3:SetCode(EVENT_BATTLE_DAMAGE)
 	e3:SetRange(LOCATION_MZONE)
@@ -33,10 +34,8 @@ function s.filter(c,e,tp,zone)
 	return c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP,tp,zone)
 end
 function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then
-		local zone=e:GetHandler():GetLinkedZone()
-		return zone~=0 and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,e,tp,zone)
-	end
+	local zone=e:GetHandler():GetLinkedZone()
+	if chk==0 then return zone~=0 and Duel.IsExistingMatchingCard(s.filter,tp,LOCATION_HAND+LOCATION_DECK,0,1,nil,e,tp,zone) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND+LOCATION_DECK)
 end
 function s.operation(e,tp,eg,ep,ev,re,r,rp)
@@ -56,28 +55,32 @@ function s.atcon(e,tp,eg,ep,ev,re,r,rp)
 	return rc:IsControler(tp)
 end
 function s.attg(e,tp,eg,ep,ev,re,r,rp,chk)
-	if chk==0 then return Duel.IsExistingMatchingCard(aux.NOT(aux.FilterFaceupFunction(Card.IsStatus,STATUS_BATTLE_DESTROYED)),tp,0,LOCATION_MZONE,1,nil) end
+	if chk==0 then return Duel.IsExistingMatchingCard(Card.IsFaceup,1-tp,LOCATION_MZONE,0,1,nil) end -- Corrected target filter to opponent's face-up monsters
+	Duel.SetOperationInfo(0, CATEGORY_ATKCHANGE + CATEGORY_DEFCHANGE + CATEGORY_TOGRAVE, nil, 0, 1-tp, LOCATION_MZONE) -- Corrected operation info for all opponent's monsters
 	Duel.SetTargetParam(ev)
 end
 function s.atop(e,tp,eg,ep,ev,re,r,rp)
-	local g=Duel.GetMatchingGroup(Card.IsFaceup,tp,0,LOCATION_MZONE,nil)
+	local g=Duel.GetMatchingGroup(Card.IsFaceup,1-tp,LOCATION_MZONE,0,nil) -- Corrected to get opponent's monsters
 	local dg=Group.CreateGroup()
-	local c=e:GetHandler()
-	local sc=g:GetFirst()
-		while sc do
-			local preatk=tc:GetAttack()
-			local e1=Effect.CreateEffect(e:GetHandler())
-			e1:SetType(EFFECT_TYPE_SINGLE)
-			e1:SetCode(EFFECT_UPDATE_ATTACK)
-			e1:SetReset(RESET_EVENT+RESETS_STANDARD)
-			e1:SetValue(ev)
-			sc:RegisterEffect(e1)
-			local e2=e1:Clone()
-			e2:SetCode(EFFECT_UPDATE_DEFENSE)
-			sc:RegisterEffect(e2)
-			sc=g:GetNext()
-		if preatk~=0 and tc:GetAttack()==0 then dg:AddCard(tc) end
-		tc=g:GetNext()
+	local current_card_handler = e:GetHandler()
+	local iter_card=g:GetFirst()
+	while iter_card do
+		local e1=Effect.CreateEffect(current_card_handler)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_UPDATE_ATTACK)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD)
+		e1:SetValue(-ev) -- Corrected value to be negative for loss
+		iter_card:RegisterEffect(e1)
+		local e2=e1:Clone()
+		e2:SetCode(EFFECT_UPDATE_DEFENSE)
+		iter_card:RegisterEffect(e2)
+		-- Check if ATK or DEF became 0 or less after applying the effect
+		if iter_card:GetAttack() <= 0 or iter_card:GetDefense() <= 0 then
+			dg:AddCard(iter_card)
+		end
+		iter_card=g:GetNext() -- Corrected variable name
 	end
-	Duel.Destroy(dg,REASON_EFFECT)
+	if dg:GetCount() > 0 then -- Only destroy if there are cards to destroy
+		Duel.Destroy(dg,REASON_EFFECT)
+	end
 end

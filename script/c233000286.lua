@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e1:SetTarget(s.target)
 	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
-	--atkup
+	--atkup (hand)
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetType(EFFECT_TYPE_QUICK_O)
@@ -69,53 +69,52 @@ end
 --boost
 function s.condition2(e,tp,eg,ep,ev,re,r,rp)
 	local phase=Duel.GetCurrentPhase()
+	-- The effect can be activated in the damage step, but not after damage calculation.
 	if phase~=PHASE_DAMAGE or Duel.IsDamageCalculated() then return false end
+
 	local a=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
-	return d~=nil and d:IsFaceup() and ((a:GetControler()==tp and a:IsSetCard(0x7d2) and a:IsRace(RACE_BEASTWARRIOR) and a:IsRelateToBattle())
-		or (d:GetControler()==tp and d:IsSetCard(0x7d2) and d:IsRace(RACE_BEASTWARRIOR) and d:IsRelateToBattle()))
+
+	-- Check if a battle target exists, is face-up, and is related to the battle.
+	if not d or not d:IsFaceup() or not a:IsRelateToBattle() or not d:IsRelateToBattle() then return false end
+
+	-- Check if the attacking monster is a "Vee☆Vee" Beast-Warrior monster controlled by either player.
+	-- Or if the defending monster is a "Vee☆Vee" Beast-Warrior monster controlled by either player.
+	local is_attacker_veevee_beastwarrior = a:IsSetCard(0x7d2) and a:IsRace(RACE_BEASTWARRIOR)
+	local is_defender_veevee_beastwarrior = d:IsSetCard(0x7d2) and d:IsRace(RACE_BEASTWARRIOR)
+
+	return (is_attacker_veevee_beastwarrior and a:GetControler() == Duel.GetTurnPlayer()) or (is_defender_veevee_beastwarrior and d:GetControler() == Duel.GetTurnPlayer())
 end
+
 function s.cost2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsAbleToGraveAsCost() end
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST)
 end
-function s.operation2(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.operation2(e,tp,eg,ep,ev,re,r,rp)
 	local a=Duel.GetAttacker()
 	local d=Duel.GetAttackTarget()
 	if not a:IsRelateToBattle() or not d:IsRelateToBattle() then return end
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetOwnerPlayer(tp)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_UPDATE_ATTACK+EFFECT_UPDATE_DEFENSE)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+	local target_m = nil
 	if a:GetControler()==tp then
-		e1:SetValue(d:GetAttack())
-		e1:SetValue(d:GetDefense())
-		a:RegisterEffect(e1)
+		target_m = a
 	else
-		e1:SetValue(a:GetAttack())
-		e1:SetValue(a:GetDefense())
-		d:RegisterEffect(e1)
+		target_m = d
 	end
-end
-
---this should only need to be called once, but something is funny
-function s.operation2a(e,tp,eg,ep,ev,re,r,rp,chk)
-	local a=Duel.GetAttacker()
-	local d=Duel.GetAttackTarget()
-	if not a:IsRelateToBattle() or not d:IsRelateToBattle() then return end
-	local e1=Effect.CreateEffect(e:GetHandler())
-	e1:SetOwnerPlayer(tp)
-	e1:SetType(EFFECT_TYPE_SINGLE)
-	e1:SetCode(EFFECT_UPDATE_ATTACK+EFFECT_UPDATE_DEFENSE)
-	e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-	if a:GetControler()==tp then
+	if target_m then
+		local e1=Effect.CreateEffect(e:GetHandler())
+		e1:SetOwnerPlayer(tp)
+		e1:SetType(EFFECT_TYPE_SINGLE)
+		e1:SetCode(EFFECT_UPDATE_ATTACK)
 		e1:SetValue(d:GetAttack())
-		e1:SetValue(d:GetDefense())
-		a:RegisterEffect(e1)
-	else
-		e1:SetValue(a:GetAttack())
-		e1:SetValue(a:GetDefense())
-		d:RegisterEffect(e1)
+		e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+		target_m:RegisterEffect(e1)
+
+		local e2=Effect.CreateEffect(e:GetHandler())
+		e2:SetOwnerPlayer(tp)
+		e2:SetType(EFFECT_TYPE_SINGLE)
+		e2:SetCode(EFFECT_UPDATE_DEFENSE)
+		e2:SetValue(d:GetDefense())
+		e2:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+		target_m:RegisterEffect(e2)
 	end
 end

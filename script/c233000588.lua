@@ -3,7 +3,7 @@ local s,id=GetID()
 function s.initial_effect(c)
 	alias=c:GetOriginalCodeRule()
 	--xyz summon
-	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_BEAST),4,2,s.ovfilter,aux.Stringid(id,0),99,s.xyzop)
+	Xyz.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsRace,RACE_BEAST),4,2,s.ovfilter,aux.Stringid(id,0),Xyz.InfiniteMats,s.xyzop)
 	c:EnableReviveLimit()
 	--gain ATK
 	local e2=Effect.CreateEffect(c)

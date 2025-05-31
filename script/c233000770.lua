@@ -63,18 +63,17 @@ function s.descon2(e,tp,eg,ep,ev,re,r,rp)
 	return re:IsActiveType(TYPE_MONSTER) and rc~=c and rc:IsSetCard(0x7df) and c:IsLevelAbove(6) and rc:IsControler(tp)
 end
 function s.destg2(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	if chkc then return chkc:IsControler(1-tp) and chkc:IsOnField() and chkc:IsRemovable() end
-	if chk==0 then return Duel.IsExistingTarget(aux.TRUE,tp,0,LOCATION_ONFIELD,2,2) end
-	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-	local g=Duel.SelectTarget(tp,Card.IsRemovable,tp,0,LOCATION_ONFIELD,2,2,nil)
-	Duel.SetOperationInfo(0,CATEGORY_REMOVE,g,1,0,0)
+	local g=Duel.GetMatchingGroup(nil,tp,0,LOCATION_ONFIELD,nil)
+	if chk==0 then return #g>=2 end
+	Duel.SetOperationInfo(0,CATEGORY_REMOVE,g,2,tp,0)
 end
 function s.desop2(e,tp,eg,ep,ev,re,r,rp)
-	if not e:GetHandler():IsRelateToEffect(e) then return end
-	if g:GetCount()>0 then
-		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_REMOVE)
-		local sg=g:Select(tp,2,2,nil)
-		Duel.Remove(sg,POS_FACEDOWN,REASON_EFFECT)
+	local g=Duel.GetMatchingGroup(nil,tp,0,LOCATION_ONFIELD,nil)
+	if #g>=2 then
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+		local dg=g:Select(tp,2,2,nil)
+		Duel.HintSelection(dg,true)
+		Duel.Remove(dg,POS_FACEDOWN,REASON_EFFECT)
 	end
 end
 

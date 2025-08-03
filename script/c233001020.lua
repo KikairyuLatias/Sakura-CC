@@ -29,7 +29,7 @@ end
 
 --special
 function s.cfilter(c)
-	return c:IsFacedown() or not c:IsSetCard(0x5f7) or not c:IsSetCard(0x5f8)
+	return c:IsFacedown() or not (c:IsSetCard(0x5f7) or c:IsSetCard(0x5f8))
 end
 function s.spcon(e,tp,eg,ep,ev,re,r,rp)
 	return not Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
@@ -48,7 +48,7 @@ end
 
 --Synchro Summon
 function s.scfilter(c)
-	return c:IsSetCard(0x5f7) or c:IsSetCard(0x5f8) and c:IsSynchroSummonable(nil)
+	return (c:IsSetCard(0x5f7) or c:IsSetCard(0x5f8)) and c:IsSynchroSummonable(nil)
 end
 function s.sctg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.scfilter,tp,LOCATION_EXTRA,0,1,nil) end

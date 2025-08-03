@@ -2,15 +2,16 @@
 local s,id=GetID()
 function s.initial_effect(c)
 	--link summon
-	Link.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsType,TYPE_EFFECT),3,99,s.lcheck)
+	Link.AddProcedure(c,aux.FilterBoolFunctionEx(Card.IsSetCard,0x14af),3,nil,s.lcheck)
 	c:EnableReviveLimit()
-	--unaffected by opponent effects
+	--Unaffected by the opponent's activated effects
 	local e0=Effect.CreateEffect(c)
 	e0:SetType(EFFECT_TYPE_SINGLE)
+	e0:SetCode(EFFECT_IMMUNE_EFFECT)
 	e0:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e0:SetRange(LOCATION_MZONE)
-	e0:SetCode(EFFECT_IMMUNE_EFFECT)
-	e0:SetValue(s.unaffectedval)
+	e0:SetCondition(s.immcon)
+	e0:SetValue(s.immval)
 	c:RegisterEffect(e0)
 	--opponent cannot tribute me
 	local e1=Effect.CreateEffect(c)
@@ -18,6 +19,7 @@ function s.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_SINGLE_RANGE)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetCode(EFFECT_UNRELEASABLE_SUM)
+	e1:SetCondition(s.immcon)
 	e1:SetValue(s.sumlimit)
 	c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
@@ -61,9 +63,13 @@ function s.initial_effect(c)
 	c:RegisterEffect(e5)
 end
 
---restriction
-function s.lcheck(g,lc,tp)
-	return g:GetClassCount(Card.GetCode)==#g
+--Immune
+function s.immcon(e)
+	local tp=e:GetHandlerPlayer()
+	return e:GetHandler():IsLinkSummoned()
+end
+function s.immval(e,te)
+	return te:GetOwnerPlayer()~=e:GetHandlerPlayer() and te:IsActivated()
 end
 
 -- protections

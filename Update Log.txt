@@ -290,3 +290,18 @@ Reversion of the setcode_constants and other stuff because they are tied to the 
 - Updated Bunny/Flyer with some card moving (for alt. arts)
 - Addition of Olympidragon archetype
 - Misc. script updates
+
+5/31/25
+
+- Fixing some script (with a little AI assistance)
+
+6/6/25
+
+- Rocketblossom Deer scripted with some AI assistance.
+- Some other coding was fixed.
+
+8/3/25
+
+- DB08 archetypes (Dream*Star, Animastral, Diver Dragon scripted)
+- Other misc updates
+- Added more Diver cards (LEGACY)

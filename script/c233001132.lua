@@ -5,7 +5,7 @@ function s.initial_effect(c)
 	Pendulum.AddProcedure(c)
 	--destroy something
 	local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,1))
+	e1:SetDescription(aux.Stringid(id,0))
 	e1:SetRange(LOCATION_PZONE)
 	e1:SetCategory(CATEGORY_DESTROY)
 	e1:SetType(EFFECT_TYPE_ACTIVATE)

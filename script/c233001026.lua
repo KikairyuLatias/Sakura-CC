@@ -81,7 +81,7 @@ end
 
 --no one escapes the law
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
-	return not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) and Duel.IsChainNegatable(ev)
+	return not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) and ep~=tp and Duel.IsChainNegatable(ev)
 end
 
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
@@ -118,7 +118,7 @@ end
 
 --burn
 function s.banfilter(c)
-	return c:IsFaceup() and c:IsSetCard(0x5f7) or c:IsSetCard(0x5f8)
+	return c:IsFaceup() and (c:IsSetCard(0x5f7) or c:IsSetCard(0x5f8))
 end
 
 function s.damcon(e,tp,eg,ep,ev,re,r,rp)

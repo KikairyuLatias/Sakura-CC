@@ -8,7 +8,7 @@ function s.initial_effect(c)
 	e1:SetCode(EVENT_CHAINING)
 	e1:SetCountLimit(1,id)
 	e1:SetCost(s.cost)
-	e1:SetCondition(s.condition2)
+	e1:SetCondition(function(e,tp,eg,ep,ev,re,r,rp) return rp==1-tp end)
 	e1:SetTarget(s.target2)
 	e1:SetOperation(s.activate2)
 	c:RegisterEffect(e1)
@@ -31,14 +31,11 @@ end
 function s.cfilter(c)
 	return c:IsFaceup() and c:IsSetCard(0x7d2) and c:IsRace(RACE_BEASTWARRIOR)
 end
-	--this is supposed to also tribute from the hand too, but I can just errata it to just be from field if edopro is too dumb to	 make it work as intended
+	--this is supposed to also tribute from the hand too, but I can just errata it to just be from field if edopro is too dumb to	make it work as intended
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.CheckReleaseGroup(tp,Card.IsSetCard,1,nil,0x7d2) end
 	local g=Duel.SelectReleaseGroup(tp,Card.IsSetCard,1,1,nil,0x7d2)
 	Duel.Release(g,REASON_COST)
-end
-function s.condition2(e,tp,eg,ep,ev,re,r,rp)
-	return (re:IsActiveType(TYPE_MONSTER) or re:IsHasType(EFFECT_TYPE_ACTIVATE)) and Duel.IsChainNegatable(ev) and Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil) and ep~=tp
 end
 function s.target2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

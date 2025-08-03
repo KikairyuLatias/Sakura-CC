@@ -29,7 +29,7 @@ end
 
 --ss condition
 function s.costfilter(c)
-	return c:IsSetCard(0x24af) and c:IsAbleToGraveAsCost()
+	return c:IsMonster() and c:IsAbleToGraveAsCost() and c:IsSetCard(0x24af)
 end
 function s.cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.costfilter,tp,LOCATION_HAND+LOCATION_EXTRA,0,2,nil) end

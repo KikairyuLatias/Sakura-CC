@@ -55,7 +55,7 @@ end
 
 --handtrap cond
 function s.actfilter(c)
-	return c:IsFaceup() and c:IsSetCard(0x7f3) and c:IsType(TYPE_SYNCHRO)
+	return c:IsFaceup() and c:IsSetCard(0x7f3) and c:IsSummonLocation(LOCATION_EXTRA) and c:IsFaceup()
 end
 function s.actcon(e)
 	return Duel.IsExistingMatchingCard(s.actfilter,e:GetHandlerPlayer(),LOCATION_MZONE,0,1,nil)

@@ -1,7 +1,7 @@
 --Solar Dreamstar Dragon
 local s,id=GetID()
 function s.initial_effect(c)
-	Synchro.AddProcedure(c,nil,1,1,aux.FilterSummonCode(233001001),1,1)
+	Synchro.AddProcedure(c,nil,2,2,aux.FilterSummonCode(233001001),1,1)
 	c:EnableReviveLimit()
 	--cannot negate my synchro summon
 	local e0=Effect.CreateEffect(c)
@@ -89,7 +89,8 @@ function s.damop(e,tp,eg,ep,ev,re,r,rp)
 end
 --negation
 function s.discon(e,tp,eg,ep,ev,re,r,rp)
-	return not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED) and Duel.IsChainNegatable(ev)
+	return not e:GetHandler():IsStatus(STATUS_BATTLE_DESTROYED)
+		and ep~=tp and Duel.IsChainNegatable(ev)
 end
 function s.distg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return true end

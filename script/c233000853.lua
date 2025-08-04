@@ -34,7 +34,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e2c)
 
 	--Fusion Summon 1 "Diver Dragon" Fusion Monster
-	local params={function(c) return c:IsSetCard(0x64af) end}
+	local params={aux.FilterBoolFunction(Card.IsSetCard,0x64af),Fusion.OnFieldMat}
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,2))
 	e3:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_FUSION_SUMMON)
@@ -112,7 +112,7 @@ function s.sptg2(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then
 		if Duel.IsPlayerAffectedByEffect(tp,CARD_BLUEEYES_SPIRIT) then return false end
 		if Duel.GetLocationCount(tp,LOCATION_MZONE)<2 then return false end
-		local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_HAND,0,nil,e,tp)
+		local g=Duel.GetMatchingGroup(s.filter,tp,LOCATION_HAND+LOCATION_DECK,0,nil,e,tp)
 		return g:GetClassCount(Card.GetCode)>=2
 	end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,2,tp,LOCATION_HAND+LOCATION_DECK)

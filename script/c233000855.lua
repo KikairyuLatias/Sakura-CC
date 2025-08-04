@@ -21,8 +21,8 @@ function s.initial_effect(c)
 	e1c:SetCode(EVENT_SPSUMMON_SUCCESS)
 	c:RegisterEffect(e1c)
 
-		--Fusion Summon 1 "Diver Dragon" Fusion Monster
-	local params={function(c) return c:IsSetCard(0x64af) end}
+	--Fusion Summon 1 "Diver Dragon" Fusion Monster
+	local params={aux.FilterBoolFunction(Card.IsSetCard,0x64af),Fusion.OnFieldMat}
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_FUSION_SUMMON)

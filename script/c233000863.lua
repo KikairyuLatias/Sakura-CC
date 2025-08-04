@@ -1,5 +1,4 @@
 -- Diver Dragon Naval Charge
---Diver Equine Unity
 local s,id=GetID()
 function s.initial_effect(c)
 	--Activate
@@ -13,6 +12,17 @@ function s.initial_effect(c)
 	e1:SetTarget(s.destg)
 	e1:SetOperation(s.desop)
 	c:RegisterEffect(e1)
+	--Activate
+	local e2=Effect.CreateEffect(c)
+	e2:SetDescription(aux.Stringid(id,0))
+	e2:SetCategory(CATEGORY_DESTROY)
+	e2:SetType(EFFECT_TYPE_ACTIVATE)
+	e2:SetCode(EVENT_FREE_CHAIN)
+	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
+	e2:SetCountLimit(1,id)
+	e2:SetTarget(s.bantg)
+	e2:SetOperation(s.banop)
+	c:RegisterEffect(e2)
 end
 
 --destroy things
@@ -42,6 +52,41 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	local g=Duel.SelectMatchingCard(tp,s.desfilter,tp,0,LOCATION_ONFIELD,1,ct,nil)
 	if g:GetCount()>0 then
 		local ct2=Duel.Destroy(g,REASON_EFFECT)
+		Duel.BreakEffect()
+		Duel.Damage(1-tp,500,REASON_EFFECT)
+	end
+end
+function s.chainlm(e,rp,tp)
+	return tp==rp
+end
+
+--banish things
+function s.cfilter2(c)
+	return c:IsFaceup() and c:IsSetCard(0x64af) and (c:IsSynchroMonster() or c:IsFusionMonster())
+end
+function s.lmfilter2(c)
+	return c:IsFaceup() and c:IsSetCard(0x64af) and (c:IsSynchroMonster() or c:IsFusionMonster())
+end
+function s.banfilter(c)
+	return c:IsAbleToRemove()
+end
+function s.bantg(e,tp,eg,ep,ev,re,r,rp,chk)
+	local c=e:GetHandler()
+	if chk==0 then return Duel.IsExistingMatchingCard(s.cfilter,tp,LOCATION_MZONE,0,1,nil)
+		and Duel.IsExistingMatchingCard(s.desfilter,tp,0,LOCATION_ONFIELD,1,nil) end
+	local g=Duel.GetMatchingGroup(s.desfilter,tp,0,LOCATION_ONFIELD,nil)
+	Duel.SetOperationInfo(0,CATEGORY_DESTROY,g,1,0,0)
+	if Duel.IsExistingMatchingCard(s.lmfilter,tp,LOCATION_MZONE,0,1,nil) and e:IsHasType(EFFECT_TYPE_ACTIVATE) then
+		Duel.SetChainLimit(s.chainlm)
+	end
+end
+function s.banop(e,tp,eg,ep,ev,re,r,rp)
+	local ct=Duel.GetMatchingGroupCount(s.cfilter,tp,LOCATION_MZONE,0,nil)
+	if ct==0 then return end
+	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_DESTROY)
+	local g=Duel.SelectMatchingCard(tp,s.banfilter,tp,0,LOCATION_ONFIELD,1,ct,nil)
+	if g:GetCount()>0 then
+		local ct2=Duel.Remove(g,POS_FACEDOWN,REASON_EFFECT)
 		Duel.BreakEffect()
 		Duel.Damage(1-tp,500,REASON_EFFECT)
 	end
